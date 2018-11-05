@@ -6,82 +6,112 @@ import psycopg2 as dbapi2
 
 INIT_STATEMENTS = [
     """CREATE TABLE IF NOT EXISTS public.users
-(
-    id serial NOT NULL UNIQUE,
-    first_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    last_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    creation_date timestamp without time zone NOT NULL DEFAULT now(),
-    birth_date timestamp without time zone NOT NULL,
-    post_karma integer NOT NULL DEFAULT 0,
-    comment_karma integer NOT NULL DEFAULT 0,
-    is_admin boolean NOT NULL DEFAULT false,
-    is_banned boolean NOT NULL DEFAULT false,
-    username character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(256) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT user_id_primary PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-ALTER TABLE public.users
-    OWNER to itucs;""",
-
-    """
-    CREATE TABLE IF NOT EXISTS public.votes
-(
-    id serial NOT NULL UNIQUE,
-    date timestamp without time zone NOT NULL,
-    parent_type character varying(32) COLLATE pg_catalog."default" NOT NULL,
-    passed_time interval NOT NULL,
-    vote boolean NOT NULL,
-    user_id integer NOT NULL,
-    CONSTRAINT vote_id_pk PRIMARY KEY (id),
-    CONSTRAINT user_id_fk FOREIGN KEY (user_id)
-        REFERENCES public.users (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
-
-ALTER TABLE public.votes
-    OWNER to itucs;
+    (
+        id serial NOT NULL UNIQUE,
+        first_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
+        last_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
+        date timestamp without time zone NOT NULL DEFAULT now(),
+        birth_date timestamp without time zone NOT NULL,
+        post_karma integer NOT NULL DEFAULT 0,
+        comment_karma integer NOT NULL DEFAULT 0,
+        is_admin boolean NOT NULL DEFAULT false,
+        is_banned boolean NOT NULL DEFAULT false,
+        username character varying(32) COLLATE pg_catalog."default" NOT NULL,
+        password character varying(32) COLLATE pg_catalog."default" NOT NULL,
+        email character varying(256) COLLATE pg_catalog."default" NOT NULL,
+        CONSTRAINT user_id_primary PRIMARY KEY (id)
+    );
     """,
-    """
-    CREATE TABLE IF NOT EXISTS public.reports
-(
-    id serial NOT NULL UNIQUE,
-    violated_rule text COLLATE pg_catalog."default" NOT NULL,
-    date timestamp without time zone NOT NULL,
-    reason_description text COLLATE pg_catalog."default",
-    action_taken text COLLATE pg_catalog."default" NOT NULL,
-    is_dismissed boolean NOT NULL,
-    post_id integer,
-    comment_id integer,
-    CONSTRAINT report_id_pk PRIMARY KEY (id),
-    CONSTRAINT comment_id_fk FOREIGN KEY (comment_id)
-        REFERENCES public.comments (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT post_id_fk FOREIGN KEY (post_id)
-        REFERENCES public.posts (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
-WITH (
-    OIDS = FALSE
-)
-TABLESPACE pg_default;
 
-ALTER TABLE public.reports
-    OWNER to itucs;
-
+    """CREATE TABLE IF NOT EXISTS public.tags (
+        id serial PRIMARY KEY,
+        title character varying(24) NOT NULL,
+        date timestamp without time zone NOT NULL,
+        subscriber_ammount integer NOT NULL,
+        is_banned boolean NOT NULL DEFAULT false,
+        description text,
+        rules text
+    );
     """,
+
+    """CREATE TABLE IF NOT EXISTS public.posts (
+        id serial PRIMARY KEY,
+        user_id integer NOT NULL,
+        date timestamp without time zone NOT NULL,
+        title character varying(255) NOT NULL,
+        content_type character varying(32) NOT NULL,
+        content text NOT NULL,
+        is_external boolean NOT NULL,
+        current_vote integer NOT NULL,
+        rank_score bigint NOT NULL,
+        comment_count integer NOT NULL,
+        is_banned boolean NOT NULL,
+        CONSTRAINT user_id_fk FOREIGN KEY (user_id)
+            REFERENCES public.users (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    );
+    """,
+
+    """CREATE TABLE IF NOT EXISTS public.comments (
+        id serial PRIMARY KEY,
+        user_id integer NOT NULL,
+        post_id integer NOT NULL,
+        parent_id integer,
+        date timestamp with time zone NOT NULL,
+        content_type character varying(32) NOT NULL,
+        content text NOT NULL,
+        is_external boolean NOT NULL,
+        rank_score bigint NOT NULL,
+        CONSTRAINT user_id_fk FOREIGN KEY (user_id)
+            REFERENCES public.users (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+        CONSTRAINT post_id_fk FOREIGN KEY (post_id)
+            REFERENCES public.posts (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+
+    );
+    """,
+
+    """CREATE TABLE IF NOT EXISTS public.votes
+    (
+        id serial NOT NULL UNIQUE,
+        date timestamp without time zone NOT NULL,
+        parent_type character varying(32) NOT NULL,
+        passed_time interval NOT NULL,
+        vote boolean NOT NULL,
+        user_id integer NOT NULL,
+        CONSTRAINT vote_id_pk PRIMARY KEY (id),
+        CONSTRAINT user_id_fk FOREIGN KEY (user_id)
+            REFERENCES public.users (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    );
+    """,
+
+    """CREATE TABLE IF NOT EXISTS public.reports
+    (
+        id serial NOT NULL UNIQUE,
+        violated_rule text NOT NULL,
+        date timestamp without time zone NOT NULL,
+        reason_description text ,
+        action_taken text NOT NULL,
+        is_dismissed boolean NOT NULL,
+        post_id integer,
+        comment_id integer,
+        CONSTRAINT report_id_pk PRIMARY KEY (id),
+        CONSTRAINT comment_id_fk FOREIGN KEY (comment_id)
+            REFERENCES public.comments (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION,
+        CONSTRAINT post_id_fk FOREIGN KEY (post_id)
+            REFERENCES public.posts (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+    );
+    """
 ]
 
 
