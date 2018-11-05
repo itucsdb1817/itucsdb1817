@@ -10,5 +10,7 @@ __pycache__
 venv/
 docs/build/
 
+models/config\.py
+
 .vs
 .vscode
