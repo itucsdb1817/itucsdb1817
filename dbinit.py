@@ -73,7 +73,7 @@ INIT_STATEMENTS = [
         CONSTRAINT user_id_fk FOREIGN KEY (user_id)
             REFERENCES public.users (id) MATCH SIMPLE
             ON UPDATE NO ACTION
-            ON DELETE NO ACTION
+            ON DELETE NO ACTION,
         CONSTRAINT post_id_fk FOREIGN KEY (post_id)
             REFERENCES public.posts (id) MATCH SIMPLE
             ON UPDATE NO ACTION
