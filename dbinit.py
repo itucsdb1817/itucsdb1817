@@ -5,12 +5,12 @@ import psycopg2 as dbapi2
 
 
 INIT_STATEMENTS = [
-    'DROP TABLE IF EXISTS public.users',
-    'DROP TABLE IF EXISTS public.tags',
-    'DROP TABLE IF EXISTS public.posts',
-    'DROP TABLE IF EXISTS public.comments',
-    'DROP TABLE IF EXISTS public.votes',
     'DROP TABLE IF EXISTS public.reports',
+    'DROP TABLE IF EXISTS public.votes',
+    'DROP TABLE IF EXISTS public.comments',
+    'DROP TABLE IF EXISTS public.posts',
+    'DROP TABLE IF EXISTS public.tags',
+    'DROP TABLE IF EXISTS public.users',
 
     """CREATE TABLE IF NOT EXISTS public.users
     (
