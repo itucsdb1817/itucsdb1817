@@ -19,8 +19,6 @@ INIT_STATEMENTS = [
         last_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
         date timestamp without time zone NOT NULL DEFAULT now(),
         birth_date timestamp without time zone NOT NULL,
-        post_karma integer NOT NULL DEFAULT 0,
-        comment_karma integer NOT NULL DEFAULT 0,
         is_admin boolean NOT NULL DEFAULT false,
         is_banned boolean NOT NULL DEFAULT false,
         username character varying(32) COLLATE pg_catalog."default" NOT NULL,
@@ -34,7 +32,7 @@ INIT_STATEMENTS = [
         id serial PRIMARY KEY,
         title character varying(24) NOT NULL,
         date timestamp without time zone NOT NULL,
-        subscriber_ammount integer NOT NULL,
+        subscriber_amount integer NOT NULL,
         is_banned boolean NOT NULL DEFAULT false,
         description text,
         rules text
