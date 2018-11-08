@@ -12,7 +12,7 @@ def create_app():
     app.add_url_rule("/user/login", view_func=login.login)
     app.add_url_rule("/user/logout",view_func=logout.logout)
     app.add_url_rule("/user/register",view_func=register.register)
-    app.config["db"] = dbapi2.connect(os.getenv("DATABASE_URL"))
+    app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
     return app
 
