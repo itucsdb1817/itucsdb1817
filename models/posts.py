@@ -25,7 +25,11 @@ class Post(BaseModel):
             'comment_count',
             'tag_id'
         )
-        super().__init__(entry_id)
+        if entry_id == -1:
+            super().__init__()
+        else:
+            super().__init__(entry_id)
+
 
     def save():
         raise NotImplementedError()

@@ -8,39 +8,50 @@ import psycopg2 as db
 # COLUMN NAMES must be the in the same order as they are defined in table
 
 class BaseModel():
-
-    def __init__(self, entry, iterable_has_id=False):
-        # If an id is given , object tries to find it and copies all values
-        # The id attribute of an entry created via id should not be changed
-        # After creation all values in database can be
-        # accessed and changed with object_name.attribute_name
-        # Save method will update the entry in database directly
-        # Changing id directly after init is not allowed
-        if type(entry) is int:
-            if entry < 1:
-                raise IndexError('id of an table entry cannot be less than zero')
-            fetched_values = self._from_table_get_by_id(entry_id)
-            if not fetched_values:
-                raise NotImplementedError(f'Entry with id {entry} was not found in table {self._TABLE_NAME}')
-            else:
-                # The existance of _ORIGINAL_ATTR means the object was created
-                # from an row in the table
-                # All changes will effect that row
-                self._ORIGINAL_ATTR = fetched_values
-                self._set_attr(fetched_values)
-
-        # Creation with a tuple or a dict results in a brand new entry candidate
-        # It is recommended that the passed in container does not contain id
-        # If the container has an id, because it is a new entry, it will be discarded
-        if type(entry) is tuple:
-            if iterable_has_id and (len(entry) != len(self._COLUMN_NAMES)):
-                throw NotImplementedError()
-            if not iterable_has_id and (len(entry) != (len(self._COLUMN_NAMES) - 1)):
-                throw NotImplementedError()
-            
-
+    # If an id is given , object tries to find it and copies all values
+    # The id attribute of an entry created via id should not be changed
+    # After creation all values in database can be
+    # accessed and changed with object_name.attribute_name
+    # Save method will update the entry in database directly
+    # Changing id directly after init should not allowed
+    # The existance of _ORIGINAL_ATTR means the object was created
+    # from a row in the table
+    def __init__(self, entry_id: int):
+        assert entry_id > 0, 'id must be bigger than 0'
+        fetched_values = self._from_table_get_by_id(entry_id)
+        if not fetched_values:
+            raise NotImplementedError(f'Entry with id {entry_id} was not found in table {self._TABLE_NAME}')
         else:
-            pass
+            self._ORIGINAL_ATTR = fetched_values
+            self._set_attr(fetched_values)
+    
+    # If an id is not given, an empty entry will be created
+    # _ORIGINAL_ATTR will not exist and save function will act accordingly
+    # Interface user is expected 
+    def __init__(self):
+        pass
+
+    # Saves the object to table
+    def save(self):
+        cursor = self._DATABASE_CONNECTION.cursor()
+        if hasattr(self, '_ORIGINAL_ATTR'):
+            assert hasattr(self, 'id')
+            changed = self._get_changed()
+            placeholders = ', '.join((key + ' = %s') for key in changed.keys())
+            query = f'''UPDATE {self._TABLE_NAME}
+                        SET {placeholders}
+                        WHERE id = {self._ORIGINAL_ATTR[0]}'''
+            cursor.execute(query, changed.values())
+        else:
+            if not self._is_attr_complete():
+                raise NotImplementedError('INSUFFICENT ATTR')
+            columns = ', '.join(self._COLUMN_NAMES[1:])
+            placeholders = (len(self._COLUMN_NAMES[1:]) * '%s, ')[:-2]
+            query = f'''INSERT INTO {self._TABLE_NAME} ({columns})
+                        VALUES ({placeholders})'''
+            cursor.execute(query, self._get_attr[1:])
+        cursor.commit()
+        cursor.close()
     
     # assign the given elements from the tuple as attributes to the object
     # this method should not be called from outside as input tuple contains id from SQL Query
@@ -59,6 +70,7 @@ class BaseModel():
         return dict(zip(self._COLUMN_NAMES, self._get_attr_tuple()))
 
     # send query to find if id exists in the current 
+    # if it exists, return as tuple
     def _from_table_get_by_id(self, entry_id: int):
             cursor = self._DATABASE_CONNECTION.cursor()
             cursor.execute(
@@ -69,25 +81,22 @@ class BaseModel():
             return cursor.fetchone()
 
     # only returns new versions of attributes that have been changed as dictionary
+    # must not be called if entity is new
     def _get_changed(self):
         changed = {}
-        if not hasattr(self, '_ORIGINAL_ATTR'):
-            return changed
         for column, original, current in zip(self._COLUMN_NAMES, self._ORIGINAL_ATTR, self._get_attr()):
             if original != current:
                 changed[column] = current
+
+        # id should not have been changed
+        if 'id' in changed:
+            del changed['id']
         return changed
 
-        
-    # Query that list specified columns in referenced table,
-    def _from_table_select(self, column_names: Tuple[str]): 
-        flattened_columns = ', '.join(column for column in columns)
-        with current_app.config['db'].cursor() as cursor:
-            cursor.execute(f'SELECT {flattened_columns} FROM {self._TABLE_NAME}')
-            return cursor.fetchall()
-
-    # Query that list specified columns in referenced table,
-    def _from_table_select_all(self) -> Tuple[str]:
-        with current_app.config['db'].cursor() as cursor:
-            cursor.execute(f'SELECT * FROM {self._TABLE_NAME}')
-            return cursor.fetchall()
+    # if there are any unentered attributes
+    def _is_attr_complete(self):
+        for column in self._COLUMN_NAMES[1:]:
+            if not hasattr(self, column):
+                return False
+        return True
+    
