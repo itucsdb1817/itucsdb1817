@@ -1,19 +1,13 @@
 from flask import Flask
-
-from routes.user import login
-from routes.user import logout
-from routes.user import register
-
+from routes.user import user_routes
 import psycopg2 as dbap2
 
 def create_app():
     app = Flask(__name__)
 
-    app.add_url_rule("/user/login", view_func=login.login)
-    app.add_url_rule("/user/logout",view_func=logout.logout)
-    app.add_url_rule("/user/register",view_func=register.register)
+    app.register_blueprint(page)
     app.config['DB_URL'] = os.getenv('DATABASE_URL')
-
+    
     return app
 
 
