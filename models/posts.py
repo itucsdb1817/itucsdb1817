@@ -6,29 +6,58 @@ from base import BaseModel
 # NOT FINAL
 # MAY BE SUBJECTED TO CHANGE
 class Post(BaseModel):
+    thi
+    TABLE_NAME = 'posts'
+    COLUMN_NAMES = (
+        'id',
+        'user_id',
+        'date',
+        'title',
+        'content_type',
+        'content',
+        'is_external',
+        'current_vote',
+        'rank_score',
+        'is_banned',
+        'comment_count',
+        'tag_id'
+    )
     def __init__(self, entry_id=-1):
         # each instance of object has a connection of its own that get closed automatically
         # when the object goes out of scope
         self._DATABASE_CONNECTION = db.connect(current_app.config['db'])
-        self._TABLE_NAME = 'posts'
-        self._COLUMN_NAMES = (
-            'id',
-            'user_id',
-            'date',
-            'title',
-            'content_type',
-            'content',
-            'is_external',
-            'current_vote',
-            'rank_score',
-            'is_banned',
-            'comment_count',
-            'tag_id'
-        )
         if entry_id != -1:
             super().__init__(entry_id)
 
-
-    def save():
-        raise NotImplementedError()
     ## NEW FUNCTIONS HERE
+    # RULE OF THUMB:
+    #       IF YOU NEED TO ACCESS COLUMN VALUES, USE NORMAL METHODS
+
+    # UTILITY METHODS
+    # these utility methods are called from the class, not instance
+    # they are related to the table, but does not necessarly require the values of an instance
+    # these methods at most need the TABLE_NAME or COLUMN_NAMES from the class and nothing else
+    # Utility methods should create their own database connections if needed
+    # eg: Get first x entries in table posts as objects , 
+    # WILL WORK:    obj = Post()
+    #               obj.example()
+    # PREFERED:     Post.example()
+
+    # this is method that returns a list of post objects
+    @classmethod
+    def get_first_x(cls, id_max):
+        with db.connect(current_app.config['db']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute('SELECT * FROM {cls.TABLE_NAME} WHERE id < %s' (id_max, ))
+                list_of_posts = []
+                for post_tuple in cursor.fetchall():
+                    list_of_posts.append(Post(post_tuple))
+                return list_of_posts
+    
+    # NORMAL (INSTANCE) METHODS
+    # these methods act on the variable this instance stores itself
+    # Call these from the instance
+    def render_markdown(self):
+        if self.content_type == text:
+            # do_something(self.content)
+            pass
