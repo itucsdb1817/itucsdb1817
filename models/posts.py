@@ -6,7 +6,6 @@ from base import BaseModel
 # NOT FINAL
 # MAY BE SUBJECTED TO CHANGE
 class Post(BaseModel):
-    thi
     TABLE_NAME = 'posts'
     COLUMN_NAMES = (
         'id',
@@ -25,7 +24,7 @@ class Post(BaseModel):
     def __init__(self, entry_id=-1):
         # each instance of object has a connection of its own that get closed automatically
         # when the object goes out of scope
-        self._DATABASE_CONNECTION = db.connect(current_app.config['db'])
+        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
         if entry_id != -1:
             super().__init__(entry_id)
 
@@ -46,7 +45,7 @@ class Post(BaseModel):
     # this is method that returns a list of post objects
     @classmethod
     def get_first_x(cls, id_max):
-        with db.connect(current_app.config['db']) as conn:
+        with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
                 cursor.execute('SELECT * FROM {cls.TABLE_NAME} WHERE id < %s' (id_max, ))
                 list_of_posts = []

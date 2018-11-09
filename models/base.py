@@ -3,8 +3,8 @@ from flask import current_app
 import psycopg2 as db 
 
 # in a created model, following values should be set:
-# self._TABLE_NAME, name of the table
-# self._COLUMN_NAMES, a tuple consisting of the column names,
+# self.TABLE_NAME, name of the table
+# self.COLUMN_NAMES, a tuple consisting of the column names,
 # COLUMN NAMES must be the in the same order as they are defined in table
 
 class BaseModel():
