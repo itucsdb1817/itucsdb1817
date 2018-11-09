@@ -4,9 +4,10 @@ import psycopg2 as dbap2
 
 def create_app():
     app = Flask(__name__)
-    app.register_blueprint(page)
-    app.config["db"] = dbapi2.connect(os.getenv("DATABASE_URL"))
 
+    app.register_blueprint(page)
+    app.config['DB_URL'] = os.getenv('DATABASE_URL')
+    
     return app
 
 
