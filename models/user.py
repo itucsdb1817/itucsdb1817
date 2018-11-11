@@ -1,45 +1,70 @@
-from flask import current_app, request, jsonify, session
-import os
-import sys
+from typing import Tuple
+from flask import current_app
+import psycopg2 as db 
+from models.base import BaseModel
 
-class User:
-    def __init__(self, user_id):
-        self.user_id = user_id
-        #get_user(user_id)
-    def get_user(self, user_id):
-        cursor = current_app.config["db"].execute("SELECT * FROM users WHERE id = %(id)s", {'id':user_id})
-        if cursor.rowcount == 0:
-            current_app.config["db"].close()
-            return False
-        else:
-            for row in cursor:
-                self.user_id, self.first_name, self.last_name,self.creation_date,self.birth_date,self.post_karma,self.comment_karma,self.is_admin,self.is_banned,self.username,self.password,self.email = row
-                # Initilizes user attributes
-                current_app.config["db"].close()
-                return True
+class User(BaseModel):
+    TABLE_NAME = 'users'
+    COLUMN_NAMES = (
+        'id',
+        'first_name',
+        'last_name',
+        'creation_date',
+        'birth_date',
+        'is_admin',
+        'is_banned',
+        'username',
+        'password',
+        'email'
+    )
 
-    def add_user(self, first_name, last_name, birth_date, username, password, email):
-        cursor = current_app.config["db"].execute("""INSERT INTO users (
-            first_name
-            , last_name
-            , birth_date
-            , username
-            , password
-            , email
-        ) VALUES (    
-            %(first_name)s
-            , %(last_name)s
-            , %(birth_date)s
-            , %(username)s
-            , %(password)s
-            , %(email)s) RETURNING id -- email character varying""", 
-            {'first_name':first_name
-            , 'last_name':last_name
-            , 'birth_date':birth_date
-            , 'username':username
-            , 'password':password
-            , 'email':email})
-        fetch = cursor.fetchone()
-        print(fetch[0])
-        self.get_user(fetch[0])
-        current_app.config["db"].close()
+    def __init__(self, entry_id=None):
+        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
+        if entry_id != -1:
+            super().__init__(entry_id)
+
+   
+    # this is method that returns first "x" user objects 
+    @classmethod
+    def get_first_x(cls, id_max):
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE id < %s', (id_max, ))
+                list_of_users = []
+                for user_tuple in cursor.fetchall():
+                    list_of_users.append(User(user_tuple))
+                return list_of_users
+
+
+    #This method returns User object with requested username.
+    @classmethod
+    def get_from_username(cls, username):
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE username = %s', (username, ))
+                if cursor.rowcount == 0:
+                    return None
+                tuple = (cursor.fetchone())
+                u=User(tuple[0])
+                print(u.username)
+                return User(tuple[0])
+
+    #This method returns true if there is no other user with the same username or email.
+    @classmethod
+    def unique_user_check(cls, username, email):
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE email = %s OR username = %s', (email,username, ))
+                if cursor.rowcount == 0:
+                    return True
+                else:
+                    return False
+                
+    
+
+    
+    def render_markdown(self):
+        if self.content_type == text:
+            # do_something(self.content)s
+            pass
+          
