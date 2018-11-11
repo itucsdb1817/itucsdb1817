@@ -1,33 +1,77 @@
-from flask import Blueprint, render_template,request, jsonify, session, redirect
+from flask import Blueprint, render_template,request, jsonify, session, redirect, flash
 import os
 import sys
+from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
-from models import user as model
+from models.user import User 
+from routes.user.forms import LoginForm
+from routes.user.forms import RegistrationForm
 
 page = Blueprint('page', __name__,)
 
-@page.route('/user/login')
+#If user is not already logged in checks if
+#password is correct.
+@page.route('/user/login', methods = ['GET', 'POST'])
 def login():
-	return "login"
+	if check.logged_in():
+		return redirect("/") 
+	form = LoginForm()
+	if form.validate_on_submit():
+		username = form.data["username"]
+		user = User.get_from_username(username)
+		if user is not None:
+			password = form.data["password"]
+			if password == user.password:
+				session['user_id'] = user.id
+				return "User logged in successfully."
+			else:
+				return render_template("login.html", form=form,error = "Incorrect password.")
+		else:
+			return render_template("login.html", form=form,error = "Incorrect username or password.")
+	return render_template("login.html", form=form)
+
 
 @page.route('/user/logout')
 def logout():
-	return "logout"
+	session.pop("user_id",None)
+	return "User logged out successfully."
 
-@page.route('/user/register')
+
+#If user is logged in page is redirected it to homepage.
+#User can register if there is no other acccount with same username or email.
+@page.route('/user/register', methods = ['GET', 'POST'])
 def register():
 	if check.logged_in():
-		return redirect("/") #If user is logged in redirect it to homepage.
+		return redirect("/") 
 	else:
-		insertUser = model.User(None)
-		insertUser.add_user('John', 'Doe', '1997-06-24 00:00:00', 'Johnny', 'xd', 'jdoe@hotmail.de') #User register
-		return "Welcome " + insertUser.username
-	req = request.json
+		form = RegistrationForm(request.form)		
+		if form.validate() == False:
+			print(form.errors) 
+
+		if form.validate_on_submit():
+			username = form.data["username"]
+			email = form.data["email"]
+			unique_check = User.unique_user_check(username,email)
+
+			if unique_check:
+				new_user = User()
+				new_user.first_name = form.data["firstname"]
+				new_user.last_name = form.data["lastname"]
+				new_user.username = form.data["username"]
+				new_user.birth_date = form.data["birth_date"]
+				new_user.email = form.data["email"]
+				new_user.password =form.data["password"]
+				new_user.is_admin = False
+				new_user.is_banned = False
+				new_user.creation_date = datetime.utcnow()
+				new_user.save()
+				return "User has successfully signed up."
+			else:
+				return "This username or email address is already in use."
+		else:
+			return render_template('register.html', form=form, error = "Invalid field, please check again.")
+
+	return render_template('register.html', form=form)
 
 
-#def show(page):	use for html connection
-#   try:
-#        return render_template('pages/%s.html' % page)
-#    except TemplateNotFound:
-#        abort(404)
