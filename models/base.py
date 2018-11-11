@@ -16,14 +16,16 @@ class BaseModel():
     # Changing id directly after init should not allowed
     # The existance of _ORIGINAL_ATTR means the object was created
     # from a row in the table
-    def __init__(self, entry: int):
-        if type(entry) is int:
+    def __init__(self, entry):
+        if not entry:
+            return 
+        elif type(entry) is int:
             assert entry > 0, 'id must be bigger than 0'
-            fetched_values = self._from_table_get_by_id(entry_id)
+            fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
                 raise NotImplementedError(f'Entry with id {entry} was not found in table {self._TABLE_NAME}')
-        else if type(entry) is tuple:
-            assert len(entry) == len(self.__class__.entry)
+        elif type(entry) is tuple:
+            assert len(entry) == len(self.__class__.COLUMN_NAMES)
             fetched_values = entry
         else:
             raise NotImplementedError('__init__ of base, program shouldnt be here')
@@ -33,8 +35,8 @@ class BaseModel():
     # If an id is not given, an empty entry will be created
     # _ORIGINAL_ATTR will not exist and save function will act accordingly
     # Interface user is expected 
-    def __init__(self):
-        pass
+    #def __init__(self, *args):
+    #    pass
 
     # Saves the object to table
     def save(self):
@@ -54,8 +56,9 @@ class BaseModel():
             placeholders = (len(self.__class__.COLUMN_NAMES[1:]) * '%s, ')[:-2]
             query = f'''INSERT INTO {self.__class__.TABLE_NAME} ({columns})
                         VALUES ({placeholders})'''
-            cursor.execute(query, self._get_attr[1:])
-        cursor.commit()
+            tuple = self._get_attr()
+            cursor.execute(query, tuple)
+        self._DATABASE_CONNECTION.commit()
         cursor.close()
     
     # assign the given elements from the tuple as attributes to the object
@@ -67,7 +70,7 @@ class BaseModel():
     # returns current attributes combined in a tuple
     # (47, 'James', True, ...) etc
     def _get_attr(self):
-        return tuple([getattr(self,column) for column in self.__class__.COLUMN_NAMES])
+        return tuple([getattr(self,column) for column in self.__class__.COLUMN_NAMES[1:]])
     
     # returns current attributes in a dict with the column names as keys
     # {'id': 47, 'first_name': 'James', 'is_admin': True}
@@ -76,7 +79,7 @@ class BaseModel():
 
     # send query to find if id exists in the current 
     # if it exists, return as tuple
-    def _from_table_get_by_id(self, entry_id: int):
+    def _from_table_get_by_id(self, entry_id):
             cursor = self._DATABASE_CONNECTION.cursor()
             cursor.execute(
                 f'''SELECT * FROM {self.__class__.TABLE_NAME}

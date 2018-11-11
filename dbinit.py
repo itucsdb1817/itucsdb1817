@@ -17,7 +17,7 @@ INIT_STATEMENTS = [
         id serial NOT NULL UNIQUE,
         first_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
         last_name character varying(32) COLLATE pg_catalog."default" NOT NULL,
-        date timestamp without time zone NOT NULL DEFAULT now(),
+        creation_date timestamp without time zone NOT NULL DEFAULT now(),
         birth_date timestamp without time zone NOT NULL,
         is_admin boolean NOT NULL DEFAULT false,
         is_banned boolean NOT NULL DEFAULT false,
