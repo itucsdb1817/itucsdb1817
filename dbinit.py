@@ -22,7 +22,7 @@ INIT_STATEMENTS = [
         is_admin boolean NOT NULL DEFAULT false,
         is_banned boolean NOT NULL DEFAULT false,
         username character varying(32) COLLATE pg_catalog."default" NOT NULL,
-        password character varying(32) COLLATE pg_catalog."default" NOT NULL,
+        password character varying(64) COLLATE pg_catalog."default" NOT NULL,
         email character varying(256) COLLATE pg_catalog."default" NOT NULL,
         CONSTRAINT user_id_primary PRIMARY KEY (id)
     );

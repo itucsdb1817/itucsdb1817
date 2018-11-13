@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template,request, jsonify, session, redirect, flash
+from flask import Blueprint, render_template,request, jsonify, session, redirect, flash,current_app
+from flask_bcrypt  import Bcrypt
 import os
 import sys
 from datetime import datetime
@@ -22,7 +23,8 @@ def login():
 		user = User.get_from_username(username)
 		if user is not None:
 			password = form.data["password"]
-			if password == user.password:
+			password_hash = user.password
+			if current_app.config['bcrypt'].check_password_hash(password_hash, password):
 				session['user_id'] = user.id
 				return "User logged in successfully."
 			else:
@@ -61,7 +63,8 @@ def register():
 				new_user.username = form.data["username"]
 				new_user.birth_date = form.data["birth_date"]
 				new_user.email = form.data["email"]
-				new_user.password =form.data["password"]
+				password_hash = current_app.config['bcrypt'].generate_password_hash(form.data["password"]).decode('utf-8')
+				new_user.password = password_hash
 				new_user.is_admin = False
 				new_user.is_banned = False
 				new_user.creation_date = datetime.utcnow()
