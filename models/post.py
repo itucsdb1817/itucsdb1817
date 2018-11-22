@@ -3,8 +3,16 @@ from flask import current_app
 import psycopg2 as db 
 from base import BaseModel
 
-# NOT FINAL
-# MAY BE SUBJECTED TO CHANGE
+# possible content types:
+# Internal: (uploaded to site)
+#   text
+#   video
+#   picture
+# External: (Must be all links)
+#   un-renderable link
+#   video
+#   picture
+
 class Post(BaseModel):
     TABLE_NAME = 'posts'
     COLUMN_NAMES = (
