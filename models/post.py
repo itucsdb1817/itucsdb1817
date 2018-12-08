@@ -1,7 +1,7 @@
 from typing import Tuple
 from flask import current_app
 import psycopg2 as db 
-from base import BaseModel
+from models.base import BaseModel
 
 # possible content types:
 # Internal: (uploaded to site)
@@ -26,8 +26,7 @@ class Post(BaseModel):
         'current_vote',
         'rank_score',
         'is_banned',
-        'comment_count',
-        'tag_id'
+        'comment_count'
     )
     def __init__(self, entry_id=-1):
         # each instance of object has a connection of its own that get closed automatically
