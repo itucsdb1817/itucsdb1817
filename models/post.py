@@ -1,10 +1,18 @@
 from typing import Tuple
 from flask import current_app
 import psycopg2 as db 
-from base import BaseModel
+from models.base import BaseModel
 
-# NOT FINAL
-# MAY BE SUBJECTED TO CHANGE
+# possible content types:
+# Internal: (uploaded to site)
+#   text
+#   video
+#   picture
+# External: (Must be all links)
+#   un-renderable link
+#   video
+#   picture
+
 class Post(BaseModel):
     TABLE_NAME = 'posts'
     COLUMN_NAMES = (
@@ -18,8 +26,7 @@ class Post(BaseModel):
         'current_vote',
         'rank_score',
         'is_banned',
-        'comment_count',
-        'tag_id'
+        'comment_count'
     )
     def __init__(self, entry_id=-1):
         # each instance of object has a connection of its own that get closed automatically
@@ -47,16 +54,10 @@ class Post(BaseModel):
     def get_first_x(cls, id_max):
         with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('SELECT * FROM {cls.TABLE_NAME} WHERE id < %s' (id_max, ))
+                cursor.execute('SELECT * FROM {cls.TABLE_NAME} WHERE id < %s', (id_max, ))
                 list_of_posts = []
                 for post_tuple in cursor.fetchall():
                     list_of_posts.append(Post(post_tuple))
                 return list_of_posts
     
-    # NORMAL (INSTANCE) METHODS
-    # these methods act on the variable this instance stores itself
-    # Call these from the instance
-    def render_markdown(self):
-        if self.content_type == text:
-            # do_something(self.content)
-            pass
+    
