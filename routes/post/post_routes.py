@@ -62,17 +62,11 @@ def post_submit():
             post.comment_count = 1
             # TODO: Implement tag existance check
             #       This should be done with custom validator after tags are created
-            #       Implement proper submission by tag ID
-            post.tag_id = 1
             
             post.save()
 
             flash('Post created sucessfully')
-            return redirect(url_for('post_view', post_id=post.id))
+            return redirect(url_for('post_pages.post_view', post_id=post.id))
             
         else:
-            error_context = {
-                'error_name': "Unknown Form Submission",
-                'error_info': "Form could not be validated"
-            }
-            return render_template('error.html', **error_context)
+            return render_template('post_text_submit.html', form=form)
