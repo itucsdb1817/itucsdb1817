@@ -4,11 +4,12 @@ from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
 from models.post import Post
+from models.user import User
 from routes.post.post_forms import TextPostForm
 
 post_pages = Blueprint('post_pages', __name__,)
 
-@post_pages.route('/post/<post_id>')
+@post_pages.route('/post/<int:post_id>')
 def post_view(post_id):
     # get post info by id, 
     # render post block
@@ -17,7 +18,33 @@ def post_view(post_id):
     # get all comments
     # group comments (nesting)
     # sort comments by opt
-    raise NotImplementedError()
+    """
+    Expand this DOCSTRING
+    """
+    try:
+        post = Post(post_id)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The post you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+
+    context = {
+        'meta': {
+            'user':     User(post.user_id).username,
+            'date':     post.date,
+            'vote':     post.current_vote,
+            'comment':  post.comment_count
+        },
+        'post': {
+            'title':    post.title,
+            'body':     post.content
+        }
+    }
+
+    return render_template('post.html', **context)
+
 
 @post_pages.route('/post/<post_id>/<comment_id>')
 def comment_permalink_view(post_id, comment_id):

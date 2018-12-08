@@ -1,0 +1,22 @@
+{% block title %} {{post.title}} {% endblock %}
+{% block content %}
+    <h2> {{ post.title }} </h2>
+    <p>
+        Submitted By: {{ meta.user }}
+    </p>
+    <p>
+        Date of Submission: {{ meta.date }}
+    </p>
+    <p>
+        Vote Count: {{ meta.vote }}
+    </p>
+    <p>
+        Comment Count: {{ meta.comment }}
+    </p>
+    <h3>
+        POST:
+    </h3>
+    <p>
+        {{ post.body }}
+    </p>
+{% endblock %}
