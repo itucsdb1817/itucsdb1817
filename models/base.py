@@ -55,9 +55,12 @@ class BaseModel():
             columns = ', '.join(self.__class__.COLUMN_NAMES[1:])
             placeholders = (len(self.__class__.COLUMN_NAMES[1:]) * '%s, ')[:-2]
             query = f'''INSERT INTO {self.__class__.TABLE_NAME} ({columns})
-                        VALUES ({placeholders})'''
+                        VALUES ({placeholders})
+                        RETURNING id
+                        '''
             tuple = self._get_attr()
             cursor.execute(query, tuple)
+            self.id = cursor.fetchone()[0]
         self._DATABASE_CONNECTION.commit()
         cursor.close()
     
