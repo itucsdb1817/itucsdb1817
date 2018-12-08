@@ -2,6 +2,7 @@ from flask import Flask
 from flask_bcrypt  import Bcrypt
 import os
 from routes.user import user_routes
+from routes.post import post_routes
 import psycopg2 as dbap2
 
 
@@ -9,6 +10,7 @@ def create_app():
 	app = Flask(__name__)
 	app.config["bcrypt"] = Bcrypt(app)    
 	app.register_blueprint(user_routes.page)
+	app.register_blueprint(post_routes.post_pages)
 	app.config['DB_URL'] = os.getenv('DATABASE_URL')  
 	 
 	return app
