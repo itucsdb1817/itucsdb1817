@@ -9,11 +9,11 @@ from models.user import User
 from routes.user.forms import LoginForm
 from routes.user.forms import RegistrationForm
 
-page = Blueprint('page', __name__,)
+user_page = Blueprint('user_page', __name__,)
 
 #If user is not already logged in checks if
 #password is correct.
-@page.route('/user/login', methods = ['GET', 'POST'])
+@user_page.route('/user/login', methods = ['GET', 'POST'])
 def login():
 	if check.logged_in():
 		return redirect("/") 
@@ -34,7 +34,7 @@ def login():
 	return render_template("login.html", form=form)
 
 
-@page.route('/user/logout')
+@user_page.route('/user/logout')
 def logout():
 	session.pop("user_id",None)
 	return "User logged out successfully."
@@ -42,7 +42,7 @@ def logout():
 
 #If user is logged in page is redirected it to homepage.
 #User can register if there is no other acccount with same username or email.
-@page.route('/user/register', methods = ['GET', 'POST'])
+@user_page.route('/user/register', methods = ['GET', 'POST'])
 def register():
 	if check.logged_in():
 		return redirect("/") 
