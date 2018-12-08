@@ -1,8 +1,10 @@
 import sys
-from flask import Blueprint, render_template, request, jsonify, session, redirect, flash, current_app
+from flask import Blueprint, render_template, request, jsonify, session, redirect, flash, current_app, url_for, flash
 from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
+from models.post import Post
+from routes.post.post_forms import TextPostForm
 
 post_pages = Blueprint('post_pages', __name__,)
 
@@ -15,26 +17,62 @@ def post_view(post_id):
     # get all comments
     # group comments (nesting)
     # sort comments by opt
-    NotImplementedError()
+    raise NotImplementedError()
 
 @post_pages.route('/post/<post_id>/<comment_id>')
-def comment_permalink(post_id, comment_id):
+def comment_permalink_view(post_id, comment_id):
     """
     This view is the permanant view for the comment chain starting from the supplied id.
     It only renders the post, given comment, and its children
     """
-    NotImplementedError()
+    raise NotImplementedError()
 
-@post_pages.route('/post/submit')
+# TODO: Implement different types of posts
+@post_pages.route('/post/submit', methods = ['GET', 'POST'])
 def post_submit():
     """
     This view is for submitting posts. An account is required for submitting posts.
+    Get parameters supply the tag name, e.g. a link from the tag page to post with that tag.
+    Post request receive the form submission
     """
+    # Forbid submission of post if user is not logged in
     if not check.logged_in():
         error_context = {
             'error_name': "403 Forbidden",
             'error_info': "You many not post without an account. Please log in or create an account"
         }
         return render_template('error.html', **error_context)
+    # User is logged in, show text submission form
     else:
-        return render_template('error.html', error_type="OK", error_info="OK")
+        target_tag = request.args.get('tag')
+        form = TextPostForm()
+
+        if form.validate_on_submit():
+            post = Post()
+            post.user_id = int(session['user_id'])
+            post.date = datetime.now()
+            post.title = form.title.data
+            post.content_type = 'text'
+            post.content = form.content.data
+            # TODO: Implement external links
+            post.is_external = False
+            post.current_vote = 0
+            post.rank_score = 0
+            post.is_banned = False
+            post.comment_count = 1
+            # TODO: Implement tag existance check
+            #       This should be done with custom validator after tags are created
+            #       Implement proper submission by tag ID
+            post.tag_id = 1
+            
+            post.save()
+
+            flash('Post created sucessfully')
+            return redirect(url_for('post_view', post_id=post.id))
+            
+        else:
+            error_context = {
+                'error_name': "Unknown Form Submission",
+                'error_info': "Form could not be validated"
+            }
+            return render_template('error.html', **error_context)

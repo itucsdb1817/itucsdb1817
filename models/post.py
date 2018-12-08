@@ -60,3 +60,5 @@ class Post(BaseModel):
                 for post_tuple in cursor.fetchall():
                     list_of_posts.append(Post(post_tuple))
                 return list_of_posts
+    
+    
