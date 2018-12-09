@@ -16,7 +16,5 @@
     <h3>
         POST:
     </h3>
-    <p>
-        {{ post.body }}
-    </p>
+    {{post.body|safe}}
 {% endblock %}
