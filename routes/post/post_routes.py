@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, jsonify, session, redirec
 from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
+from utils import md
 from models.post import Post
 from models.user import User
 from routes.post.post_forms import TextPostForm
@@ -80,7 +81,7 @@ def post_submit():
             post.date = datetime.now()
             post.title = form.title.data
             post.content_type = 'text'
-            post.content = form.content.data
+            post.content = md.render(form.content.data)
             # TODO: Implement external links
             post.is_external = False
             post.current_vote = 0
