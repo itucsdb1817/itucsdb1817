@@ -3,3 +3,4 @@ psycopg2-binary>=2.7
 gunicorn>=19.9
 Flask-WTF>=0.14.2
 Flask-Bcrypt>=0.7.1
+mistune>=0.8.4
