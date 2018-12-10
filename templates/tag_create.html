@@ -1,0 +1,37 @@
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+      <li>
+        <div style="padding: 20px;background-color: #998323; color: white;margin-bottom: 15px;">
+            {{message}}
+        </div>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{% block title %}Create new Tag{% endblock %}
+{% block content %}
+<h1>Create new Tag</h1>
+<form action="" method="post" novalidate>
+  <p>
+    {{ form.hidden_tag() }}
+  </p>
+  <p>
+    {{ form.title.label }}
+    {{ form.title }}
+  </p>
+  <p>
+    {{ form.description.label }}
+    {{ form.description }}
+  </p>
+  <p>
+    {{ form.rules.label }}
+    {{ form.rules }}
+  </p>
+  <p>
+    <input type="submit" value="Submit">
+  </p>
+</form>
+{% endblock %}

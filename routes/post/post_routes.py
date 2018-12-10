@@ -6,6 +6,7 @@ from utils import logged_in as check
 from utils import md
 from models.post import Post
 from models.user import User
+from models.tag import Tag
 from routes.post.post_forms import TextPostForm
 
 post_pages = Blueprint('post_pages', __name__,)
@@ -73,7 +74,6 @@ def post_submit():
         return render_template('error.html', **error_context)
     # User is logged in, show text submission form
     else:
-        target_tag = request.args.get('tag')
         form = TextPostForm()
 
         if form.validate_on_submit():
@@ -91,7 +91,16 @@ def post_submit():
             post.comment_count = 1
             # TODO: Implement tag existance check
             #       This should be done with custom validator after tags are created
-            
+            tag = Tag(form.tag.data)
+            if hasattr(tag, _ORIGINAL_ATTR):
+                post.tag_id = tag.id
+            else:
+                error_context = {
+                    'error_name': "INVALID TAG",
+                    'error_info': "the tag you entered is invalid"
+                }
+                return render_template('error.html', **error_context)
+
             post.save()
 
             flash('Post created sucessfully')
