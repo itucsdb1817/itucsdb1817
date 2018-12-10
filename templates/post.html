@@ -8,13 +8,34 @@
         Date of Submission: {{ meta.date }}
     </p>
     <p>
-        Vote Count: {{ meta.vote }}
+        Vote Count: <div id="votecount">{{ meta.vote }}</div>
     </p>
     <p>
         Comment Count: {{ meta.comment }}
     </p>
+    <input type="button" onClick="vote(1)">UpVote</input>
+    <input type="button" onClick="vote(0)">DownVote</input>
     <h3>
-        POST:
+    POST:
     </h3>
     {{post.body|safe}}
+    <script>
+
+    // This function will be updated when fronend platform is implemented
+    function vote(type) {
+        $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
+            if('success' in result){
+                //For instant display
+                if(type){
+                    $("#votecount").text(result.final_vote);
+                }else{
+                    $("#votecount").text(result.final_vote);
+                }
+            }else if('error' in result){
+                alert(result.error);
+            }
+        }});
+    }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}

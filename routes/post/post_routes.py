@@ -39,6 +39,7 @@ def post_view(post_id):
             'comment':  post.comment_count
         },
         'post': {
+            'id':       post.id,
             'title':    post.title,
             'body':     post.content
         }
