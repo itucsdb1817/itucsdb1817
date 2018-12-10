@@ -11,7 +11,7 @@ from forms import TagCreationForm, TagEditForm
 
 tag_pages = Blueprint('tag_pages', __name__,)
 
-@tag_pages.route('/tag_create')
+@tag_pages.route('/tag_create', methods = ['POST'])
 def tag_create():
     if not check.logged_in():
         error_context = {
@@ -46,8 +46,7 @@ def tag_create():
             # TODO: Redirect to tag page
 
         else:
-            # TODO: Render form
-            raise NotImplementedError()
+            return render_template('tag_create.html', form=form)
 
 @tag_pages.route('/t/<string:tag_name>')
 def tag_view():

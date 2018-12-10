@@ -11,3 +11,27 @@
     </ul>
   {% endif %}
 {% endwith %}
+{% block title %}Create new Tag{% endblock %}
+{% block content %}
+<h1>Create new Tag</h1>
+<form action="" method="post" novalidate>
+  <p>
+    {{ form.hidden_tag() }}
+  </p>
+  <p>
+    {{ form.title.label }}
+    {{ form.title }}
+  </p>
+  <p>
+    {{ form.tag.label }}
+    {{ form.tag }}
+  </p>
+  <p>
+    {{ form.content.label }}
+    {{ form.content }}
+  </p>
+  <p>
+    <input type="submit" value="Submit">
+  </p>
+</form>
+{% endblock %}

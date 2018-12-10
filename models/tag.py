@@ -24,7 +24,8 @@ class Tag(BaseModel):
             try:
                 with self._DATABASE_CONNECTION.cursor() as cursor:
                     cursor.execute(
-                        "SELECT * FROM {self.__cls__.TABLE_NAME} WHERE title={identifier}"
+                        "SELECT * FROM {self.__cls__.TABLE_NAME} WHERE title=%s",
+                        (identifier,)
                     )
                     t = cursor.fetchone()[0]
                     if t is not None:
