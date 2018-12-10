@@ -41,6 +41,7 @@ INIT_STATEMENTS = [
         rank_score bigint  NOT NULL,
         is_banned boolean  NOT NULL,
         comment_count int  NOT NULL,
+        tag_id int NOT NULL,
         CONSTRAINT posts_pk PRIMARY KEY (id)
     );
     """,
