@@ -48,7 +48,7 @@ class BaseModel():
             query = f'''UPDATE {self.__class__.TABLE_NAME}
                         SET {placeholders}
                         WHERE id = {self._ORIGINAL_ATTR[0]}'''
-            cursor.execute(query, changed.values())
+            cursor.execute(query, list(changed.values()))
         else:
             if not self._is_attr_complete():
                 raise NotImplementedError('INSUFFICENT ATTR')
@@ -95,9 +95,10 @@ class BaseModel():
     # must not be called if entity is new
     def _get_changed(self):
         changed = {}
-        for column, original, current in zip(self.__class__.COLUMN_NAMES, self._ORIGINAL_ATTR, self._get_attr()):
+        for column, original, current in zip(self.__class__.COLUMN_NAMES[1:], self._ORIGINAL_ATTR[1:], self._get_attr()):
             if original != current:
                 changed[column] = current
+            print(original,current,column)
         # id should not have been changed
         if 'id' in changed:
             del changed['id']
