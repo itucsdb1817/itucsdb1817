@@ -25,6 +25,7 @@ def tag_create():
             tag = Tag()
             mod = TagModerator()
 
+            # TODO: tag name sanitization
             tag.title = form.title.data
             tag.date = datetime.now()
             tag.subscriber_amount = 0
@@ -41,6 +42,7 @@ def tag_create():
 
             mod.save()
 
+            flash('New tag created')
             # TODO: Redirect to tag page
 
         else:

@@ -14,11 +14,26 @@ class Tag(BaseModel):
         'rules'
     )
 
-    def __init__(self, entry_id=-1):
+    def __init__(self, identifier=None):
         self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
-        if entry_id != -1:
-            super().__init__(entry_id)
+        # tag id
+        if isinstance(identifier, 'int'):
+            super.__init__(identifier)
+        # tag title
+        elif isinstance(identifier, 'str'):
+            try:
+                with self._DATABASE_CONNECTION.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT * FROM {self.__cls__.TABLE_NAME} WHERE title={identifier}"
+                    )
+                    t = cursor.fetchone()[0]
+                    if t is not None:
+                        super.__init__(t)
+                        return
+            except:
+                return
     
+
 class TagSubscription(BaseModel):
     TABLE_NAME = 'tag_susbcriptions'
     COLUMN_NAMES = (
