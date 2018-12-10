@@ -9,13 +9,13 @@ class User(BaseModel):
         'id',
         'first_name',
         'last_name',
-        'creation_date',
-        'birth_date',
-        'is_admin',
-        'is_banned',
         'username',
         'password',
         'email'
+        'birth_date',
+        'is_admin',
+        'is_banned',
+        'date',
     )
 
     def __init__(self, entry_id=None):
