@@ -7,7 +7,7 @@ from utils import md
 from models.post import Post
 from models.user import User
 from models.tag import Tag, TagModerator
-from forms import TagCreationForm, TagEditForm
+from routes.tag.tag_forms import TagCreationForm, TagEditForm
 
 tag_pages = Blueprint('tag_pages', __name__,)
 
