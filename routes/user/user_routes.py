@@ -6,8 +6,10 @@ from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
 from models.user import User 
+from models.post import Post 
 from routes.user.forms import LoginForm
 from routes.user.forms import RegistrationForm
+from routes.user.forms import PasswordForm
 
 user_page = Blueprint('user_page', __name__,)
 
@@ -67,14 +69,64 @@ def register():
 				new_user.password = password_hash
 				new_user.is_admin = False
 				new_user.is_banned = False
-				new_user.creation_date = datetime.utcnow()
+				new_user.date = datetime.utcnow()
 				new_user.save()
 				return "User has successfully signed up."
 			else:
 				return "This username or email address is already in use."
 		else:
-			return render_template('register.html', form=form, error = "Invalid field, please check again.")
-
+			if request.method == "POST":
+				return render_template('register.html', form=form, error = "Invalid field, please check again.")
+			else:
+				return render_template('register.html', form=form)
 	return render_template('register.html', form=form)
+
+
+@user_page.route('/user/profile/<int:id>', methods = ['GET', 'POST'])
+def profile_page(id):
+	try:
+		self_profile = False
+		if check.logged_in():
+			if id == session.get("user_id",""):
+				self_profile = True
+		user = User(id)
+		return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.creation_date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile)
+
+	except NotImplementedError as error:
+		flash("Error: " + str(error))
+		return redirect("/") 
+
+
+@user_page.route('/user/change_password', methods = ['GET', 'POST'])
+def change_password():
+	if check.logged_in():
+		form = PasswordForm()
+		if form.validate_on_submit():
+			user = User(session.get("user_id",""))
+			password = form.data["old_password"]
+			password_hash = user.password
+			if current_app.config['bcrypt'].check_password_hash(password_hash, password):
+				user.update_password(current_app.config['bcrypt'].generate_password_hash(form.data["new_password"]).decode('utf-8'))
+				return render_template('change_password.html', form=form, success = "Your password has been updated.")
+			else:
+				return render_template('change_password.html', form=form, error = "Incorrect password.")
+		else:
+			if request.method == "POST":
+				return render_template('change_password.html', form=form, error = "Invalid field, please check again.")
+			else:
+				return render_template('change_password.html', form=form)
+	else:
+		return redirect("/user/login")
+
+
+
+
+
+
+
+
+
+
+
 
 

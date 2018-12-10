@@ -31,3 +31,16 @@ class RegistrationForm(FlaskForm):
 	submit = SubmitField('Sign Up')
 
 
+#Change password form
+class PasswordForm(FlaskForm):
+
+	old_password = PasswordField('Password')
+	new_password = PasswordField('New Password',  [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+	confirm = PasswordField('Repeat Password')
+	submit = SubmitField('Change')
+
+
+

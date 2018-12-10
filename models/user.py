@@ -9,13 +9,13 @@ class User(BaseModel):
         'id',
         'first_name',
         'last_name',
-        'creation_date',
-        'birth_date',
-        'is_admin',
-        'is_banned',
         'username',
         'password',
         'email'
+        'birth_date',
+        'is_admin',
+        'is_banned',
+        'date',
     )
 
     def __init__(self, entry_id=None):
@@ -58,9 +58,15 @@ class User(BaseModel):
                 if cursor.rowcount == 0:
                     return True
                 else:
-                    return False
+                    return False    
+
+    def update_password(self,new_password):
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'UPDATE {self.TABLE_NAME} SET  password = %s WHERE id = %s', (new_password,self.id, ))
                 
-    
+
+
 
     
     def render_markdown(self):
