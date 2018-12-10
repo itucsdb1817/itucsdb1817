@@ -69,7 +69,7 @@ def register():
 				new_user.password = password_hash
 				new_user.is_admin = False
 				new_user.is_banned = False
-				new_user.creation_date = datetime.utcnow()
+				new_user.date = datetime.utcnow()
 				new_user.save()
 				return "User has successfully signed up."
 			else:

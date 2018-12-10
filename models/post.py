@@ -27,6 +27,7 @@ class Post(BaseModel):
         'rank_score',
         'is_banned',
         'comment_count'
+        # 'tag_id'
     )
     def __init__(self, entry_id=-1):
         # each instance of object has a connection of its own that get closed automatically
