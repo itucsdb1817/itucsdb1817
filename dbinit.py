@@ -5,14 +5,6 @@ import psycopg2 as dbapi2
 
 
 INIT_STATEMENTS = [
-<<<<<<< Updated upstream
-    'DROP TABLE IF EXISTS public.reports',
-    'DROP TABLE IF EXISTS public.votes',
-    'DROP TABLE IF EXISTS public.comments',
-    'DROP TABLE IF EXISTS public.posts',
-    'DROP TABLE IF EXISTS public.tags',
-    'DROP TABLE IF EXISTS public.users',
-=======
     'DROP TABLE IF EXISTS public.reports CASCADE',
     'DROP TABLE IF EXISTS public.votes CASCADE',
     'DROP TABLE IF EXISTS public.comments CASCADE',
@@ -21,7 +13,6 @@ INIT_STATEMENTS = [
     'DROP TABLE IF EXISTS public.users CASCADE',
     'DROP TABLE IF EXISTS public.tag_moderators CASCADE',
     'DROP TABLE IF EXISTS public.tag_subscriptions CASCADE',
->>>>>>> Stashed changes
 
     """
     CREATE TABLE comments (
