@@ -1,0 +1,34 @@
+{% if error %}
+<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+  {{ error }}
+</div>
+{% endif %}
+{% block title %}<h1>Profile - {{ username }}</h1>{% endblock %}
+{% block content %}
+    
+    
+        <p>  NAME:  {{first_name}}    </p>
+        <p>  LAST NAME:  {{last_name}}     </p>
+        <p>  BIRTH DATE: {{birth_date}}     </p>
+        <p>  CREATION DATE: {{creation_date}}     </p>
+        <p>  POSTS    </p>
+
+        <div> 
+            {% for post in posts %}
+               <a href="/post/{{post.id}}"> {{ post.title }}</a>
+                {{ post.content|safe}}
+                {{ post.date }}
+                {{ post.comment_count or 0 }}
+                {{post.current_vote }}
+            {% endfor %}
+
+
+        </div>
+        
+        <form action= "/post/submit" >
+    <input type="submit" value="NEW POST" />
+</form>
+
+
+       
+{% endblock %}

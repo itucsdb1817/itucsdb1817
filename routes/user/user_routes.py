@@ -6,6 +6,7 @@ from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
 from models.user import User 
+from models.post import Post 
 from routes.user.forms import LoginForm
 from routes.user.forms import RegistrationForm
 
@@ -76,5 +77,18 @@ def register():
 			return render_template('register.html', form=form, error = "Invalid field, please check again.")
 
 	return render_template('register.html', form=form)
+
+
+@user_page.route('/user/profile/<int:id>', methods = ['GET', 'POST'])
+def profile_page(id):
+	try:
+		user = User(id)
+		return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.creation_date, posts = Post.get_user_post(user.id))
+
+	except (NotImplementedError) as error:
+		flash('Error: ' + error)
+		return redirect("/") 
+
+
 
 

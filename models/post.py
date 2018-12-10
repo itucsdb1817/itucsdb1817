@@ -54,10 +54,18 @@ class Post(BaseModel):
     def get_first_x(cls, id_max):
         with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('SELECT * FROM {cls.TABLE_NAME} WHERE id < %s', (id_max, ))
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE id < %s', (id_max, ))
                 list_of_posts = []
                 for post_tuple in cursor.fetchall():
                     list_of_posts.append(Post(post_tuple))
                 return list_of_posts
     
-    
+    @classmethod
+    def get_user_post(cls,user_id):             
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE user_id = %s', (user_id, ))
+                list_of_posts = []
+                for post_tuple in cursor.fetchall():
+                    list_of_posts.append(Post(post_tuple))
+                return list_of_posts
