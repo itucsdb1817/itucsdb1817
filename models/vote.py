@@ -10,7 +10,7 @@ class Vote(BaseModel):
     COLUMN_NAMES = (
         'id',
         'date',
-        'parent_type',
+        'is_comment',
         'passed_time',
         'vote' ,
         'user_id' ,

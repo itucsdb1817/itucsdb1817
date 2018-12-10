@@ -58,7 +58,7 @@ def vote_post(parent_id,vote_type,parent_type):
 				if create_vote:
 					vote = Vote()
 					vote.date = datetime.utcnow()
-					vote.parent_type = bool(parent_type)
+					vote.is_comment = bool(parent_type)
 					vote.passed_time = '1'
 					vote.vote = bool(vote_type)
 					vote.user_id = session.get("user_id", "")
