@@ -23,7 +23,7 @@ class BaseModel():
             assert entry > 0, 'id must be bigger than 0'
             fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
-                raise NotImplementedError(f'Entry with id {entry} was not found in table {self._TABLE_NAME}')
+                raise NotImplementedError(f'Entry with id {entry} was not found in table {self.__class__.TABLE_NAME}')
         elif type(entry) is tuple:
             assert len(entry) == len(self.__class__.COLUMN_NAMES)
             fetched_values = entry
