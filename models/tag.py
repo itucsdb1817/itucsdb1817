@@ -33,6 +33,8 @@ class Tag(BaseModel):
                 if t is not None:
                     super().__init__(t)
                     return
+                else:
+                    raise NotImplementedError('no tag')
     
     def paginate(self, page, page_size=20):
         """
@@ -41,7 +43,7 @@ class Tag(BaseModel):
         assert page > 0
         with self._DATABASE_CONNECTION.cursor() as cursor:
             # TODO: Selection of sorting
-            cursor.execute("SELECT COUNT(id) FROM posts")
+            cursor.execute(f"SELECT COUNT(id) FROM posts WHERE tag_id={self.id}")
             count = cursor.fetchone()[0]
             if count == 0:
                 # table is empty, abort
@@ -54,6 +56,7 @@ class Tag(BaseModel):
             pagination['page_number'] = page
             pagination['last_page_number'] = max_page_count
             pagination['posts'] = []
+            cursor.execute(f"SELECT * FROM posts WHERE tag_id={self.id}")
             for i in range(page):
                 post_tuples = cursor.fetchmany(page_size)
                 if post_tuples is None:

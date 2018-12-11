@@ -49,10 +49,9 @@ def tag_create():
 
 @tag_pages.route('/t/<string:tag_name>', methods = ['GET'])
 def tag_view(tag_name):
-    tag = Tag(tag_name)
-    # existance of the attributes _ORIGINAL_ATTR denotes the model instance
-    # is not new and interfaces an entry in table
-    if not hasattr(tag, '_ORIGINAL_ATTR'):
+    try:
+        tag = Tag(tag_name)
+    except NotImplementedError as error:
         error_context = {
             'error_name': "404 Not Found",
             'error_info': "The tag you tried to access does not exist, but you can create this tag."
@@ -77,7 +76,7 @@ def tag_view(tag_name):
         }
     }
     context['pagination'] = tag.paginate(page_index)
-    render_template('tag.html', **context)
+    return render_template('tag.html', **context)
 
 
 @tag_pages.route('/t/<string:tag_name>/mod')
