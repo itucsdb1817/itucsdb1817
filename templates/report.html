@@ -1,0 +1,25 @@
+{% if error %}
+<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+  {{ error }}
+</div>
+{% endif %}
+{% block title %}<h1> Report  </h1>{% endblock %}
+{% block content %}
+<form action="" method="post" novalidate>
+  <p>
+    {{ form.hidden_tag() }}
+  </p>
+  <p>
+    {{ form.violated_rule.label }}
+    {{ form.violated_rule }}
+  </p>
+  <p>
+    {{ form.reason_description.label }}
+    {{ form.reason_description }}
+  </p>
+
+  <p>
+    <input type="submit" value="Submit">
+  </p>
+</form>
+{% endblock %}
