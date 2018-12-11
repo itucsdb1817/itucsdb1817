@@ -43,8 +43,7 @@ def tag_create():
             mod.save()
 
             flash('New tag created')
-            # TODO: Redirect to tag page
-            return render_template('tag_create.html', form=form)
+            return redirect(url_for('tag_pages.tag_view', tag_name=tag.title))
         else:
             return render_template('tag_create.html', form=form)
 
@@ -59,11 +58,14 @@ def tag_view(tag_name):
             'error_info': "The tag you tried to access does not exist, but you can create this tag."
         }
         return render_template('error.html', **error_context)
-    
-    # TODO: Implement tag page and pagination
-    page_index = request.args.get('page')
-    if not isinstance(page_index, int):
+        
+    # TODO: Implement tag page adogsnd pagination
+    try:
+        page_index = int(request.args.get('page'))
+    except:
+        flash('Page index must be a number, index set to 1')
         page_index = 1
+
     if page_index <= 0:
         page_index = 1
     

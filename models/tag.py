@@ -24,20 +24,15 @@ class Tag(BaseModel):
             super().__init__(identifier)
         # tag title
         elif isinstance(identifier, str):
-            try:
-                with self._DATABASE_CONNECTION.cursor() as cursor:
-                    cursor.execute(
-                        f"SELECT * FROM {self.TABLE_NAME} WHERE title=%s",
-                        (identifier,)
-                    )
-                    t = cursor.fetchone()
-                    if t is not None:
-                        super().__init__(t)
-                        return
-                    else:
-                        raise NotImplementedError("no tag")
-            except:
-                raise
+            with self._DATABASE_CONNECTION.cursor() as cursor:
+                cursor.execute(
+                    f"SELECT * FROM {self.TABLE_NAME} WHERE title=%s",
+                    (identifier,)
+                )
+                t = cursor.fetchone()
+                if t is not None:
+                    super().__init__(t)
+                    return
     
     def paginate(self, page, page_size=20):
         """
