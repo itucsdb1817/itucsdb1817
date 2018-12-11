@@ -23,7 +23,7 @@ class BaseModel():
             assert entry > 0, 'id must be bigger than 0'
             fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
-                raise NotImplementedError(f'Entry with id {entry} was not found in table {self._TABLE_NAME}')
+                raise NotImplementedError(f'Entry with id {entry} was not found in table {self.__class__.TABLE_NAME}')
         elif type(entry) is tuple:
             assert len(entry) == len(self.__class__.COLUMN_NAMES)
             fetched_values = entry
@@ -48,7 +48,7 @@ class BaseModel():
             query = f'''UPDATE {self.__class__.TABLE_NAME}
                         SET {placeholders}
                         WHERE id = {self._ORIGINAL_ATTR[0]}'''
-            cursor.execute(query, changed.values())
+            cursor.execute(query, list(changed.values()))
         else:
             if not self._is_attr_complete():
                 raise NotImplementedError('INSUFFICENT ATTR')
@@ -68,6 +68,7 @@ class BaseModel():
     # this method should not be called from outside as input tuple contains id from SQL Query
     def _set_attr(self, t: Tuple):
         for column, value in zip(self.__class__.COLUMN_NAMES, t):
+            print(column, value)
             setattr(self, column, value)
     
     # returns current attributes combined in a tuple
@@ -95,9 +96,10 @@ class BaseModel():
     # must not be called if entity is new
     def _get_changed(self):
         changed = {}
-        for column, original, current in zip(self.__class__.COLUMN_NAMES, self._ORIGINAL_ATTR, self._get_attr()):
+        for column, original, current in zip(self.__class__.COLUMN_NAMES[1:], self._ORIGINAL_ATTR[1:], self._get_attr()):
             if original != current:
                 changed[column] = current
+            print(original,current,column)
         # id should not have been changed
         if 'id' in changed:
             del changed['id']
@@ -106,6 +108,7 @@ class BaseModel():
     # if there are any unentered attributes
     def _is_attr_complete(self):
         for column in self.__class__.COLUMN_NAMES[1:]:
+            print(column,hasattr(self,column))
             if not hasattr(self, column):
                 return False
         return True
