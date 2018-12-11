@@ -15,6 +15,9 @@ user_page = Blueprint('user_page', __name__,)
 
 #If user is not already logged in checks if
 #password is correct.
+@user_page.route('/', methods = ['GET', 'POST'])
+def index():
+	return render_template("index.html")
 @user_page.route('/user/login', methods = ['GET', 'POST'])
 def login():
 	if check.logged_in():
