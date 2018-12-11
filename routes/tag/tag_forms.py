@@ -7,7 +7,7 @@ class TagEditForm(FlaskForm):
         [validators.DataRequired()]
     )
     rules = TextAreaField(
-        'Description',
+        'Rules',
         [validators.DataRequired()]
     )
 
