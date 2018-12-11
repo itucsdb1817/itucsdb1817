@@ -5,6 +5,7 @@ from routes.user import user_routes
 from routes.post import post_routes
 from routes.tag import tag_routes
 from routes.vote import vote_routes
+from routes.report import report_routes
 import psycopg2 as dbap2
 
 
@@ -15,6 +16,7 @@ def create_app():
 	app.register_blueprint(user_routes.user_page)
 	app.register_blueprint(tag_routes.tag_pages)
 	app.register_blueprint(vote_routes.vote_page)
+	app.register_blueprint(report_routes.report_page)
 
 
 

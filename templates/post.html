@@ -7,6 +7,9 @@
     <p>
         Date of Submission: {{ meta.date }}
     </p>
+    <form action = "/report/0/{{post.id}}" method="GET">
+        <input type="submit" value="Report"/>  
+    </form>
     <p>
         Vote Count: <div id="votecount">{{ meta.vote }}</div>
     </p>
