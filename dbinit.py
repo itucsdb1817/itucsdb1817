@@ -5,12 +5,14 @@ import psycopg2 as dbapi2
 
 
 INIT_STATEMENTS = [
-    'DROP TABLE IF EXISTS public.reports',
-    'DROP TABLE IF EXISTS public.votes',
-    'DROP TABLE IF EXISTS public.comments',
-    'DROP TABLE IF EXISTS public.posts',
-    'DROP TABLE IF EXISTS public.tags',
-    'DROP TABLE IF EXISTS public.users',
+    'DROP TABLE IF EXISTS public.reports CASCADE',
+    'DROP TABLE IF EXISTS public.votes CASCADE',
+    'DROP TABLE IF EXISTS public.comments CASCADE',
+    'DROP TABLE IF EXISTS public.posts CASCADE',
+    'DROP TABLE IF EXISTS public.tags CASCADE',
+    'DROP TABLE IF EXISTS public.users CASCADE',
+    'DROP TABLE IF EXISTS public.tag_moderators CASCADE',
+    'DROP TABLE IF EXISTS public.tag_subscriptions CASCADE',
 
     """
     CREATE TABLE comments (
@@ -23,6 +25,7 @@ INIT_STATEMENTS = [
         is_external boolean  NOT NULL,
         rank_score bigint  NOT NULL,
         date timestamp  NOT NULL,
+        current_vote int  NOT NULL,
         CONSTRAINT comments_pk PRIMARY KEY (id)
     );
     """,
@@ -32,6 +35,7 @@ INIT_STATEMENTS = [
     CREATE TABLE posts (
         id serial  NOT NULL,
         user_id int  NOT NULL,
+        tag_id int NOT NULL,
         date timestamp  NOT NULL,
         title varchar(32)  NOT NULL,
         content_type varchar(32)  NOT NULL,
@@ -41,7 +45,6 @@ INIT_STATEMENTS = [
         rank_score bigint  NOT NULL,
         is_banned boolean  NOT NULL,
         comment_count int  NOT NULL,
-        tag_id int NOT NULL,
         CONSTRAINT posts_pk PRIMARY KEY (id)
     );
     """,

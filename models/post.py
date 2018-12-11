@@ -18,6 +18,7 @@ class Post(BaseModel):
     COLUMN_NAMES = (
         'id',
         'user_id',
+        'tag_id',
         'date',
         'title',
         'content_type',
@@ -26,8 +27,7 @@ class Post(BaseModel):
         'current_vote',
         'rank_score',
         'is_banned',
-        'comment_count',
-        'tag_id'
+        'comment_count'
     )
     def __init__(self, entry_id=-1):
         # each instance of object has a connection of its own that get closed automatically

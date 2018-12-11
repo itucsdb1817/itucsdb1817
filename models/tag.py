@@ -11,9 +11,9 @@ class Tag(BaseModel):
         'id',
         'title',
         'date',
-        'subscriber_amount'
-        'is_banned'
-        'description'
+        'subscriber_amount',
+        'is_banned',
+        'description',
         'rules'
     )
 
@@ -21,21 +21,23 @@ class Tag(BaseModel):
         self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
         # tag id
         if isinstance(identifier, int):
-            super.__init__(identifier)
+            super().__init__(identifier)
         # tag title
         elif isinstance(identifier, str):
             try:
                 with self._DATABASE_CONNECTION.cursor() as cursor:
                     cursor.execute(
-                        "SELECT * FROM {self.__cls__.TABLE_NAME} WHERE title=%s",
+                        f"SELECT * FROM {self.TABLE_NAME} WHERE title=%s",
                         (identifier,)
                     )
                     t = cursor.fetchone()
                     if t is not None:
-                        super.__init__(t)
+                        super().__init__(t)
                         return
+                    else:
+                        raise NotImplementedError("no tag")
             except:
-                return
+                raise
     
     def paginate(self, page, page_size=20):
         """
