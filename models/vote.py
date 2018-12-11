@@ -9,11 +9,11 @@ class Vote(BaseModel):
     TABLE_NAME = 'votes'
     COLUMN_NAMES = (
         'id',
+        'user_id' ,
         'date',
         'is_comment',
         'passed_time',
         'vote' ,
-        'user_id' ,
         'post_id',
         'comment_id'
     )

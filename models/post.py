@@ -18,6 +18,7 @@ class Post(BaseModel):
     COLUMN_NAMES = (
         'id',
         'user_id',
+        'tag_id',
         'date',
         'title',
         'content_type',

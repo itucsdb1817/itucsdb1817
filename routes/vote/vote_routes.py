@@ -34,19 +34,20 @@ def vote_post(parent_id,vote_type,parent_type):
 							parent.current_vote -= 1 
 						parent.save()
 						create_vote = True
-					else:								#User voted this post before
-						if user_vote[0].vote:			#Previous vote was upvote
-							if vote_type == 0:			#User wants to change the vote to downwote
+					else:									#User voted this post before
+						print("Prev vote:",user_vote[0].vote," ",parent.current_vote)
+						if user_vote[0].vote:				#Previous vote was upvote
+							if vote_type == 0:				#User wants to change the vote to downwote
 								parent.current_vote -= 2
 							else:
-								parent.current_vote -= 1#User takes the vote back by clicking twice
-								delete_vote = True		#Vote will be delete
-						else:							#Previous vote was downvote
-							if vote_type == 0:			#Current vote is downvote
-								parent.current_vote += 1#Vote will be deleted since it was clicked twice
+								parent.current_vote -= 1	#User takes the vote back by clicking twice
+								delete_vote = True			#Vote will be delete
+						else:								#Previous vote was downvote
+							if vote_type == 0:				#Current vote is downvote
+								parent.current_vote += 1	#Vote will be deleted since it was clicked twice
 								delete_vote = True
 							else:
-								parent.current_vote += 2#User wants to chane the vote to upvote
+								parent.current_vote += 2	#User wants to chane the vote to upvote
 						if delete_vote:
 							user_vote[0].delete()
 						else:

@@ -68,6 +68,7 @@ class BaseModel():
     # this method should not be called from outside as input tuple contains id from SQL Query
     def _set_attr(self, t: Tuple):
         for column, value in zip(self.__class__.COLUMN_NAMES, t):
+            print(column, value)
             setattr(self, column, value)
     
     # returns current attributes combined in a tuple

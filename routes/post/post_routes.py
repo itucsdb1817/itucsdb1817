@@ -31,7 +31,7 @@ def post_view(post_id):
             'error_info': "The post you tried to access does not exist"
         }
         return render_template('error.html', **error_context)
-
+    print(post)
     context = {
         'meta': {
             'user':     User(post.user_id).username,
@@ -91,10 +91,11 @@ def post_submit():
             post.comment_count = 1
             # TODO: Implement tag existance check
             #       This should be done with custom validator after tags are created
-            tag = Tag(form.tag.data)
-            if hasattr(tag, _ORIGINAL_ATTR):
+            try:
+                tag = Tag(form.tag.data)
+                print(form.tag.data)
                 post.tag_id = tag.id
-            else:
+            except NotImplementedError as error:
                 error_context = {
                     'error_name': "INVALID TAG",
                     'error_info': "the tag you entered is invalid"

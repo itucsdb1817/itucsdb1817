@@ -44,7 +44,7 @@ def tag_create():
 
             flash('New tag created')
             # TODO: Redirect to tag page
-
+            return render_template('tag_create.html', form=form)
         else:
             return render_template('tag_create.html', form=form)
 
