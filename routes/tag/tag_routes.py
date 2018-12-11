@@ -7,11 +7,11 @@ from utils import md
 from models.post import Post
 from models.user import User
 from models.tag import Tag, TagModerator
-from forms import TagCreationForm, TagEditForm
+from routes.tag.tag_forms import TagCreationForm, TagEditForm
 
 tag_pages = Blueprint('tag_pages', __name__,)
 
-@tag_pages.route('/tag_create', methods = ['POST'])
+@tag_pages.route('/tag_create', methods = ['GET', 'POST'])
 def tag_create():
     if not check.logged_in():
         error_context = {
@@ -48,7 +48,7 @@ def tag_create():
         else:
             return render_template('tag_create.html', form=form)
 
-@tag_pages.route('/t/<string:tag_name>')
+@tag_pages.route('/t/<string:tag_name>', methods = ['GET'])
 def tag_view(tag_name):
     tag = Tag(tag_name)
     # existance of the attributes _ORIGINAL_ATTR denotes the model instance
