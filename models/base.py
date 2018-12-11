@@ -107,6 +107,7 @@ class BaseModel():
     # if there are any unentered attributes
     def _is_attr_complete(self):
         for column in self.__class__.COLUMN_NAMES[1:]:
+            print(column,hasattr(self,column))
             if not hasattr(self, column):
                 return False
         return True

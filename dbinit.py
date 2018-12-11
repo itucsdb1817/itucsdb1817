@@ -25,6 +25,7 @@ INIT_STATEMENTS = [
         is_external boolean  NOT NULL,
         rank_score bigint  NOT NULL,
         date timestamp  NOT NULL,
+        current_vote int  NOT NULL,
         CONSTRAINT comments_pk PRIMARY KEY (id)
     );
     """,
@@ -34,6 +35,7 @@ INIT_STATEMENTS = [
     CREATE TABLE posts (
         id serial  NOT NULL,
         user_id int  NOT NULL,
+        tag_id int NOT NULL,
         date timestamp  NOT NULL,
         title varchar(32)  NOT NULL,
         content_type varchar(32)  NOT NULL,

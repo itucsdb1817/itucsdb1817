@@ -27,26 +27,26 @@ def vote_post(parent_id,vote_type,parent_type):
 				if parent_type == 0:
 					parent = Post(parent_id)
 					user_vote = Vote.get_user_post_vote(session.get("user_id", ""),parent_id)
-					if not user_vote:	##User did not vote before
-						if(vote_type == 1):
+					if not user_vote:					#User did not vote this post before
+						if(vote_type == 1):				#If upvote increment the count, else decrement.
 							parent.current_vote += 1
 						else:
 							parent.current_vote -= 1 
 						parent.save()
 						create_vote = True
-					else:
-						if user_vote[0].vote:
-							if vote_type == 0:
+					else:								#User voted this post before
+						if user_vote[0].vote:			#Previous vote was upvote
+							if vote_type == 0:			#User wants to change the vote to downwote
 								parent.current_vote -= 2
 							else:
-								parent.current_vote -= 1
-								delete_vote = True
-						else:
-							if vote_type == 0:
-								parent.current_vote += 1
+								parent.current_vote -= 1#User takes the vote back by clicking twice
+								delete_vote = True		#Vote will be delete
+						else:							#Previous vote was downvote
+							if vote_type == 0:			#Current vote is downvote
+								parent.current_vote += 1#Vote will be deleted since it was clicked twice
 								delete_vote = True
 							else:
-								parent.current_vote += 2
+								parent.current_vote += 2#User wants to chane the vote to upvote
 						if delete_vote:
 							user_vote[0].delete()
 						else:
@@ -55,6 +55,8 @@ def vote_post(parent_id,vote_type,parent_type):
 						parent.save()
 				elif parent_type == 1:
 					parent = Comment(parent_id)
+					##### comment vote system will be implemented 
+				#New vote gets created and sended as a JSON object
 				if create_vote:
 					vote = Vote()
 					vote.date = datetime.utcnow()

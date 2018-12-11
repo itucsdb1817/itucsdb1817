@@ -11,7 +11,7 @@ class User(BaseModel):
         'last_name',
         'username',
         'password',
-        'email'
+        'email',
         'birth_date',
         'is_admin',
         'is_banned',
