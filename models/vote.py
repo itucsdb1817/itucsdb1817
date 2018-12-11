@@ -14,6 +14,8 @@ class Vote(BaseModel):
         'is_comment',
         'passed_time',
         'vote' ,
+        'vote_ip',
+        'last_update_time',
         'post_id',
         'comment_id'
     )

@@ -123,6 +123,8 @@ INIT_STATEMENTS = [
         is_comment bool  NOT NULL,
         passed_time interval  NOT NULL,
         vote boolean  NOT NULL,
+        vote_ip varchar(32) NOT NULL,
+        last_update_time timestamp NOT NULL,
         post_id int  NULL,
         comment_id int  NULL,
         CONSTRAINT votes_pk PRIMARY KEY (id)

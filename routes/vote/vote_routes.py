@@ -35,10 +35,11 @@ def vote_post(parent_id,vote_type,parent_type):
 						parent.save()
 						create_vote = True
 					else:									#User voted this post before
-						print("Prev vote:",user_vote[0].vote," ",parent.current_vote)
 						if user_vote[0].vote:				#Previous vote was upvote
 							if vote_type == 0:				#User wants to change the vote to downwote
 								parent.current_vote -= 2
+								user_vote[0].last_update_time = datetime.utcnow()
+								user_vote[0].save()
 							else:
 								parent.current_vote -= 1	#User takes the vote back by clicking twice
 								delete_vote = True			#Vote will be delete
@@ -48,6 +49,8 @@ def vote_post(parent_id,vote_type,parent_type):
 								delete_vote = True
 							else:
 								parent.current_vote += 2	#User wants to chane the vote to upvote
+								user_vote[0].last_update_time = datetime.utcnow()
+								user_vote[0].save()
 						if delete_vote:
 							user_vote[0].delete()
 						else:
@@ -64,6 +67,8 @@ def vote_post(parent_id,vote_type,parent_type):
 					vote.is_comment = bool(parent_type)
 					vote.passed_time = '1'
 					vote.vote = bool(vote_type)
+					vote.vote_ip = request.remote_addr
+					vote.last_update_time = datetime.utcnow()
 					vote.user_id = session.get("user_id", "")
 					vote.post_id = parent_id if parent_type == 0 else None
 					vote.comment_id = parent_id if parent_type == 1 else None 
