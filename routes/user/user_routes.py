@@ -82,7 +82,7 @@ def register():
 				return render_template('register.html', form=form, error = "This username or e-mail is already in use, please try another one.")
 		else:
 			if request.method == "POST":
-				return render_template('register.html', form=form, error = "Invalid field, please check again.")
+				return render_template('register.html', form=form, error = ", field, please check again.")
 			else:
 				return render_template('register.html', form=form)
 	return render_template('register.html', form=form)

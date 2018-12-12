@@ -1,25 +1,62 @@
-{% if error %}
-<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
-  {{ error }}
-</div>
-{% endif %}
-{% block title %}<h1> Report  </h1>{% endblock %}
-{% block content %}
-<form action="" method="post" novalidate>
-  <p>
-    {{ form.hidden_tag() }}
-  </p>
-  <p>
-    {{ form.violated_rule.label }}
-    {{ form.violated_rule }}
-  </p>
-  <p>
-    {{ form.reason_description.label }}
-    {{ form.reason_description }}
-  </p>
+<!DOCTYPE html>
+<html>
 
-  <p>
-    <input type="submit" value="Submit">
-  </p>
-</form>
-{% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Report </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <!-- Bulma Version 0.7.2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/login.css">
+</head>
+
+<body>
+    {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
+        </div>
+        {% endif %}
+        {% block title %}Report{% endblock %}
+
+    {% include 'flash.html' %}
+    <section class="hero is-success is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="column is-4 is-offset-4">
+                    <h3 class="title has-text-grey">Report</h3>
+                    <p class="subtitle has-text-grey">Please explain the reason of your report.</p>
+                    <div class="box">
+                        <!--<figure class="avatar">
+                            <img src="https://placehold.it/128x128">
+                        </figure>-->
+                        <form action="" method="post" novalidate>
+                            {{ form.hidden_tag() }}
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.violated_rule(class="input is-large", type="text", placeholder="Violated Rule", autofocus="")}} 
+                                    </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.reason_description(class="input is-large", type="textarea", placeholder="Description", autofocus="")}} 
+                                    </div>
+                            </div>
+                            
+
+                            <input id="submit" name="submit" type="submit" value="Sign In"  class="button is-block is-info is-large is-fullwidth">                         
+
+                            </form>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+    <script async type="text/javascript" src="/static/bulma.js"></script>
+</body>
+
+</html>

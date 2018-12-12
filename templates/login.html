@@ -14,6 +14,13 @@
 </head>
 
 <body>
+    {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
+        </div>
+        {% endif %}
+        {% block title %}Login{% endblock %}
+
     {% include 'flash.html' %}
     <section class="hero is-success is-fullheight">
         <div class="hero-body">
