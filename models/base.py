@@ -40,29 +40,29 @@ class BaseModel():
 
     # Saves the object to table
     def save(self):
-        cursor = self._DATABASE_CONNECTION.cursor()
-        if hasattr(self, '_ORIGINAL_ATTR'):
-            assert hasattr(self, 'id')
-            changed = self._get_changed()
-            placeholders = ', '.join((key + ' = %s') for key in changed.keys())
-            query = f'''UPDATE {self.__class__.TABLE_NAME}
-                        SET {placeholders}
-                        WHERE id = {self._ORIGINAL_ATTR[0]}'''
-            cursor.execute(query, list(changed.values()))
-        else:
-            if not self._is_attr_complete():
-                raise NotImplementedError('INSUFFICENT ATTR')
-            columns = ', '.join(self.__class__.COLUMN_NAMES[1:])
-            placeholders = (len(self.__class__.COLUMN_NAMES[1:]) * '%s, ')[:-2]
-            query = f'''INSERT INTO {self.__class__.TABLE_NAME} ({columns})
-                        VALUES ({placeholders})
-                        RETURNING id
-                        '''
-            tuple = self._get_attr()
-            cursor.execute(query, tuple)
-            self.id = cursor.fetchone()[0]
-        self._DATABASE_CONNECTION.commit()
-        cursor.close()
+        with db.connect(current_app.config['DB_URL']) as conn:
+            cursor = conn.cursor()
+            if hasattr(self, '_ORIGINAL_ATTR'):
+                assert hasattr(self, 'id')
+                changed = self._get_changed()
+                placeholders = ', '.join((key + ' = %s') for key in changed.keys())
+                query = f'''UPDATE {self.__class__.TABLE_NAME}
+                            SET {placeholders}
+                            WHERE id = {self._ORIGINAL_ATTR[0]}'''
+                cursor.execute(query, list(changed.values()))
+            else:
+                if not self._is_attr_complete():
+                    raise NotImplementedError('INSUFFICENT ATTR')
+                columns = ', '.join(self.__class__.COLUMN_NAMES[1:])
+                placeholders = (len(self.__class__.COLUMN_NAMES[1:]) * '%s, ')[:-2]
+                query = f'''INSERT INTO {self.__class__.TABLE_NAME} ({columns})
+                            VALUES ({placeholders})
+                            RETURNING id
+                            '''
+                tuple = self._get_attr()
+                cursor.execute(query, tuple)
+                self.id = cursor.fetchone()[0]
+                conn.commit()
     
     # assign the given elements from the tuple as attributes to the object
     # this method should not be called from outside as input tuple contains id from SQL Query
@@ -84,7 +84,8 @@ class BaseModel():
     # send query to find if id exists in the current 
     # if it exists, return as tuple
     def _from_table_get_by_id(self, entry_id):
-            cursor = self._DATABASE_CONNECTION.cursor()
+        with db.connect(current_app.config['DB_URL']) as conn:
+            cursor = conn.cursor()
             cursor.execute(
                 f'''SELECT * FROM {self.__class__.TABLE_NAME}
                         WHERE id=%s''',

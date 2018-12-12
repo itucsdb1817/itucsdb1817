@@ -18,13 +18,13 @@ class Tag(BaseModel):
     )
 
     def __init__(self, identifier=None):
-        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
         # tag id
         if isinstance(identifier, int):
             super().__init__(identifier)
         # tag title
         elif isinstance(identifier, str):
-            with self._DATABASE_CONNECTION.cursor() as cursor:
+            with db.connect(current_app.config['DB_URL']) as conn:
+                cursor = conn.cursor()
                 cursor.execute(
                     f"SELECT * FROM {self.TABLE_NAME} WHERE title=%s",
                     (identifier,)
@@ -41,8 +41,9 @@ class Tag(BaseModel):
         This method paginates the entries in database.
         """
         assert page > 0
-        with self._DATABASE_CONNECTION.cursor() as cursor:
+        with db.connect(current_app.config['DB_URL']) as conn:
             # TODO: Selection of sorting
+            cursor = conn.cursor()
             cursor.execute(f"SELECT COUNT(id) FROM posts WHERE tag_id={self.id}")
             count = cursor.fetchone()[0]
             if count == 0:
@@ -71,6 +72,7 @@ class Tag(BaseModel):
                     'date':     post.date
                 }
                 pagination['posts'].append(info)
+            cursor.close()
             return pagination
 
 
@@ -84,7 +86,6 @@ class TagSubscription(BaseModel):
     )
 
     def __init__(self, entry_id=-1):
-        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
         if entry_id != -1:
             super().__init__(entry_id)
 
@@ -98,6 +99,5 @@ class TagModerator(BaseModel):
     )
 
     def __init__(self, entry_id=-1):
-        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
         if entry_id != -1:
             super().__init__(entry_id)

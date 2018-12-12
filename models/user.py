@@ -19,7 +19,6 @@ class User(BaseModel):
     )
 
     def __init__(self, entry_id=None):
-        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
         if entry_id != -1:
             super().__init__(entry_id)
 
