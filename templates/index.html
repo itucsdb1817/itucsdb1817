@@ -13,7 +13,9 @@
 		<link rel="stylesheet" type="text/css" href="/static/forum.css">
 	</head>
 	<body>
+
 		<nav class="navbar is-white topNav">
+		    {% include 'flash.html' %}
 			<div class="container">
 				<div class="navbar-brand">
 					<a class="navbar-item" href="../">
@@ -26,6 +28,7 @@
 					</div>
 				</div>
 				<div id="topNav" class="navbar-menu">
+
 					<div class="navbar-start">
 						<a class="navbar-item" href="cover.html">Home</a>
 						<a class="navbar-item" href="landing.html">Landing</a>
@@ -35,11 +38,12 @@
 						<a class="navbar-item" href="search.html">Search</a>
 						<a class="navbar-item" href="tabs.html">Tabs</a>
 					</div>
+
 					<div class="navbar-end">
 						<div class="navbar-item">
 							<div class="field is-grouped">
 								<p class="control">
-									<a class="button is-small">
+									<a class="button is-small" href="/user/register">
 										<span class="icon">
 											<i class="fa fa-user-plus"></i>
 										</span>
@@ -49,11 +53,13 @@
 									</a>
 								</p>
 								<p class="control">
-									<a class="button is-small is-info is-outlined">
+									<a class="button is-small is-info is-outlined" href="/user/login">
 										<span class="icon">
 											<i class="fa fa-user"></i>
 										</span>
-										<span>Login</span>
+										<span>
+											Login
+										</span>
 									</a>
 								</p>
 							</div>
@@ -79,6 +85,7 @@
 			</div>
 		</nav>
 		<section class="container">
+
 			<div class="columns">
 				<div class="column is-3">
 					<a class="button is-primary is-block is-alt is-large" href="#">New Post</a>
