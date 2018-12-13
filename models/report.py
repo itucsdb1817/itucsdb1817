@@ -33,6 +33,17 @@ class Report(BaseModel):
                     list_of_reports.append(Report(report_tuple))
                 return list_of_reports
 
+    @classmethod
+    def get_user_all_reports(cls,user_id):             
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE submitting_user_id = %s', (user_id, ))
+                list_of_reports = []
+                for report_tuple in cursor.fetchall():
+                    list_of_reports.append(Report(report_tuple))
+                return list_of_reports
+
+
     
 
 
