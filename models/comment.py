@@ -26,7 +26,7 @@ class Comment(BaseModel):
         if entry is None:
             get_children = False
 
-        super.__init__(entry)
+        super().__init__(entry)
 
         if get_children:
             self._get_children()

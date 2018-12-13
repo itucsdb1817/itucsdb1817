@@ -60,7 +60,7 @@ def post_view(post_id):
 
         flash('Comment created successfuly')
         # reload page with the new comment
-        return redirect(url_for('post_pages.post_view'))
+        return redirect(url_for('post_pages.post_view', post_id=post_id))
 
     context = post.generate_context()
     return render_template('post.html', **context, form=form)

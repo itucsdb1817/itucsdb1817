@@ -16,7 +16,7 @@ class BaseModel():
     # Changing id directly after init should not allowed
     # The existance of _ORIGINAL_ATTR means the object was created
     # from a row in the table
-    def __init__(self, entry):
+    def __init__(self, entry=None):
         if entry is None:
             return 
         elif isinstance(entry, int):
