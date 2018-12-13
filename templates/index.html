@@ -40,6 +40,22 @@
 					</div>
 
 					<div class="navbar-end">
+						{% if loggedin %}
+						<div class="navbar-item">
+							<div class="field is-grouped">
+								<p class="control">
+									<a class="button is-small is-info is-outlined" href="/user/logout">
+										<span class="icon">
+											<i class="fa fa-user"></i>
+										</span>
+										<span>
+											Logout
+										</span>
+									</a>
+								</p>
+							</div>
+						</div>
+						{% else %}
 						<div class="navbar-item">
 							<div class="field is-grouped">
 								<p class="control">
@@ -64,7 +80,9 @@
 								</p>
 							</div>
 						</div>
+						{% endif %}
 					</div>
+					
 				</div>
 			</div>
 		</nav>

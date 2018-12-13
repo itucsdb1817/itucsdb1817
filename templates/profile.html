@@ -1,44 +1,272 @@
-{% if error %}
-<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
-  {{ error }}
-</div>
-{% endif %}
-{% block title %}<h1>Profile - {{ username }}</h1>{% endblock %}
-{% block content %}
-    
-    
-        <p>  NAME:  {{first_name}}    </p>
-        <p>  LAST NAME:  {{last_name}}     </p>
-        <p>  BIRTH DATE: {{birth_date}}     </p>
-        <p>  CREATION DATE: {{creation_date}}     </p>
-        {% if self_profile %}
-            <p> E-MAIL: {{email}}</p>
-        {% endif %}
-        <p>  POSTS    </p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Forum - Free Bulma template</title>
+        <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+        <!-- Bulma Version 0.7.2-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/profile.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-        <div> 
-            {% for post in posts %}
-               <a href="/post/{{post.id}}"> {{ post.title }}</a>
-                {{ post.content|safe}}
-                {{ post.date }}
-                {{ post.comment_count or 0 }}
-                {{post.current_vote }}
-            {% endfor %}
+        </head>
+    
+    <body>
+
+        <div class='columns'>
+          <div class='container profile'>
+            <div class='modal' id='edit-preferences-modal'>
+              <div class='modal-background'></div>
+              <div class='modal-card'>
+                <header class='modal-card-head'>
+                  <p class='modal-card-title'>Edit Preferences</p>
+                  <button class='delete'></button>
+                </header>
+                <section class='modal-card-body'>
+                  <label class='label'>Name</label>
+                  <p class='control'>
+                    <input class='input' placeholder='Text input' type='text'>
+                  </p>
+                  <label class='label'>Username</label>
+                  <p class='control has-icon has-icon-right'>
+                    <input class='input' placeholder='Text input' type='text' value='pmillerk'>
+                  </p>
+                  <label class='label'>Email</label>
+                  <p class='control has-icon has-icon-right'>
+                    <input class='input' placeholder='Email input' type='text' value='hello@'>
+                    <i class='fa fa-warning'></i>
+                    <span class='help is-danger'>This email is invalid</span>
+                  </p>
+                  <div class='control'>
+                    <div class='control-label is-pulled-left'>
+                      <label class='label'>Date of Birth</label>
+                    </div>
+                    <span>
+                      <span class='select'>
+                        <select>
+                          <option>Month</option>
+                          <option>With options</option>
+                        </select>
+                      </span>
+                      <span class='select'>
+                        <select>
+                          <option>Day</option>
+                          <option>With options</option>
+                        </select>
+                      </span>
+                      <span class='select'>
+                        <select>
+                          <option>Year</option>
+                          <option>With options</option>
+                        </select>
+                      </span>
+                    </span>
+                  </div>
+                  <label class='label'>Description</label>
+                  <p class='control'>
+                    <textarea class='textarea' placeholder='Describe Yourself!'></textarea>
+                  </p>
+                  <div class='content'>
+                    <h1>Optional Information</h1>
+                  </div>
+                  <label class='label'>Phone Number</label>
+                  <p class='control has-icon has-icon-right'>
+                    <input class='input' placeholder='Text input' type='text' value='+1 *** *** 0535'>
+                  </p>
+                  <label class='label'>Work</label>
+                  <p class='control has-icon has-icon-right'>
+                    <input class='input' placeholder='Text input' type='text' value='Greater Washington Publishing'>
+                  </p>
+                  <label class='label'>School</label>
+                  <p class='control has-icon has-icon-right'>
+                    <input class='input' placeholder='Text input' type='text' value='George Mason University'>
+                  </p>
+                </section>
+                <footer class='modal-card-foot'>
+                  <a class='button is-primary modal-save'>Save changes</a>
+                  <a class='button modal-cancel'>Cancel</a>
+                </footer>
+              </div>
+            </div>
+            <div class='section profile-heading'>
+              <div class='columns is-mobile is-multiline'>
+                <div class='column is-2'>
+                  <span class='header-icon user-profile-image'>
+                    <img alt='' src='http://placehold.it/300x225'>
+                  </span>
+                </div>
+                <div class='column is-4-tablet is-10-mobile name'>
+                  <p>
+                    <span class='title is-bold'>{{first_name}} {{last_name}}</span>
+                    <br>
+                    <a class='button is-primary is-outlined' href='#' id='edit-preferences' style='margin: 5px 0'>
+                      Edit Preferences
+                    </a>
+                    <br>
+                  </p>
+                  <p class='tagline'>
+                    {{birth_date}}
+                    <i class="fa fa-birthday-cake" aria-hidden="true"></i>                           
+                  </p>               
+                <p class='tagline'>
+                    {{email}}
+                       
+                  </p>
+
+                </div>
+                <div class='column is-2-tablet is-4-mobile has-text-centered'>
+                  <p class='stat-val'>{{posts|length}}</p>
+                  <p class='stat-key'>posts</p>
+                </div>
+                <div class='column is-2-tablet is-4-mobile has-text-centered'>
+                  <p class='stat-val'>{{total_votes|length}}</p>
+                  <p class='stat-key'>votes</p>
+                </div>
+                <div class='column is-2-tablet is-4-mobile has-text-centered'>
+                  <p class='stat-val'>3</p>
+                  <p class='stat-key'>comments</p>
+                </div>
+              </div>
+            </div>
+            <div class='profile-options is-fullwidth'>
+              <div class='tabs is-fullwidth is-medium'>
+                <ul>
+                  <li class='link is-active' id='post_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-list'></i>
+                      </span>
+                      <span>Posts</span>
+                    </a>
+                  </li>
+                  <li class='link' id='vote_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-thumbs-up'></i>
+                      </span>
+                      <span>Votes</span>
+                    </a>
+                  </li>
+                  <li class='link' id='comment_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-search'></i>
+                      </span>
+                      <span>Comments</span>
+                    </a>
+                  </li>
+                  <li class='link' id='report_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-balance-scale'></i>
+                      </span>
+                      <span>Reports</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div id='posts'>
+                <div class='columns is-mobile'>
+                    {% for post in posts %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            <figure class='image is-4by3'>
+                              <img alt='' src='http://placehold.it/300x225'>
+                            </figure>
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>{{ post.title }}</span>
+                                <p>
+                                {{ post.content|safe}}
+                                {{ post.date }}
+                               
+                                </p>
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>{{post.current_vote }}</a>
+                            <a class='card-footer-item' href="/post/{{post.id}}">View</a>
+                            <a class='card-footer-item'> {{ post.comment_count or 0 }}</a>
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
+            </div>
+            <div id='votes'>
+            Votes
+            </div>
+            <div id='comments'>
+            Comments
+            </div>
+            <div id='reports'>
+            Reports
+            </div>
+          </div>
         </div>
 
-        {% if self_profile %}
+
+        <script type="text/javascript">
+            $(() => {
+              $('#edit-preferences').click(function(){
+               $('#edit-preferences-modal').addClass('is-active');
+              });
+              $('.modal-card-head button.delete, .modal-save, .modal-cancel').click(function(){
+                $('#edit-preferences-modal').removeClass('is-active');
+              });
+              $('#vote_button').click(() => {
+                disable_all();
+                activate_name("vote_button");
+                activate_content("votes");
+              });
+              $('#post_button').click(() => {
+                disable_all();
+                activate_name("post_button");
+                activate_content("posts");
+              });
+              $('#report_button').click(() => {
+                disable_all();
+                activate_name("report_button");
+                activate_content("reports");
+              });
+              $('#comment_button').click(() => {
+                disable_all();
+                activate_name("comment_button");
+                activate_content("comments");
+              });
+              $('#votes').hide();
+              $('#comments').hide();
+              $('#reports').hide();
+
+            });
+            function disable_all(){
+                $('#votes').hide();
+                $('#posts').hide();
+                $('#comments').hide();
+                $('#reports').hide();
+                $('#post_button').removeClass('is-active');
+                $('#vote_button').removeClass('is-active');
+                $('#comment_button').removeClass('is-active');
+                $('#report_button').removeClass('is-active');
+
+            }
+            function activate_name(tab){
+                $('#' + tab).addClass('is-active');
+            }
+            function activate_content(tab){
+                $('#' + tab).show();
+            }
 
 
-        <form action= "/post/submit" >
-            <input type="submit" value="NEW POST" />
-        </form>
+        </script>
+    </body>
+</html>
 
-        <form action= "/user/change_password" >
-            <input type="submit" value="CHANGE PASSWORD" />
-        </form>
-
-        {% endif %}
-
-
-       
-{% endblock %}
