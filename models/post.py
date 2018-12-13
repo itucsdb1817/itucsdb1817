@@ -29,12 +29,8 @@ class Post(BaseModel):
         'is_banned',
         'comment_count'
     )
-    def __init__(self, entry_id=-1):
-        # each instance of object has a connection of its own that get closed automatically
-        # when the object goes out of scope
-        self._DATABASE_CONNECTION = db.connect(current_app.config['DB_URL'])
-        if entry_id != -1:
-            super().__init__(entry_id)
+    def __init__(self, entry_id=None):
+        super().__init__(entry_id)
 
     ## NEW FUNCTIONS HERE
     # RULE OF THUMB:
