@@ -24,7 +24,7 @@ def post_view(post_id):
     Expand this DOCSTRING
     """
     try:
-        post = Post(post_id)
+        post = Post(post_id, get_children=True)
     except:
         error_context = {
             'error_name': "404 Not Found",
@@ -32,20 +32,8 @@ def post_view(post_id):
         }
         return render_template('error.html', **error_context)
     print(post)
-    context = {
-        'meta': {
-            'user':     User(post.user_id).username,
-            'date':     post.date,
-            'vote':     post.current_vote,
-            'comment':  post.comment_count
-        },
-        'post': {
-            'id':       post.id,
-            'title':    post.title,
-            'body':     post.content
-        }
-    }
 
+    context = post.generate_context()
     return render_template('post.html', **context)
 
 
