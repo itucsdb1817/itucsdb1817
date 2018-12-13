@@ -18,11 +18,8 @@ class Tag(BaseModel):
     )
 
     def __init__(self, identifier=None):
-        # tag id
-        if isinstance(identifier, int):
-            super().__init__(identifier)
         # tag title
-        elif isinstance(identifier, str):
+        if isinstance(identifier, str):
             with db.connect(current_app.config['DB_URL']) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
@@ -32,9 +29,11 @@ class Tag(BaseModel):
                 t = cursor.fetchone()
                 if t is not None:
                     super().__init__(t)
-                    return
                 else:
                     raise NotImplementedError('no tag')
+        # tag id or none or direct tuple
+        else:
+            super().__init__(identifier)
     
     def paginate(self, page, page_size=20):
         """

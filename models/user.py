@@ -19,8 +19,7 @@ class User(BaseModel):
     )
 
     def __init__(self, entry_id=None):
-        if entry_id != -1:
-            super().__init__(entry_id)
+        super().__init__(entry_id)
 
    
     # this is method that returns first "x" user objects 
