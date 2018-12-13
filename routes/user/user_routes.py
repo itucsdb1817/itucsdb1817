@@ -7,6 +7,7 @@ sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
 from models.user import User 
 from models.post import Post 
+from models.vote import Vote 
 from routes.user.forms import LoginForm
 from routes.user.forms import RegistrationForm
 from routes.user.forms import PasswordForm
@@ -17,7 +18,7 @@ user_page = Blueprint('user_page', __name__,)
 #password is correct.
 @user_page.route('/', methods = ['GET', 'POST'])
 def index():
-	return render_template("index.html")
+	return render_template("index.html", loggedin=check.logged_in())
 @user_page.route('/user/login', methods = ['GET', 'POST'])
 def login():
 	if check.logged_in():
@@ -96,7 +97,7 @@ def profile_page(id):
 			if id == session.get("user_id",""):
 				self_profile = True
 		user = User(id)
-		return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.creation_date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile)
+		return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id))
 
 	except NotImplementedError as error:
 		flash("Error: " + str(error))

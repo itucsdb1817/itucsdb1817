@@ -2,6 +2,7 @@ from flask import Flask
 from flask_bcrypt  import Bcrypt
 import os
 from routes.user import user_routes
+from routes.user import admin_routes
 from routes.post import post_routes
 from routes.tag import tag_routes
 from routes.vote import vote_routes
@@ -13,10 +14,11 @@ def create_app():
 	app = Flask(__name__)
 	app.config["bcrypt"] = Bcrypt(app)    
 	app.register_blueprint(post_routes.post_pages)
-	app.register_blueprint(user_routes.user_page)
+	app.register_blueprint(admin_routes.admin_user_page)
 	app.register_blueprint(tag_routes.tag_pages)
 	app.register_blueprint(vote_routes.vote_page)
 	app.register_blueprint(report_routes.report_page)
+	app.register_blueprint(user_routes.user_page)
 
 
 
