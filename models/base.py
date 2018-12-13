@@ -17,18 +17,18 @@ class BaseModel():
     # The existance of _ORIGINAL_ATTR means the object was created
     # from a row in the table
     def __init__(self, entry):
-        if not entry:
+        if entry is None:
             return 
-        elif type(entry) is int:
+        elif isinstance(entry, int):
             assert entry > 0, 'id must be bigger than 0'
             fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
                 raise NotImplementedError(f'Entry with id {entry} was not found in table {self.__class__.TABLE_NAME}')
-        elif type(entry) is tuple:
+        elif isinstance(entry, tuple):
             assert len(entry) == len(self.__class__.COLUMN_NAMES)
             fetched_values = entry
         else:
-            raise NotImplementedError('__init__ of base, program shouldnt be here')
+            return
         self._ORIGINAL_ATTR = fetched_values
         self._set_attr(fetched_values)
     
@@ -50,6 +50,7 @@ class BaseModel():
                             SET {placeholders}
                             WHERE id = {self._ORIGINAL_ATTR[0]}'''
                 cursor.execute(query, list(changed.values()))
+                print(f'Existing db entry {self.__class__.__name__} updated')
             else:
                 if not self._is_attr_complete():
                     raise NotImplementedError('INSUFFICENT ATTR')
@@ -61,8 +62,9 @@ class BaseModel():
                             '''
                 tuple = self._get_attr()
                 cursor.execute(query, tuple)
+                print(f'New db entry {self.__class__.__name__} created')
                 self.id = cursor.fetchone()[0]
-                conn.commit()
+            conn.commit()
     
     # assign the given elements from the tuple as attributes to the object
     # this method should not be called from outside as input tuple contains id from SQL Query
