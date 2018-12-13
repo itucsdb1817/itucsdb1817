@@ -7,11 +7,13 @@ from utils import md
 from models.post import Post
 from models.user import User
 from models.tag import Tag
+from models.comment import Comment
 from routes.post.post_forms import TextPostForm
+from routes.post.comment_forms import CommentForm
 
 post_pages = Blueprint('post_pages', __name__,)
 
-@post_pages.route('/post/<int:post_id>')
+@post_pages.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post_view(post_id):
     # get post info by id, 
     # render post block
@@ -24,30 +26,44 @@ def post_view(post_id):
     Expand this DOCSTRING
     """
     try:
-        post = Post(post_id)
+        # get post object with all comments
+        post = Post(post_id, True)
     except:
         error_context = {
             'error_name': "404 Not Found",
             'error_info': "The post you tried to access does not exist"
         }
         return render_template('error.html', **error_context)
-    print(post)
-    context = {
-        'meta': {
-            'user':     User(post.user_id).username,
-            'date':     post.date,
-            'vote':     post.current_vote,
-            'comment':  post.comment_count
-        },
-        'post': {
-            'id':       post.id,
-            'title':    post.title,
-            'body':     post.content
-        }
-    }
+    
+    form = CommentForm()
+    if form.validate_on_submit():
+        if not check.logged_in():
+            error_context = {
+                'error_name': "403 Forbidden",
+                'error_info': "You may not comment without an account. Please log in or create an account"
+            }
+            return render_template('error.html', **error_context)
+        # create comment
+        comment = Comment()
+        comment.user_id = session['user_id']
+        comment.post_id = post_id
+        # not a reply, original comment
+        comment.parent_id = None
+        comment.content_type = 'text'
+        comment.content = md.render(form.content.data)
+        comment.is_external = False
+        comment.rank_score = 0
+        comment.date = datetime.now()
+        comment.current_vote = 0
+        
+        comment.save()
 
-    return render_template('post.html', **context)
+        flash('Comment created successfuly')
+        # reload page with the new comment
+        return redirect(url_for('post_pages.post_view', post_id=post_id))
 
+    context = post.generate_context()
+    return render_template('post.html', **context, form=form)
 
 @post_pages.route('/post/<post_id>/<comment_id>')
 def comment_permalink_view(post_id, comment_id):
@@ -58,7 +74,7 @@ def comment_permalink_view(post_id, comment_id):
     raise NotImplementedError()
 
 # TODO: Implement different types of posts
-@post_pages.route('/post/submit', methods = ['GET', 'POST'])
+@post_pages.route('/post/submit', methods=['GET', 'POST'])
 def post_submit():
     """
     This view is for submitting posts. An account is required for submitting posts.
@@ -69,7 +85,7 @@ def post_submit():
     if not check.logged_in():
         error_context = {
             'error_name': "403 Forbidden",
-            'error_info': "You many not post without an account. Please log in or create an account"
+            'error_info': "You may not post without an account. Please log in or create an account"
         }
         return render_template('error.html', **error_context)
     # User is logged in, show text submission form

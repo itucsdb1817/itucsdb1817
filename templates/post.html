@@ -22,8 +22,27 @@
     POST:
     </h3>
     {{post.body|safe}}
-    <script>
 
+    <form action="" method="POST" novalidate>
+        <p>{{ form.hidden_tag() }}</p>
+        <p>
+            {{ form.content.label }}
+            {{ form.content }}
+        </p>
+        <p>
+            <input type="submit" value="Submit">
+        </p>
+    </form>
+
+    <ul>
+    {% for comment in comments %}
+    <li>Comment by: <a href="/user/profile/{{comment.user_id}}">{{comment.user}}</a></li>
+    <li>Vote: {{comment.vote}}</li>
+    <div class="commentcontent">{{comment.content|safe}}</div>
+    {% endfor %}
+    </ul>
+
+    <script>
     // This function will be updated when fronend platform is implemented
     function vote(type) {
         $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
