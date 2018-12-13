@@ -24,7 +24,7 @@ def post_view(post_id):
     Expand this DOCSTRING
     """
     try:
-        post = Post(post_id, get_children=True)
+        post = Post(post_id, True)
     except:
         error_context = {
             'error_name': "404 Not Found",
