@@ -25,13 +25,14 @@ def login():
 	form = LoginForm()
 	if form.validate_on_submit():
 		username = form.data["username"]
-		user = User.get_from_username(username)
+		user = User.get_from_username(username)			
 		if user is not None:
 			password = form.data["password"]
 			password_hash = user.password
 			if current_app.config['bcrypt'].check_password_hash(password_hash, password):
 				session['user_id'] = user.id
-				return "User logged in successfully."
+				flash({'text': "You have successfully logged in.", 'type': "success"}) 
+				return redirect("/")
 			else:
 				return render_template("login.html", form=form,error = "Incorrect password.")
 		else:
@@ -42,7 +43,8 @@ def login():
 @user_page.route('/user/logout')
 def logout():
 	session.pop("user_id",None)
-	return "User logged out successfully."
+	flash({'text': "You have successfully logged out.", 'type': "success"}) 
+	return redirect("/")
 
 
 #If user is logged in page is redirected it to homepage.
@@ -74,12 +76,13 @@ def register():
 				new_user.is_banned = False
 				new_user.date = datetime.utcnow()
 				new_user.save()
-				return "User has successfully signed up."
+				flash({'text': "You have successfully signed up!", 'type': "success"}) 
+				return redirect("/")
 			else:
-				return "This username or email address is already in use."
+				return render_template('register.html', form=form, error = "This username or e-mail is already in use, please try another one.")
 		else:
 			if request.method == "POST":
-				return render_template('register.html', form=form, error = "Invalid field, please check again.")
+				return render_template('register.html', form=form, error = ", field, please check again.")
 			else:
 				return render_template('register.html', form=form)
 	return render_template('register.html', form=form)
@@ -119,6 +122,7 @@ def change_password():
 			else:
 				return render_template('change_password.html', form=form)
 	else:
+		flash({'text': "You have to sign in to change your password.",'type':'is-warning'})
 		return redirect("/user/login")
 
 
