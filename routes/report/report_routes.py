@@ -60,5 +60,24 @@ def report_post(is_comment,reported_id):
 				return render_template('report.html', form=form)
 
 
+@report_page.route('/report_delete/<int:submitter_id>/<int:id>', methods = ['GET', 'POST'])
+def delete_report(submitter_id,id):
+	if not check.logged_in():
+		flash({'text': "Please sign in.", 'type': "error"}) 
+		return redirect("/") 
+	else:
+		if submitter_id == session.get("user_id",""):
+			report = Report(id)
+			report.delete()
+			flash({'text': "You have deleted a report.", 'type': "success"}) 
+			return redirect("/user/profile/" + str(submitter_id))
+		else:
+			flash({'text': "You can not delete another user's report.", 'type': "error"}) 
+			return redirect("/") 
+
+
+
+
+
 
 
