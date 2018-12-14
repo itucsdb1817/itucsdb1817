@@ -26,6 +26,7 @@ class Post(BaseModel):
         'title',
         'content_type',
         'content',
+        'content_html',
         'is_external',
         'current_vote',
         'rank_score',
