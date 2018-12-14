@@ -6,5 +6,5 @@ from models.user import User
 #This function returns true if the admin is
 #currently logged in.
 def admin_logged_in():
-	id = session.get("admin_user_id","") or -1
-	return id != -1
+    id = session.get("admin_user_id","") or -1
+    return id != -1
