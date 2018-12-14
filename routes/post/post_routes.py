@@ -58,6 +58,9 @@ def post_view(post_id):
         
         comment.save()
 
+        post.comment_count += 1
+        post.save()
+
         flash('Comment created successfuly')
         # reload page with the new comment
         return redirect(url_for('post_pages.post_view', post_id=post_id))
