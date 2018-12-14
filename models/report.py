@@ -22,7 +22,10 @@ class Report(BaseModel):
     def __init__(self, entry_id=None):
         super().__init__(entry_id)
 
-
+    """
+    This function returns a user's list of reports for a specific post
+    in order to check if the user reported this post before.
+    """
     @classmethod
     def get_user_prev_report(cls,user_id,post_id):             
         with db.connect(current_app.config['DB_URL']) as conn:
@@ -32,6 +35,21 @@ class Report(BaseModel):
                 for report_tuple in cursor.fetchall():
                     list_of_reports.append(Report(report_tuple))
                 return list_of_reports
+                
+    """
+    This function returns a user's list of reports for a specific comment
+    in order to check if the user reported this comment before.
+    """
+    @classmethod
+    def get_user_prev_comment_report(cls,user_id,comment_id):             
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE submitting_user_id = %s AND comment_id = %s', (user_id,comment_id, ))
+                list_of_reports = []
+                for report_tuple in cursor.fetchall():
+                    list_of_reports.append(Report(report_tuple))
+                return list_of_reports
+
     """
     Returns list of reports that submitted by given id.
     Users either can view their reports as a section of their
