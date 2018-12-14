@@ -35,7 +35,7 @@ def report_post(is_comment,reported_id):
 						return redirect("/post/" + str(reported_id))
 				else:
 					reported_comment = Comment(reported_id)
-					if len(Report.get_user_prev_report(session.get("user_id", ""),reported_id)) > 0:
+					if len(Report.get_user_prev_comment_report(session.get("user_id", ""),reported_id)) > 0:
 						return redirect("/post/" + str(reported_comment.post_id))
 					
 				report = Report()

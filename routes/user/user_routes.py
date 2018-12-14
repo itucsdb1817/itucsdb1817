@@ -15,9 +15,11 @@ from routes.user.forms import RegistrationForm
 from routes.user.forms import PasswordForm
 
 user_page = Blueprint('user_page', __name__,)
+"""
+If user is not already logged in and he / she is not a
+banned user checks if password is correct.
+"""
 
-#If user is not already logged in checks if
-#password is correct.
 @user_page.route('/', methods = ['GET', 'POST'])
 def index():
 	return render_template("index.html", loggedin=check.logged_in())
@@ -29,10 +31,10 @@ def login():
 	if form.validate_on_submit():
 		username = form.data["username"]
 		user = User.get_from_username(username)	
-		if user.is_banned is True:
-			flash({'text': "You are banned from Accio, you can not sign in.", 'type': "error"}) 
-			return redirect("/")		
 		if user is not None:
+			if user.is_banned is True:
+				flash({'text': "You are banned from Accio, you can not sign in.", 'type': "error"}) 
+				return redirect("/")
 			password = form.data["password"]
 			password_hash = user.password
 			if current_app.config['bcrypt'].check_password_hash(password_hash, password):
