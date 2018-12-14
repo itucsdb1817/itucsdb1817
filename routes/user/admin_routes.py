@@ -8,11 +8,14 @@ from utils import admin_logged_in as check
 from models.user import User 
 from models.post import Post 
 from models.vote import Vote 
+from models.report import Report
 from routes.user.forms import LoginForm
 from routes.user.forms import RegistrationForm
 from routes.user.forms import PasswordForm
+from routes.user.forms import ReviewForm
 
 admin_user_page = Blueprint('admin_user_page', __name__,)
+
 @admin_user_page.route('/admin/login', methods = ['GET', 'POST'])
 def login():
 	if check.admin_logged_in():
@@ -33,3 +36,33 @@ def login():
 		else:
 			return render_template("login.html", form=form,error = "Incorrect username or password.")
 	return render_template("login.html", form=form)
+
+
+@admin_user_page.route('/admin/reports', methods = ['GET', 'POST'])
+def show_reports():
+	if check.admin_logged_in():
+		return render_template('admin_reports.html', report_list = Report.get_reports())
+	else:
+		flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
+		return redirect("/admin/login")
+
+
+@admin_user_page.route('/admin/reports/<int:id>', methods = ['GET', 'POST'])
+def review_reports(id):
+	if check.admin_logged_in():
+		form = ReviewForm(request.form)
+		
+		if form.validate_on_submit():
+			report = Report(id)
+			action = form.data["action_taken"]
+			is_dismissed = form.data["is_dismissed"]
+			report.update_for_review(action,is_dismissed)
+			return redirect("../")
+		else:
+			if request.method == "POST":
+				return render_template('admin_review.html', form=form, error = "Invalid, field, please check again.")
+			else:
+				return render_template('admin_review.html', form=form)
+	else:
+		flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
+		return redirect("/admin/login")
