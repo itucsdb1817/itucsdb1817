@@ -8,6 +8,7 @@ from utils import logged_in as check
 from models.user import User 
 from models.post import Post 
 from models.vote import Vote 
+from models.comment import Comment 
 from models.report import Report 
 from routes.user.forms import LoginForm
 from routes.user.forms import RegistrationForm
@@ -98,7 +99,7 @@ def profile_page(id):
 			if id == session.get("user_id",""):
 				self_profile = True
 		user = User(id)
-		return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id))
+		return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id), comments = Comment.get_user_total_comments(user.id), reports = Report.get_user_all_reports(user.id))
 
 	except NotImplementedError as error:
 		flash("Error: " + str(error))
@@ -127,20 +128,18 @@ def change_password():
 		flash({'text': "You have to sign in to change your password.",'type':'is-warning'})
 		return redirect("/user/login")
 
+
 @user_page.route('/user/reports/<int:id>', methods = ['GET', 'POST'])
 def show_reports(id):
 	if check.logged_in():
 		if id == session.get("user_id",""):
 			return render_template('user_reports.html', report_list = Report.get_user_all_reports(id))
 		else:
-			return("id doesnt match")
+			flash({'text': "You can not view another user's reports", 'type': "error"}) 
+			return redirect("../")
 	else:
-		return("not logged in")
-
-
-
-
-
+		flash({'text': "You have to sign in to view your reports.", 'type': "error"}) 
+		return redirect("/")
 
 
 

@@ -74,5 +74,15 @@ class Comment(BaseModel):
                 context['children'].append(child.generate_context())
         return context
 
+    @classmethod
+    def get_user_total_comments(cls,user_id):             
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE user_id = %s', (user_id, ))
+                list_of_comments = []
+                for comment_tuple in cursor.fetchall():
+                    list_of_comments.append(Comment(comment_tuple))
+                return list_of_comments
+
 
 

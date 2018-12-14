@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField,DateTimeField, DateField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField,DateTimeField, DateField,TextAreaField
 from wtforms.validators import DataRequired
 from wtforms import validators
 from wtforms.fields.html5 import EmailField
@@ -41,6 +41,12 @@ class PasswordForm(FlaskForm):
     ])
 	confirm = PasswordField('Repeat Password')
 	submit = SubmitField('Change')
+
+#Report review form for admins
+class ReviewForm(FlaskForm):
+	action_taken = StringField('action_taken', validators=[DataRequired()])
+	is_dismissed = BooleanField('is_dismissed',validators=[DataRequired()])
+	submit = SubmitField('Submit')
 
 
 

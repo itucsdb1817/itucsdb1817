@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Forum - Free Bulma template</title>
+        <title>Reports</title>
         <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
@@ -17,8 +17,7 @@
         </div>
         {% endif %}
     </head>
-{% block content %}.
-<h1>My Reports</h1>
+{% block content %}
     {% for report in report_list %}
         <article class="post">
             <h4>Reason of report: {{ report.reason_description }}</h4>
@@ -26,12 +25,24 @@
                     
                     <div class="media-content">
                         <div class="content">
-                            <p>Violated rule: {{ report.violated_rule }}</p>   
+                            <p>Violated rule: {{ report.violated_rule }}</p>  
+                        </div>
+                        <div class="content">
+                            <p>Submission date: {{ report.date }}</p>
+                        </div>
+                        <div class="content">
+                            <p>Submitted by: @{{report.submitting_user_id}} </p> 
                         </div>
                     </div>
                     <div class="media-right">
-                        <p>Submission date: {{ report.date }}</p>
+
+                       
+                    <a class="button is-block is-info is-large is-fullwidth" href="/admin/reports/{{report.id}}">Review</a>
+                    
+                    
+                        
                     </div>
+
                 </div>
     </article>
     {% endfor %}

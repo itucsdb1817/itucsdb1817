@@ -4,11 +4,10 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Forum - Free Bulma template</title>
+        <title>Profile</title>
         <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-        <!-- Bulma Version 0.7.2-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
         <link rel="stylesheet" type="text/css" href="/static/profile.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -71,11 +70,12 @@
                   <p class='stat-key'>votes</p>
                 </div>
                 <div class='column is-2-tablet is-4-mobile has-text-centered'>
-                  <p class='stat-val'>3</p>
+                  <p class='stat-val'>{{comments|length}}</p>
                   <p class='stat-key'>comments</p>
                 </div>
               </div>
             </div>
+
             <div class='profile-options is-fullwidth'>
               <div class='tabs is-fullwidth is-medium'>
                 <ul>
@@ -114,6 +114,7 @@
                 </ul>
               </div>
             </div>
+
             <div id='posts'>
                 <div class='columns is-mobile'>
                     {% for post in posts %}
@@ -145,15 +146,107 @@
                   {% endfor %}
                 </div>
             </div>
+
             <div id='votes'>
-            Votes
+              <div class='columns is-mobile'>
+                    {% for vote in total_votes %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            <figure class='image is-4by3'>
+                              <img alt='' src='http://placehold.it/300x225'>
+                            </figure>
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>
+                                {%if vote.vote == True%}
+                                  <p>upvote</p>
+                                {%elif vote.vote == False%}
+                                  <p>downvote</p>
+                                {%endif%}
+                              </span>
+                                
+                              {%if vote.is_comment == 1%}
+                                <p>Voted comment :#{{ vote.comment_id }}</p>
+                              {%elif vote.is_comment == 0%}
+                                <p>Voted post :#{{ vote.post_id }}</p>
+                              {%endif%}
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>View</a>
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
             </div>
+
             <div id='comments'>
-            Comments
+              <div class='columns is-mobile'>
+                    {% for comment in comments %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            <figure class='image is-4by3'> 
+                            <img alt='' src='http://placehold.it/300x225'>
+                            </figure>
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>{{comment.content_type}}</span>
+                                <p>
+                                {{ comment.content|safe}}
+                                {{ comment.date }}
+                               
+                                </p>
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>{{comment.current_vote }}</a>
+                            <a class='card-footer-item' href = "/post/{{comment.post_id}}"  >View</a>
+                            <a class='card-footer-item'>{{comment.rank_score}}</a>
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
             </div>
+
             <div id='reports'>
-            Reports
+
+            {% for report in reports %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            <figure class='image is-4by3'> 
+                            <img alt='' src='http://placehold.it/300x225'>
+                            </figure>
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>#{{report.id}}</span>
+                                <p>
+                                Violated rule is, {{ report.violated_rule}}.
+                                <br>
+                                Description: {{ report.reason_description}}
+                               
+                                </p>
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>Is report dismissed?<br> {{report.is_dismissed }}</a>  
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
             </div>
+
           </div>
         </div>
 
@@ -184,7 +277,7 @@
               $('#comments').hide();
               $('#reports').hide();
 
-            });
+            
             function disable_all(){
                 $('#votes').hide();
                 $('#posts').hide();
@@ -194,7 +287,6 @@
                 $('#vote_button').removeClass('is-active');
                 $('#comment_button').removeClass('is-active');
                 $('#report_button').removeClass('is-active');
-
             }
             function activate_name(tab){
                 $('#' + tab).addClass('is-active');

@@ -48,7 +48,8 @@ def report_post(is_comment,reported_id):
 				report.post_id = reported_id if is_comment == 0 else None
 				report.comment_id = reported_id if is_comment == 1 else None
 				report.save()
-				return redirect("/user/reports")
+				flash({'text': "You have created a report.", 'type': "success"}) 
+				return redirect("/")
 			except NotImplementedError as error:
 				return render_template("error.html", error_type = "Failed", error_info = str(error))
 		else:
