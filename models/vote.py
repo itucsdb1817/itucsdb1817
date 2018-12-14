@@ -34,6 +34,16 @@ class Vote(BaseModel):
                     list_of_votes.append(Vote(vote_tuple))
                 return list_of_votes
 
+    @classmethod
+    def get_user_comment_vote(cls,user_id,comment_id):             
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE user_id = %s AND comment_id = %s', (user_id,comment_id, ))
+                list_of_votes = []
+                for vote_tuple in cursor.fetchall():
+                    list_of_votes.append(Vote(vote_tuple))
+                return list_of_votes
+
     def delete(self):
         with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:

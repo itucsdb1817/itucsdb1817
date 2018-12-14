@@ -27,39 +27,43 @@ def vote_post(parent_id,vote_type,parent_type):
 				if parent_type == 0:
 					parent = Post(parent_id)
 					user_vote = Vote.get_user_post_vote(session.get("user_id", ""),parent_id)
-					if not user_vote:					#User did not vote this post before
-						if(vote_type == 1):				#If upvote increment the count, else decrement.
-							parent.current_vote += 1
-						else:
-							parent.current_vote -= 1 
-						parent.save()
-						create_vote = True
-					else:									#User voted this post before
-						if user_vote[0].vote:				#Previous vote was upvote
-							if vote_type == 0:				#User wants to change the vote to downwote
-								parent.current_vote -= 2
-								user_vote[0].last_update_time = datetime.utcnow()
-								user_vote[0].save()
-							else:
-								parent.current_vote -= 1	#User takes the vote back by clicking twice
-								delete_vote = True			#Vote will be delete
-						else:								#Previous vote was downvote
-							if vote_type == 0:				#Current vote is downvote
-								parent.current_vote += 1	#Vote will be deleted since it was clicked twice
-								delete_vote = True
-							else:
-								parent.current_vote += 2	#User wants to chane the vote to upvote
-								user_vote[0].last_update_time = datetime.utcnow()
-								user_vote[0].save()
-						if delete_vote:
-							user_vote[0].delete()
-						else:
-							user_vote[0].vote = bool(vote_type)
-							user_vote[0].save()
-						parent.save()
+
 				elif parent_type == 1:
 					parent = Comment(parent_id)
-					##### comment vote system will be implemented 
+					user_vote = Vote.get_user_comment_vote(session.get("user_id", ""),parent_id)
+
+
+				if not user_vote:						#User did not vote this post before
+					if(vote_type == 1):					#If upvote increment the count, else decrement.
+						parent.current_vote += 1
+					else:
+						parent.current_vote -= 1 
+					parent.save()
+					create_vote = True
+				else:									#User voted this post before
+					if user_vote[0].vote:				#Previous vote was upvote
+						if vote_type == 0:				#User wants to change the vote to downwote
+							parent.current_vote -= 2
+							user_vote[0].last_update_time = datetime.utcnow()
+							user_vote[0].save()
+						else:
+							parent.current_vote -= 1	#User takes the vote back by clicking twice
+							delete_vote = True			#Vote will be delete
+					else:								#Previous vote was downvote
+						if vote_type == 0:				#Current vote is downvote
+							parent.current_vote += 1	#Vote will be deleted since it was clicked twice
+							delete_vote = True
+						else:
+							parent.current_vote += 2	#User wants to chane the vote to upvote
+							user_vote[0].last_update_time = datetime.utcnow()
+							user_vote[0].save()
+					if delete_vote:
+						user_vote[0].delete()
+					else:
+						user_vote[0].vote = bool(vote_type)
+						user_vote[0].save()
+					parent.save()
+				
 				#New vote gets created and sended as a JSON object
 				if create_vote:
 					vote = Vote()
