@@ -11,6 +11,7 @@ from models.user import User
 from models.post import Post 
 from models.vote import Vote
 from models.report import Report
+from models.comment import Comment
 from routes.report.forms import ReportForm
 
 
@@ -34,9 +35,9 @@ def report_post(is_comment,reported_id):
 						return redirect("/post/" + str(reported_id))
 				else:
 					reported_comment = Comment(reported_id)
-					#if len(report.get_user_prev_report(session.get("user_id", ""),reported_id)) > 0:
-					#	return redirect("/post/" + reported_id)
-
+					if len(Report.get_user_prev_report(session.get("user_id", ""),reported_id)) > 0:
+						return redirect("/post/" + str(reported_comment.post_id))
+					
 				report = Report()
 				report.submitting_user_id = session.get("user_id", "")
 				report.violated_rule = form.data["violated_rule"]
@@ -48,7 +49,8 @@ def report_post(is_comment,reported_id):
 				report.post_id = reported_id if is_comment == 0 else None
 				report.comment_id = reported_id if is_comment == 1 else None
 				report.save()
-				return redirect("/user/reports")
+				flash({'text': "You have created a report.", 'type': "success"}) 
+				return redirect("/")
 			except NotImplementedError as error:
 				return render_template("error.html", error_type = "Failed", error_info = str(error))
 		else:
