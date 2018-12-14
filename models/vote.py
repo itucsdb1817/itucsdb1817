@@ -44,11 +44,6 @@ class Vote(BaseModel):
                     list_of_votes.append(Vote(vote_tuple))
                 return list_of_votes
 
-    def delete(self):
-        with db.connect(current_app.config['DB_URL']) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(f'DELETE FROM {self.TABLE_NAME} WHERE id= %s', (self.id, ))
-
     @classmethod
     def get_user_total_votes(cls,user_id):             
         with db.connect(current_app.config['DB_URL']) as conn:

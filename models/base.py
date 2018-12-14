@@ -65,6 +65,25 @@ class BaseModel():
                 print(f'New db entry {self.__class__.__name__} created')
                 self.id = cursor.fetchone()[0]
             conn.commit()
+
+    # deletes object from table
+    def delete(self):
+        if hasattr(self, 'id'):
+            self.delete_direct(self.id)
+        else:
+            raise NotImplementedError("Cannot delete unexisting row, save first or discard")
+    
+    # deletes specified row with the supplied primary key
+    # if you dont already have a model object but know the id
+    # calling this directly is more optimized
+    @classmethod
+    def delete_direct(cls, pk):
+        assert isinstance(pk, int), "Key must be of type int"
+        with db.connect(current_app.config['DB_URL']) as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"DELETE FROM {cls.TABLE_NAME} WHERE id=%s", (pk, ))
+            conn.commit()
+            cursor.close()
     
     # assign the given elements from the tuple as attributes to the object
     # this method should not be called from outside as input tuple contains id from SQL Query
