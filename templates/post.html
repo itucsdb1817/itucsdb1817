@@ -39,6 +39,9 @@
     <li>Comment by: <a href="/user/profile/{{comment.user_id}}">{{comment.user}}</a></li>
     <li>Vote: {{comment.vote}}</li>
     <div class="commentcontent">{{comment.content|safe}}</div>
+    <form action = "/report/1/{{comment.id}}" method="GET">
+        <input type="submit" value="Report"/>  
+    </form>
     {% endfor %}
     </ul>
 
