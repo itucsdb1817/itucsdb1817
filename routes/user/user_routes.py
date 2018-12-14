@@ -28,7 +28,10 @@ def login():
 	form = LoginForm()
 	if form.validate_on_submit():
 		username = form.data["username"]
-		user = User.get_from_username(username)			
+		user = User.get_from_username(username)	
+		if user.is_banned is True:
+			flash({'text': "You are banned from Accio, you can not sign in.", 'type': "error"}) 
+			return redirect("/")		
 		if user is not None:
 			password = form.data["password"]
 			password_hash = user.password
