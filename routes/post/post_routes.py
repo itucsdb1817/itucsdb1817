@@ -8,7 +8,7 @@ from models.post import Post
 from models.user import User
 from models.tag import Tag
 from models.comment import Comment
-from routes.post.post_forms import TextPostForm, TextPostEditForm
+from routes.post.post_forms import TextPostForm, TextPostEditForm, DeletePostForm
 from routes.post.comment_forms import CommentForm
 
 post_pages = Blueprint('post_pages', __name__,)
@@ -177,4 +177,43 @@ def post_edit(post_id):
 
     return render_template('post_text_edit.html', form=form, body=post.content)
 
+@post_pages.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
+def post_delete(post_id):
+    try:
+        post = Post(post_id, False)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The post you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
     
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (post.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster"
+        }
+        return render_template('error.html', **error_context)
+    
+    form = DeletePostForm()
+    if form.validate_on_submit():
+        if form.yes.data:
+            post.delete()
+            flash("Post deleted succesfully")
+            return redirect('/')
+        else:
+            flash("Post deletion cancelled")
+            return redirect(url_for('post_pages.post_view', post_id=post_id))
+
+    return render_template('post_delete.html', form=form)
+
+

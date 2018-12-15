@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, TextAreaField, validators
+from wtforms import TextField, TextAreaField, SubmitField, validators
 
 class BasePostForm(FlaskForm):
     title   = TextField('Title', [validators.required(), validators.length(max=255, min=2)])
@@ -10,3 +10,7 @@ class TextPostForm(BasePostForm):
 
 class TextPostEditForm(FlaskForm):
     content = TextAreaField('Content', [validators.required()])
+
+class DeletePostForm(FlaskForm):
+    yes = SubmitField('Action')
+    no = SubmitField('Action')
