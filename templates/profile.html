@@ -47,9 +47,20 @@
                     {{username}} 
                     </p>
                     <a class='button is-primary is-outlined' href='/user/change_password' id='edit-preferences' style='margin: 5px 0'>
-                      Change Password
+                      Change Password 
                     </a>
-                    
+                    {%if admin%}
+                    {%if ban%}
+                    <a class='button is-primary is-outlined'  id='edit-preferences' href ="/admin/ban/{{id}}"style='margin: 5px 0'>
+                      Unban {{username}}
+                    </a>
+
+                    {%else%}
+                    <a class='button is-primary is-outlined'  id='edit-preferences' href ="/admin/ban/{{id}}" style='margin: 5px 0'>
+                      Ban {{username}}
+                    </a>
+                    {%endif%}
+                    {%endif%}
                   </p>
                   <p class='tagline'>
                     {{birth_date}}
@@ -134,9 +145,9 @@
                             </div>
                           </div>
                           <footer class='card-footer'>
-                            <a class='card-footer-item'>{{post.current_vote }}</a>
+                            <a class='card-footer-item'>{{post.current_vote }} vote</a>
                             <a class='card-footer-item' href="/post/{{post.id}}">View</a>
-                            <a class='card-footer-item'> {{ post.comment_count or 0 }}</a>
+                            <a class='card-footer-item'> {{ post.comment_count or 0 }} comment</a>
                           </footer>
                         </div>
                         <br>
@@ -147,6 +158,7 @@
 
             <div id='votes'>
               <div class='columns is-mobile'>
+                    {%set index = 0 %}
                     {% for vote in total_votes %}
                     <div class='column is-3'>
                         <div class='card'>
@@ -161,18 +173,24 @@
                                   <p>downvote</p>
                                 {%endif%}
                               </span>
-                                
-                              {%if vote.is_comment == 1%}
-                                <p>Voted comment :#{{ vote.comment_id }}</p>
-                              {%elif vote.is_comment == 0%}
-                                <p>Voted post :#{{ vote.post_id }}</p>
+                              {%if vote.is_comment == 0%}
+                              <p> {{parent_list[index].title}} </p> 
                               {%endif%}
+
+                              <p> {{parent_list[index].content}}</p> 
+                                  
                             </div>
                           </div>
+                          {%if vote.is_comment == 0%}
+                            <a class='card-footer-item' href="/post/{{vote.post_id}}">View</a>
+                          {%elif vote.is_comment == 1%}
+                            <a class='card-footer-item' href="/post/{{parent_list[index].post_id}}">View</a>
+                          {%endif%}
                           
                         </div>
                         <br>
                   </div>
+                    {%set index = index + 1%}
                   {% endfor %}
                 </div>
             </div>
@@ -196,9 +214,9 @@
                             </div>
                           </div>
                           <footer class='card-footer'>
-                            <a class='card-footer-item'>{{comment.current_vote }}</a>
-                            <a class='card-footer-item' href = "/post/{{comment.post_id}}"  >View</a>
-                            <a class='card-footer-item'>{{comment.rank_score}}</a>
+                            <a class='card-footer-item'>{{comment.current_vote }} vote</a>
+                            <a class='card-footer-item' href = "/post/{{comment.post_id}}">View</a>
+                            <a class='card-footer-item'>{{comment.rank_score}} score</a>
                           </footer>
                         </div>
                         <br>
