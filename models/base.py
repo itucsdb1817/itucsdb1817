@@ -20,7 +20,8 @@ class BaseModel():
         if entry is None:
             return 
         elif isinstance(entry, int):
-            assert entry > 0, 'id must be bigger than 0'
+            if entry < 0:
+                raise NotImplementedError('id must be bigger than zero')
             fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
                 raise NotImplementedError(f'Entry with id {entry} was not found in table {self.__class__.TABLE_NAME}')
@@ -139,7 +140,7 @@ class BaseModel():
     
     @classmethod
     def query_select_all(cls):
-        with db.connect(current_app.config['db']) as conn:
+        with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('SELECT * FROM {cls.TABLE_NAME}')
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME}')
                 return cursor.fetchall()
