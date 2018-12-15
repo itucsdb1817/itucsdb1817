@@ -78,11 +78,6 @@ class Report(BaseModel):
                 return list_of_reports
 
 
-    def delete(self):
-        with db.connect(current_app.config['DB_URL']) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(f'DELETE FROM {self.TABLE_NAME} WHERE id= %s', (self.id, ))
-    
     """
     This function updates reports from the admin side, admins are able to update is_dismissed
     and action_taken for each report wtih the given id.

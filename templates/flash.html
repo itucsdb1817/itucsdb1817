@@ -1,16 +1,16 @@
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-  	{% for message in messages %}
-  	{% if message.text is defined %}
-  	<div class="notification is-{{ message.type or 'danger' }}">
-	  {{ message.text }}
-	</div>
-	{% else %}
-	<div class="notification is-danger">
-	  {{ message }}
-	</div>
-	{% endif %}
-	{% endfor %}
+    {% for message in messages %}
+    {% if message.text is defined %}
+    <div class="notification is-{{ message.type or 'danger' }}">
+    {{ message.text }}
+  </div>
+  {% else %}
+  <div class="notification is-danger">
+    {{ message }}
+  </div>
+  {% endif %}
+  {% endfor %}
     <ul class=flashes>
     
       <li></li>	

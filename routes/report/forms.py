@@ -9,7 +9,7 @@ import sys
 
 #Form for user to report a post/tag.
 class ReportForm(FlaskForm):
-	violated_rule = StringField('Which rule is violated?', validators=[DataRequired()])
-	reason_description = TextAreaField('Please explain in detail.', validators=[DataRequired()])
+    violated_rule = StringField('Which rule is violated?', validators=[DataRequired()])
+    reason_description = TextAreaField('Please explain in detail.', validators=[DataRequired()])
 
 
