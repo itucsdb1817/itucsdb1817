@@ -86,3 +86,10 @@ def ban_user(id):
     except NotImplementedError as error:
         flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
         return redirect("/")
+
+@admin_user_page.route('/admin/view_users', methods = ['GET', 'POST'])
+def view_users():
+    if check.admin_logged_in():
+        return render_template('user_review.html', list_of_users = User.get_all_user())
+    else:
+        return redirect("/admin/login")

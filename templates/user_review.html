@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Users</title>
+        <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+        <!-- Bulma Version 0.7.2-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/forum.css">
+        {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
+        </div>
+        {% endif %}
+    </head>
+{% block content %}
+    {% for user in list_of_users %}
+        <article class="post">
+            <span class='tag is-dark subtitle'>#{{user.id}}</span>
+
+            <h4> @{{ user.username }}</h4>
+                <div class="media">
+                    
+                    <div class="media-content">
+                        <div class="content">
+                            <p> {{ user.first_name }} {{ user.last_name }}</p>  
+                        </div>
+                        <div class="content">
+                            <p>admin user = {{ user.is_admin }}</p>
+                        </div>
+                        <div class="content">
+                            <p>banned user = {{ user.is_banned }} </p> 
+                        </div>
+                    </div>
+                    <div class="media-right">
+
+                    <a class="button is-block is-info is-large is-fullwidth" href = "/edit_user/{{user.id}}" >Edit User</a>
+                                            
+                    </div>
+
+                </div>
+    </article>
+    {% endfor %}
+
+{% endblock %}
+</html>
