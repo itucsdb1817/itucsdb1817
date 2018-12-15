@@ -50,7 +50,8 @@ def post_view(post_id):
         # not a reply, original comment
         comment.parent_id = None
         comment.content_type = 'text'
-        comment.content = md.render(form.content.data)
+        comment.content = form.content.data
+        comment.content_html = md.render(form.content.data)
         comment.is_external = False
         comment.rank_score = 0
         comment.date = datetime.now()

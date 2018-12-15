@@ -75,7 +75,7 @@ class Post(BaseModel):
             # TODO: Carry id to meta
             'id':       self.id,
             'title':    self.title,
-            'body':     self.content
+            'body':     self.content_html
         }
      
     def _generate_context_comments(self):
