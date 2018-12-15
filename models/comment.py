@@ -27,7 +27,7 @@ class Comment(BaseModel):
             'user_id':  self.user_id,
             'date':     self.date,
             'vote':     self.current_vote,
-            'content':  self.content,
+            'content':  self.content_html,
         }
     
     @classmethod

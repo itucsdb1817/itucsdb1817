@@ -8,7 +8,7 @@ from models.post import Post
 from models.user import User
 from models.tag import Tag
 from models.comment import Comment
-from routes.post.post_forms import TextPostForm, TextPostEditForm, DeletePostForm
+from routes.post.post_forms import TextPostForm, TextPostEditForm, DeleteForm
 from routes.post.comment_forms import CommentForm
 
 post_pages = Blueprint('post_pages', __name__,)
@@ -47,7 +47,6 @@ def post_view(post_id):
         comment = Comment()
         comment.user_id = session['user_id']
         comment.post_id = post_id
-        # not a reply, original comment
         comment.content_type = 'text'
         comment.content = form.content.data
         comment.content_html = md.render(form.content.data)
@@ -166,7 +165,7 @@ def post_edit(post_id):
         flash("Post edited successfully")
         return redirect(url_for('post_pages.post_view', post_id=post_id))
 
-    return render_template('post_text_edit.html', form=form, body=post.content)
+    return render_template('post_text_edit.html', form=form, body=post.content, name="Post")
 
 @post_pages.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
 def post_delete(post_id):
@@ -195,7 +194,7 @@ def post_delete(post_id):
         }
         return render_template('error.html', **error_context)
     
-    form = DeletePostForm()
+    form = DeleteForm()
     if form.validate_on_submit():
         if form.yes.data:
             post.delete()
@@ -205,6 +204,83 @@ def post_delete(post_id):
             flash("Post deletion cancelled")
             return redirect(url_for('post_pages.post_view', post_id=post_id))
 
-    return render_template('post_delete.html', form=form)
+    return render_template('post_delete.html', form=form, name="Post")
 
+@post_pages.route('/comment/<int:comment_id>/edit')
+def comment_edit(comment_id):
+    # check if post exists
+    try:
+        comment = Comment(comment_id)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The comment you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
 
+    # check if user is OP
+    if not (comment.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster of this comment"
+        }
+        return render_template('error.html', **error_context)
+
+    # get POST input
+    form = CommentForm(content=comment.content)
+    if form.validate_on_submit():
+        comment.content = form.content.data
+        comment.content_html = md.render(form.content.data)
+        comment.save()
+
+        flash("Comment edited successfully")
+        return redirect(url_for('post_pages.post_view', post_id=comment.post_id))
+
+    return render_template('post_text_edit.html', form=form, body=comment.content, name="Comment")
+
+@post_pages.route('/comment/<int:comment_id>/delete')
+def comment_delete(comment_id):
+    try:
+        comment = Comment(comment_id)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The comment you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (comment.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster"
+        }
+        return render_template('error.html', **error_context)
+    
+    form = DeleteForm()
+    if form.validate_on_submit():
+        if form.yes.data:
+            comment.delete()
+            flash("Comment deleted succesfully")
+            return redirect('/')
+        else:
+            flash("Comment deletion cancelled")
+            return redirect(url_for('post_pages.post_view', post_id=comment.post_id))
+
+    return render_template('post_delete.html', form=form, name="Comment")
