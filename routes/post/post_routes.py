@@ -8,7 +8,7 @@ from models.post import Post
 from models.user import User
 from models.tag import Tag
 from models.comment import Comment
-from routes.post.post_forms import TextPostForm
+from routes.post.post_forms import TextPostForm, TextPostEditForm
 from routes.post.comment_forms import CommentForm
 
 post_pages = Blueprint('post_pages', __name__,)
@@ -50,7 +50,8 @@ def post_view(post_id):
         # not a reply, original comment
         comment.parent_id = None
         comment.content_type = 'text'
-        comment.content = md.render(form.content.data)
+        comment.content = form.content.data
+        comment.content_html = md.render(form.content.data)
         comment.is_external = False
         comment.rank_score = 0
         comment.date = datetime.now()
@@ -66,7 +67,13 @@ def post_view(post_id):
         return redirect(url_for('post_pages.post_view', post_id=post_id))
 
     context = post.generate_context()
+    # sets flag if viewer is logged in
+    context['is_logged_in'] = check.logged_in()
+    # sets flag if viewer is the original poster (a.k.a OP)
+    context['is_op'] = context['is_logged_in'] and (post.user_id == session['user_id'])
+
     return render_template('post.html', **context, form=form)
+
 
 @post_pages.route('/post/<post_id>/<comment_id>')
 def comment_permalink_view(post_id, comment_id):
@@ -128,3 +135,45 @@ def post_submit():
             
         else:
             return render_template('post_text_submit.html', form=form)
+
+@post_pages.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
+def post_edit(post_id):
+    # check if post exists
+    try:
+        post = Post(post_id, False)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The post you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (post.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster"
+        }
+        return render_template('error.html', **error_context)
+
+    # get POST input
+    form = TextPostEditForm()
+    if form.validate_on_submit():
+        post.content = form.content.data
+        post.content_html = md.render(form.content.data)
+        post.save()
+
+        flash("Post edited successfully")
+        return redirect(url_for('post_pages.post_view', post_id=post_id))
+
+    return render_template('post_text_submit.html', form=form, body=post.content)
+
+    
