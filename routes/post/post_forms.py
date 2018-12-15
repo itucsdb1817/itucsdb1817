@@ -12,4 +12,5 @@ class TextPostEditForm(FlaskForm):
     content = TextAreaField('Content', [validators.required()])
 
 class DeletePostForm(FlaskForm):
-    action = SubmitField('Action', [validators.required()])
+    yes = SubmitField('Action')
+    no = SubmitField('Action')

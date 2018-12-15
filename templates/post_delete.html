@@ -11,8 +11,8 @@
     {{ form.hidden_tag() }}
   </p>
   <p>
-    {{ form.action(name="act", value="Yes") }}
-    {{ form.action(name="act", value="No") }}
+    {{ form.yes(value="Yes")}}
+    {{ form.no(value="No") }}
   </p>
 </form>
 {% endblock %}

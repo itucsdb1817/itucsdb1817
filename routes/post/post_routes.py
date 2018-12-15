@@ -177,7 +177,7 @@ def post_edit(post_id):
 
     return render_template('post_text_edit.html', form=form, body=post.content)
 
-@post_pages.route('/post/<int:post_id>/delete')
+@post_pages.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
 def post_delete(post_id):
     try:
         post = Post(post_id, False)
@@ -206,7 +206,7 @@ def post_delete(post_id):
     
     form = DeletePostForm()
     if form.validate_on_submit():
-        if form.action.data == 'Yes':
+        if form.yes.data:
             post.delete()
             flash("Post deleted succesfully")
             return redirect('/')
