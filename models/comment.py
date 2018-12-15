@@ -1,7 +1,8 @@
-from flask import current_app
+from flask import current_app, session
 import psycopg2 as db
 from models.base import BaseModel
 from models.user import User
+from utils import logged_in as check
 
 class Comment(BaseModel):
     TABLE_NAME = 'comments'
@@ -11,6 +12,7 @@ class Comment(BaseModel):
         'post_id',
         'content_type',
         'content',
+        'content_html',
         'is_external',
         'rank_score',
         'date',
@@ -28,6 +30,7 @@ class Comment(BaseModel):
             'date':     self.date,
             'vote':     self.current_vote,
             'content':  self.content_html,
+            'is_op':    check.logged_in() and (self.user_id == session['user_id'])
         }
     
     @classmethod

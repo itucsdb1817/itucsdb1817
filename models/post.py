@@ -53,7 +53,7 @@ class Post(BaseModel):
         with db.connect(current_app.config['DB_URL']) as conn:
             cursor = conn.cursor()
             # only retreive parent comments
-            query = f"SELECT * FROM {Comment.TABLE_NAME} WHERE parent_id IS NULL AND post_id=%s"
+            query = f"SELECT * FROM {Comment.TABLE_NAME} WHERE post_id=%s"
             cursor.execute(query, (self.id, ))
             results = cursor.fetchall()
             cursor.close()
