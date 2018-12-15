@@ -11,13 +11,15 @@
         <input type="submit" value="Report"/>  
     </form>
     <p>
-        Vote Count: <div id="votecount">{{ meta.vote }}</div>
+        Vote Count: <div id="votecount_post">{{ meta.vote }}</div>
     </p>
     <p>
         Comment Count: {{ meta.comment }}
     </p>
-    <input type="button" onClick="vote(1)">UpVote</input>
-    <input type="button" onClick="vote(0)">DownVote</input>
+    {% if is_logged_in %}
+    <input type="button" onClick="vote_post(1)">UpVote</input>
+    <input type="button" onClick="vote_post(0)">DownVote</input>
+    {% endif %}
     <h3>
     POST:
     </h3>
@@ -41,25 +43,55 @@
 
     <ul>
     {% for comment in comments %}
-    <li>Comment by: <a href="/user/profile/{{comment.user_id}}">{{comment.user}}</a></li>
-    <li>Vote: {{comment.vote}}</li>
-    <div class="commentcontent">{{comment.content|safe}}</div>
-    <form action = "/report/1/{{comment.id}}" method="GET">
-        <input type="submit" value="Report"/>  
-    </form>
+        <li>Comment by: <a href="/user/profile/{{comment.user_id}}">{{comment.user}}</a></li>
+        {% set vtid =  'votecount_comment_' ~ comment.id %}
+        <li>Vote: <div id="{{vtid|safe}}">{{comment.vote}}</div></li>
+        {% if is_logged_in %}
+        <li>
+            <input type="button" onClick="vote_post(1, {{comment.id|safe}})">UpVote</input>
+            <input type="button" onClick="vote_post(0, {{comment.id|safe}})">DownVote</input>
+        </li>
+        {% endif %}
+        {% if comment.is_op %}
+        <li><a href="/comment/{{comment.id}}/edit">Edit this comment</a></li>
+        <li><a href="/comment/{{comment.id}}/delete">Delete this comment</a></li>
+        {% endif %}
+        <div class="commentcontent">{{comment.content|safe}}</div>
+        
+        {% if is_logged_in %}
+        <form action = "/report/1/{{comment.id}}" method="GET">
+            <input type="submit" value="Report"/>  
+        </form>
+        {% endif %}
+    
     {% endfor %}
     </ul>
 
+    {% if is_logged_in %}
     <script>
     // This function will be updated when fronend platform is implemented
-    function vote(type) {
+    function vote_post(type) {
         $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
             if('success' in result){
                 //For instant display
                 if(type){
-                    $("#votecount").text(result.final_vote);
+                    $("#votecount_post").text(result.final_vote);
                 }else{
-                    $("#votecount").text(result.final_vote);
+                    $("#votecount_post").text(result.final_vote);
+                }
+            }else if('error' in result){
+                alert(result.error);
+            }
+        }});
+    }
+    function vote_comment(type, comment_id) {
+        $.ajax({url: "/vote/" + comment_id +"/" + type + "/0", success: function(result){
+            if('success' in result){
+                //For instant display
+                if(type){
+                    $("#votecount_comment_" + comment_id).text(result.final_vote);
+                }else{
+                    $("#votecount_comment_" + comment_id).text(result.final_vote);
                 }
             }else if('error' in result){
                 alert(result.error);
@@ -68,4 +100,5 @@
     }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {% endif %}
 {% endblock %}
