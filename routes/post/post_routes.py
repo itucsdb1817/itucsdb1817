@@ -206,7 +206,7 @@ def post_delete(post_id):
 
     return render_template('post_delete.html', form=form, name="Post")
 
-@post_pages.route('/comment/<int:comment_id>/edit')
+@post_pages.route('/comment/<int:comment_id>/edit', methods=['GET', 'POST'])
 def comment_edit(comment_id):
     # check if post exists
     try:
@@ -246,7 +246,7 @@ def comment_edit(comment_id):
 
     return render_template('post_text_edit.html', form=form, body=comment.content, name="Comment")
 
-@post_pages.route('/comment/<int:comment_id>/delete')
+@post_pages.route('/comment/<int:comment_id>/delete', methods=['GET', 'POST'])
 def comment_delete(comment_id):
     try:
         comment = Comment(comment_id)
