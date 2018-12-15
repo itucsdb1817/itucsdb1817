@@ -139,7 +139,7 @@ class BaseModel():
     
     @classmethod
     def query_select_all(cls):
-        with db.connect(current_app.config['db']) as conn:
+        with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('SELECT * FROM {cls.TABLE_NAME}')
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME}')
                 return cursor.fetchall()

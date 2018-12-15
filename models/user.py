@@ -58,6 +58,7 @@ class User(BaseModel):
                 else:
                     return False    
 
+
     def update_password(self,new_password):
         with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
