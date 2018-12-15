@@ -16,36 +16,6 @@ from routes.user.forms import ReviewForm
 
 admin_user_page = Blueprint('admin_user_page', __name__,)
 
-@admin_user_page.route('/admin/login', methods = ['GET', 'POST'])
-def login():
-#This route is for admins to sign in.
-    if check.admin_logged_in():
-        return redirect("/") 
-    form = LoginForm()
-    if form.validate_on_submit():
-        username = form.data["username"]
-        user = User.get_from_username(username)         
-        if user is not None:
-            password = form.data["password"]
-            password_hash = user.password
-            if current_app.config['bcrypt'].check_password_hash(password_hash, password) and user.is_admin == True:
-                session['admin_user_id'] = user.id
-                flash({'text': "You have successfully logged in.", 'type': "success"}) 
-                return redirect("/")
-            else:
-                return render_template("login.html", form=form,error = "Incorrect password.")
-        else:
-            return render_template("login.html", form=form,error = "Incorrect username or password.")
-    return render_template("login.html", form=form)
-
-@admin_user_page.route('/admin/logout')
-def logout():
-#This route is for admins to sign out.
-
-    session.pop("admin_user_id",None)
-    flash({'text': "You have successfully logged out.", 'type': "success"}) 
-    return redirect("/")
-
 
 @admin_user_page.route('/admin/reports', methods = ['GET', 'POST'])
 #This function returns a list of report objects.
@@ -55,7 +25,7 @@ def show_reports():
         return render_template('admin_reports.html', report_list = Report.get_reports())
     else:
         flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
-        return redirect("/admin/login")
+        return redirect("/user/login")
 
 
 @admin_user_page.route('/admin/reports/<int:id>', methods = ['GET', 'POST'])
@@ -78,7 +48,7 @@ def review_reports(id):
                 return render_template('admin_review.html', form=form)
     else:
         flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
-        return redirect("/admin/login")
+        return redirect("/user/login")
 
 @admin_user_page.route('/admin/ban/<int:id>', methods = ['GET', 'POST'])
 def ban_user(id):
@@ -98,7 +68,7 @@ def ban_user(id):
             return redirect("/")
     else:
         flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
-        return redirect("/admin/login")
+        return redirect("/user/login")
 
 @admin_user_page.route('/convert_to_admin/<int:id>', methods = ['GET', 'POST'])
 def convert_to_admin(id):
@@ -119,7 +89,7 @@ def convert_to_admin(id):
             return redirect("/")
     else:
         flash({'text': "You have to sign in to your admin account first.", 'type': 'error'}) 
-        return redirect("/admin/login")
+        return redirect("/user/login")
 
 @admin_user_page.route('/delete_user/<int:id>', methods = ['GET', 'POST'])
 def delete_user(id):
@@ -135,7 +105,7 @@ def delete_user(id):
             return redirect("/")
     else:
         flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
-        return redirect("/admin/login")
+        return redirect("/user/login")
 
 
 @admin_user_page.route('/admin/view_users', methods = ['GET', 'POST'])
@@ -144,7 +114,7 @@ def view_users():
     if check.admin_logged_in():
         return render_template('user_review.html', list_of_users = User.get_all_user())
     else:
-        return redirect("/admin/login")
+        return redirect("/user/login")
 
 @admin_user_page.route('/admin/index', methods = ['GET', 'POST'])
 def index():
