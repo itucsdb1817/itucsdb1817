@@ -20,7 +20,8 @@ class BaseModel():
         if entry is None:
             return 
         elif isinstance(entry, int):
-            assert entry > 0, 'id must be bigger than 0'
+            if entry < 0:
+                raise NotImplementedError('id must be bigger than zero')
             fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
                 raise NotImplementedError(f'Entry with id {entry} was not found in table {self.__class__.TABLE_NAME}')
