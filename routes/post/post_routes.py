@@ -108,7 +108,8 @@ def post_submit():
             post.date = datetime.now()
             post.title = form.title.data
             post.content_type = 'text'
-            post.content = md.render(form.content.data)
+            post.content = form.content.data
+            post.content_html = md.render(form.content.data)
             # TODO: Implement external links
             post.is_external = False
             post.current_vote = 0
@@ -165,7 +166,7 @@ def post_edit(post_id):
         return render_template('error.html', **error_context)
 
     # get POST input
-    form = TextPostEditForm()
+    form = TextPostEditForm(content=post.content)
     if form.validate_on_submit():
         post.content = form.content.data
         post.content_html = md.render(form.content.data)
@@ -174,6 +175,6 @@ def post_edit(post_id):
         flash("Post edited successfully")
         return redirect(url_for('post_pages.post_view', post_id=post_id))
 
-    return render_template('post_text_submit.html', form=form, body=post.content)
+    return render_template('post_text_edit.html', form=form, body=post.content)
 
     
