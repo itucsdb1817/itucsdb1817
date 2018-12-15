@@ -47,9 +47,20 @@
                     {{username}} 
                     </p>
                     <a class='button is-primary is-outlined' href='/user/change_password' id='edit-preferences' style='margin: 5px 0'>
-                      Change Password
+                      Change Password 
                     </a>
-                    
+                    {%if admin%}
+                    {%if ban%}
+                    <a class='button is-primary is-outlined'  id='edit-preferences' href ="/admin/ban/{{id}}"style='margin: 5px 0'>
+                      Unban {{username}}
+                    </a>
+
+                    {%else%}
+                    <a class='button is-primary is-outlined'  id='edit-preferences' href ="/admin/ban/{{id}}" style='margin: 5px 0'>
+                      Ban {{username}}
+                    </a>
+                    {%endif%}
+                    {%endif%}
                   </p>
                   <p class='tagline'>
                     {{birth_date}}

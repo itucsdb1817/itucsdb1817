@@ -23,7 +23,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         username = form.data["username"]
-        user = User.get_from_username(username)			
+        user = User.get_from_username(username)         
         if user is not None:
             password = form.data["password"]
             password_hash = user.password
@@ -36,6 +36,12 @@ def login():
         else:
             return render_template("login.html", form=form,error = "Incorrect username or password.")
     return render_template("login.html", form=form)
+
+@admin_user_page.route('/admin/logout')
+def logout():
+    session.pop("admin_user_id",None)
+    flash({'text': "You have successfully logged out.", 'type': "success"}) 
+    return redirect("/")
 
 
 @admin_user_page.route('/admin/reports', methods = ['GET', 'POST'])
@@ -66,3 +72,17 @@ def review_reports(id):
     else:
         flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
         return redirect("/admin/login")
+
+@admin_user_page.route('/admin/ban/<int:id>', methods = ['GET', 'POST'])
+def ban_user(id):
+    try:
+        user = User(id)
+        if user.is_banned == False:
+            user.is_banned = True
+        else:
+            user.is_banned = False
+        user.save()
+        return redirect("/user/profile/"+str(id))
+    except NotImplementedError as error:
+        flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
+        return redirect("/")

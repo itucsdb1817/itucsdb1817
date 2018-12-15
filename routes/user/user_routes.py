@@ -5,6 +5,7 @@ import sys
 from datetime import datetime
 sys.path.append("../..") # Adds higher directory to python modules path.
 from utils import logged_in as check
+from utils import admin_logged_in as admin_check
 from models.user import User 
 from models.post import Post 
 from models.vote import Vote 
@@ -29,10 +30,11 @@ def login():
     if form.validate_on_submit():
         username = form.data["username"]
         user = User.get_from_username(username)	
-        if user.is_banned is True:
-            flash({'text': "You are banned from Accio, you can not sign in.", 'type': "error"}) 
-            return redirect("/")		
+
         if user is not None:
+            if user.is_banned is True:
+                flash({'text': "You are banned from Accio, you can not sign in.", 'type': "error"}) 
+                return redirect("/")
             password = form.data["password"]
             password_hash = user.password
             if current_app.config['bcrypt'].check_password_hash(password_hash, password):
@@ -97,12 +99,17 @@ def register():
 @user_page.route('/user/profile/<int:id>', methods = ['GET', 'POST'])
 def profile_page(id):
     try:
+        admin = False
+        ban = False
         self_profile = False
         if check.logged_in():
             if id == session.get("user_id",""):
                 self_profile = True
+        if admin_check.admin_logged_in():
+            admin = True
         user = User(id)
-       
+        if user.is_banned == True:
+        	ban = True
        	
         parent_list = []
         for vote in Vote.get_user_total_votes(user.id):
@@ -111,7 +118,8 @@ def profile_page(id):
         	elif vote.is_comment == 0:
         		parent_list.append(Post(vote.post_id))
 
-        return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id), comments = Comment.get_user_total_comments(user.id), reports = Report.get_user_all_reports(user.id), parent_list = parent_list)
+
+        return render_template('profile.html',id=user.id, username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id), comments = Comment.get_user_total_comments(user.id), reports = Report.get_user_all_reports(user.id), parent_list = parent_list, admin=admin, ban= ban)
 
     except NotImplementedError as error:
         flash("Error: " + str(error))
