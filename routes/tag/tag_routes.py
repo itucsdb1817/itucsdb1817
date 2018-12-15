@@ -47,7 +47,7 @@ def tag_create():
         else:
             return render_template('tag_create.html', form=form)
 
-@tag_pages.route('/t/<string:tag_name>', methods = ['GET'])
+@tag_pages.route('/t/<string:tag_name>', methods=['GET'])
 def tag_view(tag_name):
     try:
         tag = Tag(tag_name)
@@ -80,5 +80,24 @@ def tag_view(tag_name):
 
 
 @tag_pages.route('/t/<string:tag_name>/mod')
-def tag_moderate():
+def tag_moderate(tag_name):
+    """Main moderation view for tags"""
+    raise NotImplementedError()
+
+@tag_pages.route('/t/<string:tag_name>/mod/add')
+def tag_moderate_add_mod(tag_name):
+    """Form processor for adding new moderators
+    """
+    raise NotImplementedError()
+
+@tag_pages.route('/t/<string:tag_name>/mod/remove')
+def tag_moderate_remove_mod(tag_name):
+    raise NotImplementedError()
+
+@tag_pages.route('/t/<string:tag_name>/mod/edit_desc')
+def tag_moderate_edit_desc(tag_name):
+    raise NotImplementedError()
+
+@tag_pages.route('/t/<string:tag_name>/mod/edit_rules')
+def tag_moderate_edit_rules(tag_name):
     raise NotImplementedError()
