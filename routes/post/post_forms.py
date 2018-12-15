@@ -7,3 +7,6 @@ class BasePostForm(FlaskForm):
 
 class TextPostForm(BasePostForm):
     content = TextAreaField('Content', [validators.required()])
+
+class TextPostEditForm(FlaskForm):
+    content = TextAreaField('Content', [validators.required()])
