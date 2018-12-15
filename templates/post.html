@@ -27,6 +27,9 @@
     <p>
         <a href="/post/{{post.id}}/edit"><strong>Edit Post</strong></a>
     </p>
+    <p>
+        <a href="/post/{{post.id}}/delete"><strong>Delete Post</strong></a>
+    </p>
     {% endif %}
     {{post.body|safe}}
 
@@ -48,8 +51,8 @@
         <li>Vote: <div id="{{vtid|safe}}">{{comment.vote}}</div></li>
         {% if is_logged_in %}
         <li>
-            <input type="button" onClick="vote_post(1, {{comment.id|safe}})">UpVote</input>
-            <input type="button" onClick="vote_post(0, {{comment.id|safe}})">DownVote</input>
+            <input type="button" onClick="vote_comment(1, {{comment.id|safe}})">UpVote</input>
+            <input type="button" onClick="vote_comment(0, {{comment.id|safe}})">DownVote</input>
         </li>
         {% endif %}
         {% if comment.is_op %}
