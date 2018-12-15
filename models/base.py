@@ -45,6 +45,8 @@ class BaseModel():
             if hasattr(self, '_ORIGINAL_ATTR'):
                 assert hasattr(self, 'id')
                 changed = self._get_changed()
+                if not changed:
+                    return
                 placeholders = ', '.join((key + ' = %s') for key in changed.keys())
                 query = f'''UPDATE {self.__class__.TABLE_NAME}
                             SET {placeholders}
@@ -60,8 +62,8 @@ class BaseModel():
                             VALUES ({placeholders})
                             RETURNING id
                             '''
-                tuple = self._get_attr()
-                cursor.execute(query, tuple)
+                t = self._get_attr()
+                cursor.execute(query, t)
                 print(f'New db entry {self.__class__.__name__} created')
                 self.id = cursor.fetchone()[0]
             conn.commit()
