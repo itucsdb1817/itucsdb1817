@@ -102,7 +102,16 @@ def profile_page(id):
             if id == session.get("user_id",""):
                 self_profile = True
         user = User(id)
-        return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id), comments = Comment.get_user_total_comments(user.id), reports = Report.get_user_all_reports(user.id))
+       
+       	
+        parent_list = []
+        for vote in Vote.get_user_total_votes(user.id):
+        	if vote.is_comment == 1:
+        		parent_list.append(Comment(vote.comment_id))
+        	elif vote.is_comment == 0:
+        		parent_list.append(Post(vote.post_id))
+
+        return render_template('profile.html', username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id), comments = Comment.get_user_total_comments(user.id), reports = Report.get_user_all_reports(user.id), parent_list = parent_list)
 
     except NotImplementedError as error:
         flash("Error: " + str(error))
