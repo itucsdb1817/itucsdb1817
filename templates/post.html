@@ -88,7 +88,7 @@
         }});
     }
     function vote_comment(type, comment_id) {
-        $.ajax({url: "/vote/" + comment_id +"/" + type + "/0", success: function(result){
+        $.ajax({url: "/vote/" + comment_id + "/" + type + "/1", success: function(result){
             if('success' in result){
                 //For instant display
                 if(type){

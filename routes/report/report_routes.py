@@ -23,7 +23,7 @@ report_page = Blueprint('report_page', __name__,)
 def report_post(is_comment,reported_id):
     create_report = False
     if not check.logged_in():
-        return redirect("/user/login/")
+        return redirect("/")
     else:
         form = ReportForm(request.form)
         if form.validate_on_submit():

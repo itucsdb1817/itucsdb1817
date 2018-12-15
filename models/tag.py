@@ -75,19 +75,6 @@ class Tag(BaseModel):
             return pagination
 
 
-class TagSubscription(BaseModel):
-    TABLE_NAME = 'tag_susbcriptions'
-    COLUMN_NAMES = (
-        'id',
-        'date',
-        'user_id',
-        'tag_id'
-    )
-
-    def __init__(self, entry_id=-1):
-        if entry_id != -1:
-            super().__init__(entry_id)
-
 class TagModerator(BaseModel):
     TABLE_NAME = 'tag_moderators'
     COLUMN_NAMES = (
@@ -96,7 +83,3 @@ class TagModerator(BaseModel):
         'user_id',
         'tag_id'
     )
-
-    def __init__(self, entry_id=-1):
-        if entry_id != -1:
-            super().__init__(entry_id)

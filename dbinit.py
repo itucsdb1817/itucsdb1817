@@ -75,17 +75,6 @@ INIT_STATEMENTS = [
     );
     """,
 
-
-    """
-    CREATE TABLE tag_subscriptions (
-        id serial  NOT NULL,
-        date timestamp  NOT NULL,
-        user_id int  NOT NULL,
-        tag_id int  NOT NULL,
-        CONSTRAINT tag_subscriptions_pk PRIMARY KEY (id)
-    );
-    """,
-
     """
     CREATE TABLE tags (
         id serial  NOT NULL,
@@ -212,28 +201,6 @@ INIT_STATEMENTS = [
     ALTER TABLE reports ADD CONSTRAINT Reports_Users
         FOREIGN KEY (submitting_user_id)
         REFERENCES users (id) 
-        ON UPDATE  CASCADE 
-        NOT DEFERRABLE 
-        INITIALLY IMMEDIATE
-    ;
-    """,
-
-    """
-    ALTER TABLE tag_subscriptions ADD CONSTRAINT Subscriptions_Tags
-        FOREIGN KEY (tag_id)
-        REFERENCES tags (id)
-        ON DELETE  CASCADE 
-        ON UPDATE  CASCADE 
-        NOT DEFERRABLE 
-        INITIALLY IMMEDIATE
-    ;
-    """,
-
-    """
-    ALTER TABLE tag_subscriptions ADD CONSTRAINT Subscriptions_Users
-        FOREIGN KEY (user_id)
-        REFERENCES users (id)
-        ON DELETE  CASCADE 
         ON UPDATE  CASCADE 
         NOT DEFERRABLE 
         INITIALLY IMMEDIATE

@@ -20,7 +20,8 @@ class BaseModel():
         if entry is None:
             return 
         elif isinstance(entry, int):
-            assert entry > 0, 'id must be bigger than 0'
+            if entry < 0:
+                raise NotImplementedError('id must be bigger than zero')
             fetched_values = self._from_table_get_by_id(entry)
             if not fetched_values:
                 raise NotImplementedError(f'Entry with id {entry} was not found in table {self.__class__.TABLE_NAME}')
@@ -45,6 +46,8 @@ class BaseModel():
             if hasattr(self, '_ORIGINAL_ATTR'):
                 assert hasattr(self, 'id')
                 changed = self._get_changed()
+                if not changed:
+                    return
                 placeholders = ', '.join((key + ' = %s') for key in changed.keys())
                 query = f'''UPDATE {self.__class__.TABLE_NAME}
                             SET {placeholders}
@@ -60,8 +63,8 @@ class BaseModel():
                             VALUES ({placeholders})
                             RETURNING id
                             '''
-                tuple = self._get_attr()
-                cursor.execute(query, tuple)
+                t = self._get_attr()
+                cursor.execute(query, t)
                 print(f'New db entry {self.__class__.__name__} created')
                 self.id = cursor.fetchone()[0]
             conn.commit()
@@ -137,7 +140,7 @@ class BaseModel():
     
     @classmethod
     def query_select_all(cls):
-        with db.connect(current_app.config['db']) as conn:
+        with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
-                cursor.execute('SELECT * FROM {cls.TABLE_NAME}')
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME}')
                 return cursor.fetchall()

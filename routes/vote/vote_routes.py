@@ -10,6 +10,7 @@ from utils import logged_in as check
 from models.user import User 
 from models.post import Post 
 from models.vote import Vote
+from models.comment import Comment
 
 
 vote_page = Blueprint('vote_page', __name__,)

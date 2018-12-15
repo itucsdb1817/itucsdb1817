@@ -22,12 +22,12 @@ class User(BaseModel):
         super().__init__(entry_id)
 
    
-    # this is method that returns first "x" user objects 
+    # this is method that returns all user objects 
     @classmethod
-    def get_first_x(cls, id_max):
+    def get_all_user(cls): 
         with db.connect(current_app.config['DB_URL']) as conn:
             with conn.cursor() as cursor:
-                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE id < %s', (id_max, ))
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME}')
                 list_of_users = []
                 for user_tuple in cursor.fetchall():
                     list_of_users.append(User(user_tuple))
@@ -57,6 +57,7 @@ class User(BaseModel):
                     return True
                 else:
                     return False    
+
 
     def update_password(self,new_password):
         with db.connect(current_app.config['DB_URL']) as conn:
