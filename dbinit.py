@@ -39,7 +39,7 @@ INIT_STATEMENTS = [
         title varchar(32)  NOT NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
-        content_html  NOT NULL,
+        content_html text NOT NULL,
         is_external boolean  NOT NULL,
         current_vote int  NOT NULL,
         rank_score bigint  NOT NULL,
