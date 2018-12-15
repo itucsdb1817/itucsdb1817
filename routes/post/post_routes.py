@@ -67,7 +67,13 @@ def post_view(post_id):
         return redirect(url_for('post_pages.post_view', post_id=post_id))
 
     context = post.generate_context()
+    # sets flag if viewer is logged in
+    context['is_logged_in'] = check.logged_in()
+    # sets flag if viewer is the original poster (a.k.a OP)
+    context['is_op'] = context['is_logged_in'] and (post.user_id == session['user_id'])
+
     return render_template('post.html', **context, form=form)
+
 
 @post_pages.route('/post/<post_id>/<comment_id>')
 def comment_permalink_view(post_id, comment_id):
