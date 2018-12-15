@@ -21,6 +21,11 @@
     <h3>
     POST:
     </h3>
+    {% if is_op %}
+    <p>
+        <a href="/post/{{post.id}}/edit"><strong>Edit Post</strong></a>
+    </p>
+    {% endif %}
     {{post.body|safe}}
 
     <form action="" method="POST" novalidate>
