@@ -59,7 +59,7 @@ class Post(BaseModel):
             cursor.close()
 
         for result in results:
-            self._comments.append(Comment(result, get_children=True))
+            self._comments.append(Comment(result))
 
     def _generate_context_meta(self):
         return {

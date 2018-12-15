@@ -19,7 +19,6 @@ INIT_STATEMENTS = [
         id serial  NOT NULL,
         user_id int  NOT NULL,
         post_id int  NOT NULL,
-        parent_id int  NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
         is_external boolean  NOT NULL,

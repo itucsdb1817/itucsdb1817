@@ -48,7 +48,6 @@ def post_view(post_id):
         comment.user_id = session['user_id']
         comment.post_id = post_id
         # not a reply, original comment
-        comment.parent_id = None
         comment.content_type = 'text'
         comment.content = form.content.data
         comment.content_html = md.render(form.content.data)
@@ -74,14 +73,6 @@ def post_view(post_id):
 
     return render_template('post.html', **context, form=form)
 
-
-@post_pages.route('/post/<post_id>/<comment_id>')
-def comment_permalink_view(post_id, comment_id):
-    """
-    This view is the permanant view for the comment chain starting from the supplied id.
-    It only renders the post, given comment, and its children
-    """
-    raise NotImplementedError()
 
 # TODO: Implement different types of posts
 @post_pages.route('/post/submit', methods=['GET', 'POST'])
