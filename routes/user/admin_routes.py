@@ -18,9 +18,7 @@ admin_user_page = Blueprint('admin_user_page', __name__,)
 
 @admin_user_page.route('/admin/login', methods = ['GET', 'POST'])
 def login():
-"""
-This route is for admins to sign in.
-"""
+#This route is for admins to sign in.
     if check.admin_logged_in():
         return redirect("/") 
     form = LoginForm()
@@ -42,18 +40,16 @@ This route is for admins to sign in.
 
 @admin_user_page.route('/admin/logout')
 def logout():
-"""
-This route is for admins to sign out.
-"""
+#This route is for admins to sign out.
+
     session.pop("admin_user_id",None)
     flash({'text': "You have successfully logged out.", 'type': "success"}) 
     return redirect("/")
 
 
 @admin_user_page.route('/admin/reports', methods = ['GET', 'POST'])
-"""
-This function returns a list of report objects.
-"""
+#This function returns a list of report objects.
+
 def show_reports():
     if check.admin_logged_in():
         return render_template('admin_reports.html', report_list = Report.get_reports())
@@ -64,9 +60,8 @@ def show_reports():
 
 @admin_user_page.route('/admin/reports/<int:id>', methods = ['GET', 'POST'])
 def review_reports(id):
-"""
-Admins can review reports and decide the result of it. 
-"""
+#Admins can review reports and decide the result of it. 
+
     if check.admin_logged_in():
         form = ReviewForm(request.form)
         
@@ -87,9 +82,8 @@ Admins can review reports and decide the result of it.
 
 @admin_user_page.route('/admin/ban/<int:id>', methods = ['GET', 'POST'])
 def ban_user(id):
-"""
-Admins can ban or unban the user with given id using this function. 
-"""
+#Admins can ban or unban the user with given id using this function. 
+
     if check.admin_logged_in():
         try:
             user = User(id)
@@ -108,9 +102,8 @@ Admins can ban or unban the user with given id using this function.
 
 @admin_user_page.route('/convert_to_admin/<int:id>', methods = ['GET', 'POST'])
 def convert_to_admin(id):
-"""
-Admins can convert the user with given id to admin-user type using this function. 
-"""
+#Admins can convert the user with given id to admin-user type using this function. 
+
     if check.admin_logged_in():   
         try:
             user = User(id)
@@ -130,9 +123,7 @@ Admins can convert the user with given id to admin-user type using this function
 
 @admin_user_page.route('/delete_user/<int:id>', methods = ['GET', 'POST'])
 def delete_user(id):
-"""
-Admins can delete the user with given id using this function. 
-"""
+#Admins can delete the user with given id using this function. 
     if check.admin_logged_in():   
         try:
             user = User(id)
@@ -149,13 +140,15 @@ Admins can delete the user with given id using this function.
 
 @admin_user_page.route('/admin/view_users', methods = ['GET', 'POST'])
 def view_users():
-"""
-This function returns a list of user objects.
-"""
+#This function returns a list of user objects.
     if check.admin_logged_in():
         return render_template('user_review.html', list_of_users = User.get_all_user())
     else:
         return redirect("/admin/login")
 
-
+@admin_user_page.route('/admin/index', methods = ['GET', 'POST'])
+def index():
+#This function returns a list of user objects.
+    return render_template('admin_index.html')
+    
 
