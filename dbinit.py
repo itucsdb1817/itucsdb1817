@@ -19,9 +19,9 @@ INIT_STATEMENTS = [
         id serial  NOT NULL,
         user_id int  NOT NULL,
         post_id int  NOT NULL,
-        parent_id int  NOT NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
+        content_html text NOT NULL,
         is_external boolean  NOT NULL,
         rank_score bigint  NOT NULL,
         date timestamp  NOT NULL,
@@ -30,7 +30,6 @@ INIT_STATEMENTS = [
     );
     """,
 
-    # TODO: Add Tag_ID
     """
     CREATE TABLE posts (
         id serial  NOT NULL,
@@ -40,6 +39,7 @@ INIT_STATEMENTS = [
         title varchar(32)  NOT NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
+        content_html text NOT NULL,
         is_external boolean  NOT NULL,
         current_vote int  NOT NULL,
         rank_score bigint  NOT NULL,
@@ -123,6 +123,8 @@ INIT_STATEMENTS = [
         is_comment bool  NOT NULL,
         passed_time interval  NOT NULL,
         vote boolean  NOT NULL,
+        vote_ip varchar(32) NOT NULL,
+        last_update_time timestamp NOT NULL,
         post_id int  NULL,
         comment_id int  NULL,
         CONSTRAINT votes_pk PRIMARY KEY (id)

@@ -1,44 +1,311 @@
-{% if error %}
-<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
-  {{ error }}
-</div>
-{% endif %}
-{% block title %}<h1>Profile - {{ username }}</h1>{% endblock %}
-{% block content %}
-    
-    
-        <p>  NAME:  {{first_name}}    </p>
-        <p>  LAST NAME:  {{last_name}}     </p>
-        <p>  BIRTH DATE: {{birth_date}}     </p>
-        <p>  CREATION DATE: {{creation_date}}     </p>
-        {% if self_profile %}
-            <p> E-MAIL: {{email}}</p>
-        {% endif %}
-        <p>  POSTS    </p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Profile</title>
+        <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/profile.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-        <div> 
-            {% for post in posts %}
-               <a href="/post/{{post.id}}"> {{ post.title }}</a>
-                {{ post.content|safe}}
-                {{ post.date }}
-                {{ post.comment_count or 0 }}
-                {{post.current_vote }}
-            {% endfor %}
+        </head>
+    
+    <body>
+
+        <div class='columns'>
+          <div class='container profile'>
+            <div class='modal' id='edit-preferences-modal'>
+              <div class='modal-background'></div>
+              <div class='modal-card'>
+                <header class='modal-card-head'>
+                  <p class='modal-card-title'>Edit Preferences</p>
+                  <button class='delete'></button>
+                </header>
+                
+                <footer class='modal-card-foot'>
+                  <a class='button is-primary modal-save'>Save changes</a>
+                  <a class='button modal-cancel'>Cancel</a>
+                </footer>
+              </div>
+            </div>
+            <div class='section profile-heading'>
+              <div class='columns is-mobile is-multiline'>
+                <div class='column is-2'>
+                  <span class='header-icon user-profile-image'>
+                    <img alt='' src='http://placehold.it/300x225'>
+                  </span>
+                </div>
+                <div class='column is-4-tablet is-10-mobile name'>
+                  <p>
+                    <span class='title is-bold'>{{first_name}} {{last_name}}</span>
+                    <br>
+                    <p class='tagline'>
+                    {{username}} 
+                    </p>
+                    <a class='button is-primary is-outlined' href='/user/change_password' id='edit-preferences' style='margin: 5px 0'>
+                      Change Password 
+                    </a>
+                    {%if admin%}
+                    {%if ban%}
+                    <a class='button is-primary is-outlined'  id='edit-preferences' href ="/admin/ban/{{id}}"style='margin: 5px 0'>
+                      Unban {{username}}
+                    </a>
+
+                    {%else%}
+                    <a class='button is-primary is-outlined'  id='edit-preferences' href ="/admin/ban/{{id}}" style='margin: 5px 0'>
+                      Ban {{username}}
+                    </a>
+                    {%endif%}
+                    {%endif%}
+                  </p>
+                  <p class='tagline'>
+                    {{birth_date}}
+                    <i class="fa fa-birthday-cake" aria-hidden="true"></i>                           
+                  </p>               
+                <p class='tagline'>
+                    {{email}}
+                       
+                  </p>
+
+                </div>
+                <div class='column is-2-tablet is-4-mobile has-text-centered'>
+                  <p class='stat-val'>{{posts|length}}</p>
+                  <p class='stat-key'>posts</p>
+                </div>
+                <div class='column is-2-tablet is-4-mobile has-text-centered'>
+                  <p class='stat-val'>{{total_votes|length}}</p>
+                  <p class='stat-key'>votes</p>
+                </div>
+                <div class='column is-2-tablet is-4-mobile has-text-centered'>
+                  <p class='stat-val'>{{comments|length}}</p>
+                  <p class='stat-key'>comments</p>
+                </div>
+              </div>
+            </div>
+
+            <div class='profile-options is-fullwidth'>
+              <div class='tabs is-fullwidth is-medium'>
+                <ul>
+                  <li class='link is-active' id='post_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-list'></i>
+                      </span>
+                      <span>Posts</span>
+                    </a>
+                  </li>
+                  <li class='link' id='vote_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-thumbs-up'></i>
+                      </span>
+                      <span>Votes</span>
+                    </a>
+                  </li>
+                  <li class='link' id='comment_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-search'></i>
+                      </span>
+                      <span>Comments</span>
+                    </a>
+                  </li>
+                  <li class='link' id='report_button'>
+                    <a>
+                      <span class='icon'>
+                        <i class='fa fa-balance-scale'></i>
+                      </span>
+                      <span>Reports</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div id='posts'>
+                <div class='columns is-mobile'>
+                    {% for post in posts %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>{{ post.title }}</span>
+                                <p>
+                                {{ post.content|safe}}
+                                {{ post.date }}
+                               
+                                </p>
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>{{post.current_vote }} vote</a>
+                            <a class='card-footer-item' href="/post/{{post.id}}">View</a>
+                            <a class='card-footer-item'> {{ post.comment_count or 0 }} comment</a>
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
+            </div>
+
+            <div id='votes'>
+              <div class='columns is-mobile'>
+                    {%set index = 0 %}
+                    {% for vote in total_votes %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>
+                                {%if vote.vote == True%}
+                                  <p>upvote</p>
+                                {%elif vote.vote == False%}
+                                  <p>downvote</p>
+                                {%endif%}
+                              </span>
+                              {%if vote.is_comment == 0%}
+                              <p> {{parent_list[index].title}} </p> 
+                              {%endif%}
+
+                              <p> {{parent_list[index].content}}</p> 
+                                  
+                            </div>
+                          </div>
+                          {%if vote.is_comment == 0%}
+                            <a class='card-footer-item' href="/post/{{vote.post_id}}">View</a>
+                          {%elif vote.is_comment == 1%}
+                            <a class='card-footer-item' href="/post/{{parent_list[index].post_id}}">View</a>
+                          {%endif%}
+                          
+                        </div>
+                        <br>
+                  </div>
+                    {%set index = index + 1%}
+                  {% endfor %}
+                </div>
+            </div>
+
+            <div id='comments'>
+              <div class='columns is-mobile'>
+                    {% for comment in comments %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                            
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>{{comment.content_type}}</span>
+                                <p>
+                                {{ comment.content|safe}}
+                                {{ comment.date }}
+                               
+                                </p>
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>{{comment.current_vote }} vote</a>
+                            <a class='card-footer-item' href = "/post/{{comment.post_id}}">View</a>
+                            <a class='card-footer-item'>{{comment.rank_score}} score</a>
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
+            </div>
+
+            <div id='reports'>
+
+            {% for report in reports %}
+                    <div class='column is-3'>
+                        <div class='card'>
+                          <div class='card-image'>
+                           
+                          </div>
+                          <div class='card-content'>
+                            <div class='content'>
+                              <span class='tag is-dark subtitle'>#{{report.id}}</span>
+                                <p>
+                                Violated rule is, {{ report.violated_rule}}.
+                                <br>
+                                Description: {{ report.reason_description}}
+                               
+                                </p>
+                            </div>
+                          </div>
+                          <footer class='card-footer'>
+                            <a class='card-footer-item'>Is report dismissed?<br> {{report.is_dismissed }}</a>  
+                            <a class='card-footer-item' href = "/report_delete/{{report.submitting_user_id}}/{{report.id}}">Delete</a>
+
+                          </footer>
+                        </div>
+                        <br>
+                  </div>
+                  {% endfor %}
+                </div>
+            </div>
+
+          </div>
         </div>
 
-        {% if self_profile %}
+
+        <script type="text/javascript">
+            
+              $('#vote_button').click(() => {
+                disable_all();
+                activate_name("vote_button");
+                activate_content("votes");
+              });
+              $('#post_button').click(() => {
+                disable_all();
+                activate_name("post_button");
+                activate_content("posts");
+              });
+              $('#report_button').click(() => {
+                disable_all();
+                activate_name("report_button");
+                activate_content("reports");
+              });
+              $('#comment_button').click(() => {
+                disable_all();
+                activate_name("comment_button");
+                activate_content("comments");
+              });
+              $('#votes').hide();
+              $('#comments').hide();
+              $('#reports').hide();
+
+            
+            function disable_all(){
+                $('#votes').hide();
+                $('#posts').hide();
+                $('#comments').hide();
+                $('#reports').hide();
+                $('#post_button').removeClass('is-active');
+                $('#vote_button').removeClass('is-active');
+                $('#comment_button').removeClass('is-active');
+                $('#report_button').removeClass('is-active');
+            }
+            function activate_name(tab){
+                $('#' + tab).addClass('is-active');
+            }
+            function activate_content(tab){
+                $('#' + tab).show();
+            }
 
 
-        <form action= "/post/submit" >
-            <input type="submit" value="NEW POST" />
-        </form>
+        </script>
+    </body>
+</html>
 
-        <form action= "/user/change_password" >
-            <input type="submit" value="CHANGE PASSWORD" />
-        </form>
-
-        {% endif %}
-
-
-       
-{% endblock %}
