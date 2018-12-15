@@ -75,17 +75,55 @@ def review_reports(id):
 
 @admin_user_page.route('/admin/ban/<int:id>', methods = ['GET', 'POST'])
 def ban_user(id):
-    try:
-        user = User(id)
-        if user.is_banned == False:
-            user.is_banned = True
-        else:
-            user.is_banned = False
-        user.save()
-        return redirect("/user/profile/"+str(id))
-    except NotImplementedError as error:
-        flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
-        return redirect("/")
+    if check.admin_logged_in():
+        try:
+            user = User(id)
+            if user.is_banned == False:
+                user.is_banned = True
+            else:
+                user.is_banned = False
+            user.save()
+            return redirect("/user/profile/"+str(id))
+        except NotImplementedError as error:
+            flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
+            return redirect("/")
+    else:
+        flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
+        return redirect("/admin/login")
+
+@admin_user_page.route('/convert_to_admin/<int:id>', methods = ['GET', 'POST'])
+def convert_to_admin(id):
+    if check.admin_logged_in():   
+        try:
+            user = User(id)
+            if user.is_admin == True:
+                flash({'text': "This user is already admin.", 'type': 'error'}) 
+            elif user.is_admin == False:
+                user.is_admin = True
+                user.save()
+                flash({'text': "User type converted to admin.", 'type': 'success'}) 
+            return redirect("/admin/view_users")
+        except NotImplementedError as error:
+            flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
+            return redirect("/")
+    else:
+        flash({'text': "You have to sign in to your admin account first.", 'type': 'error'}) 
+        return redirect("/admin/login")
+
+@admin_user_page.route('/delete_user/<int:id>', methods = ['GET', 'POST'])
+def delete_user(id):
+    if check.admin_logged_in():   
+        try:
+            user = User(id)
+            user.delete()
+            flash({'text': "This account is deleted permanently.", 'type': 'success'}) 
+            return redirect("/admin/view_users")
+        except NotImplementedError as error:
+            flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
+            return redirect("/")
+    else:
+        flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
+        return redirect("/admin/login")
 
 @admin_user_page.route('/admin/view_users', methods = ['GET', 'POST'])
 def view_users():
@@ -93,3 +131,6 @@ def view_users():
         return render_template('user_review.html', list_of_users = User.get_all_user())
     else:
         return redirect("/admin/login")
+
+
+

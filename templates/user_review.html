@@ -16,6 +16,7 @@
           {{ error }}
         </div>
         {% endif %}
+        {% include 'flash.html' %}
     </head>
 {% block content %}
     {% for user in list_of_users %}
@@ -38,7 +39,14 @@
                     </div>
                     <div class="media-right">
 
-                    <a class="button is-block is-info is-large is-fullwidth" href = "/edit_user/{{user.id}}" >Edit User</a>
+                    <a class="button is-block is-info is-large is-fullwidth" href = "/delete_user/{{user.id}}">Delete</a>
+                    <br>
+                    {% if {{user.is_banned}} == "True" %}
+                    <a class="button is-block is-info is-large is-fullwidth" href = "/admin/ban/{{user.id}}">Ban</a>
+                    {% endif %}
+                    <br>
+                    <a class="button is-block is-info is-large is-fullwidth" href = "/convert_to_admin/{{user.id}}">Convert to Admin</a>
+                    <br>
                                             
                     </div>
 
