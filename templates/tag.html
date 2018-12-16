@@ -21,7 +21,6 @@
           {% endif %}
           {{ pagination.page_number}}
           {% for i in range(maxVal, minVal) %}   
-            {{ i }} == {{ pagination.page_number }} ? {{ i == pagination.page_number }}
             {% if i == pagination.page_number %}
 
             <li><a class="pagination-link is-current" aria-label="Page {{ i }}" aria-current="page">{{ i }}</a></li>
