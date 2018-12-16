@@ -1,35 +1,103 @@
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul>
-    {% for message in messages %}
-      <li>
-        <div style="padding: 20px;background-color: #998323; color: white;margin-bottom: 15px;">
-            {{message}}
+{% macro paginationFunc(padding, count, page) %}
+    {% set midpoint = page %}
+    {% if page < padding + 1 %}
+      {% set midpoint = padding + 1 %}
+    {% endif %}
+    {% if page > count - padding %}
+      {% set midpoint = count - padding %}
+    {% endif %}
+
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <ul class="pagination-list">
+          {% if 1 >= midpoint-padding %}
+            {% set maxVal = 1 %}
+          {% else %}
+            {% set maxVal = midpoint - padding %}
+          {% endif %}
+          {% if count <= midpoint+padding %}
+            {% set minVal = count %}
+          {% else %}
+            {% set minVal = midpoint+padding %}
+          {% endif %}
+          {{ pagination.page_number}}
+          {% for i in range(maxVal, minVal+1) %}   
+            {% if i == pagination.page_number %}
+
+            <li><a class="pagination-link is-current" aria-label="Page {{ i }}" aria-current="page">{{ i }}</a></li>
+            {% else %}
+            <li><a class="pagination-link" aria-label="Goto page {{ i }}" href='/t/{{ tag_info.title }}?page={{ i }}'>{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+    </nav>
+{% endmacro %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tag</title>
+        <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+        <!-- Bulma Version 0.7.2-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/forum.css">
+        {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
         </div>
-      </li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
-{% block body %}
-
-<h1>t/{{tag_info.title}}</h1>
-<p>{{tag_info.description}}</p>
-<p>{{tag_info.rules}}</p>
-
-<div class="posts">
-  <h2>Current Page: {{pagination.page_number}}</h2>
+        {% endif %}
+        {% include 'flash.html' %}
+    </head>
+{% block content %}
+    
+    <h1>t/{{tag_info.title}}</h1>
+    <p>Description: {{tag_info.description}}</p>
+    <p>Rules: {{tag_info.rules}}</p>
+      <h2>Current Page: {{pagination.page_number}}</h2>
   <h2>End Page: {{pagination.last_page_number}}</h2>
-  <ul>
-  {% for post in pagination.posts %}
-    <li><a href="/post/{{post.id}}">{{post.title}}</a></li>
-    <ul>
-      <li>Submitter: {{post.user}}</li>
-      <li>Votes: {{post.vote}}</li>
-      <li>Date: {{post.date}}</li>
-    </ul>
-  {% endfor %}
-  </ul>
-</div>
+    {%if posts == True%}
+
+    {% for post in pagination.posts %} 
+        <article class="post">
+                <div class="media">
+                    
+                    <div class="media-content">
+                        <div class="content">
+                           <a href="/post/{{post.id}}">{{post.title}}</a> 
+                          <ul>
+                            <li>
+                              <div class="content">
+                              <p>Submitter: {{post.user}}</p>
+                              </div>
+                            </li>
+                            <li>
+                                <div class="content">
+                                <p>Votes: {{post.vote}}</p> 
+                            </div>
+
+                            </li>
+                            
+                            <li>
+                               <div class="content">
+                                <p>Date: {{post.date}}</p> 
+                            </div>
+                            </li>
+
+                          </ul>  
+                        </div>
+                        
+                        
+                       
+                    </div>
+                </div>
+          </article>
+        {% endfor %}
+        {{ paginationFunc(3, pagination.last_page_number, pagination.page_number) }}
+        {%endif%}
 {% endblock %}
+
+</html>
+
