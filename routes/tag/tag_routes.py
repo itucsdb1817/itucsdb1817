@@ -109,9 +109,9 @@ def tag_moderate(tag_name):
     edit_tag_form = TagEditForm(description=tag.description, rules=tag.rules)
 
     context = {
-        'title' = tag.title,
-        'is_banned' = tag.is_banned,
-        'mods' = tag.list_mods()
+        'title':  tag.title,
+        'is_banned': tag.is_banned,
+        'mods': tag.list_mods()
     }
 
     return render_template(
