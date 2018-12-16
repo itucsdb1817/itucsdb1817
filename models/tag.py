@@ -87,6 +87,9 @@ class Tag(BaseModel):
     def mod_remove_user(self, user_id):
         TagModerator.delete_rel(user_id, self.id)
 
+    def list_mods(self, user_id):
+        TagModerator.list_mods(self.id)
+
 
 
 class TagModerator(BaseModel):
@@ -126,9 +129,9 @@ class TagModerator(BaseModel):
         tag_statement += '=%s'
 
         query = (
-            f"SELECT {u}.id, {u}.username, {t}.id, {t}.title "
-            f"INNER JOIN {u} ON {u}.id={m}.user_id "
-            f"INNER JOIN {t} ON {t}.id={m}.tag_id "
+            f"SELECT {u}.id, {u}.username, {t}.id, {t}.title FROM {m} "
+            f"INNER JOIN {u} ON {m}.user_id={u}.id "
+            f"INNER JOIN {t} ON {m}.tag_id={t}.id "
             f"WHERE {user_statement} AND {tag_statement}"
         )
 
@@ -138,6 +141,20 @@ class TagModerator(BaseModel):
             result = cursor.fetchone()
             cursor.close()
             return bool(result)
+    
+    @classmethod
+    def list_mods(cls, tag_id):
+        u = User.TABLE_NAME
+        m = cls.TABLE_NAME
+        query = (
+            f"SELECT {u}.id, {u}.username FROM {m} "
+            f"INNER JOIN {u} ON {m}.user_id={u}.id "
+            f"WHERE {m}.tag_id=%s "
+        )
+        with db.connect(current_app.config['DB_URL']) as conn:
+            cursor = conn.cursor()
+            cursor.execute(query (tag_id, ))
+            return(cursor.fetchall())
 
     @classmethod
     def delete_rel(cls, user_id, tag_id):
