@@ -93,10 +93,6 @@ def tag_moderate_add_mod(tag_name):
 def tag_moderate_remove_mod(tag_name):
     raise NotImplementedError()
 
-@tag_pages.route('/t/<string:tag_name>/mod/edit_desc')
-def tag_moderate_edit_desc(tag_name):
-    raise NotImplementedError()
-
-@tag_pages.route('/t/<string:tag_name>/mod/edit_rules')
-def tag_moderate_edit_rules(tag_name):
+@tag_pages.route('/t/<string:tag_name>/mod/edit_info')
+def tag_moderate_edit(tag_name):
     raise NotImplementedError()
