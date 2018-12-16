@@ -61,10 +61,8 @@ def tag_view(tag_name):
         }
         return render_template('error.html', **error_context)
     
-    # TODO: Implement tag page and pagination
-    if request.args.get('page') is None:
-        posts = False
-
+    # TODO: Implement tag page and pagination 
+    
     page_index = int(request.args.get('page') or 1)
     if not isinstance(page_index, int):
         page_index = 1
@@ -79,7 +77,7 @@ def tag_view(tag_name):
         }
     }
     context['pagination'] = tag.paginate(page_index)
-    return render_template('tag.html', **context, posts = posts)
+    return render_template('tag.html', **context)
 
 
 @tag_pages.route('/t/<string:tag_name>/mod')

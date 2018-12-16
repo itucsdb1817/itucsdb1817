@@ -47,8 +47,12 @@ class Tag(BaseModel):
             cursor.execute(f"SELECT COUNT(id) FROM posts WHERE tag_id={self.id}")
             count = cursor.fetchone()[0]
             if count == 0:
-                # table is empty, abort
-                return None
+                # table is empty, abort 
+                pagination = {}
+                pagination['page_number'] = 1
+                pagination['last_page_number'] = 1
+                pagination['posts'] = []  
+                return pagination
             # Normalize page index if it exceeds max page count
             pagination = {}
             max_page_count = int(ceil(count / page_size))  

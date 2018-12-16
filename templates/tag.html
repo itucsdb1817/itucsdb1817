@@ -19,7 +19,6 @@
           {% else %}
             {% set minVal = midpoint+padding %}
           {% endif %}
-          {{ pagination.page_number}}
           {% for i in range(maxVal, minVal+1) %}   
             {% if i == pagination.page_number %}
 
@@ -58,7 +57,7 @@
     <p>Rules: {{tag_info.rules}}</p>
       <h2>Current Page: {{pagination.page_number}}</h2>
   <h2>End Page: {{pagination.last_page_number}}</h2>
-    {%if posts == True%}
+    
 
     {% for post in pagination.posts %} 
         <article class="post">
@@ -96,7 +95,7 @@
           </article>
         {% endfor %}
         {{ paginationFunc(3, pagination.last_page_number, pagination.page_number) }}
-        {%endif%}
+        
 {% endblock %}
 
 </html>
