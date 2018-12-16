@@ -61,13 +61,13 @@ def tag_view(tag_name):
         return render_template('error.html', **error_context)
     
     # TODO: Implement tag page and pagination
-    page_index = request.args.get('page')
+    page_index = int(request.args.get('page'))
     if not isinstance(page_index, int):
         page_index = 1
     if page_index <= 0:
         page_index = 1
     
-    context = {
+    context = { 
         'tag_info': {
             'title':        tag.title,
             'rules':        tag.rules,
