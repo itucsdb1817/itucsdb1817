@@ -64,7 +64,7 @@ def tag_view(tag_name):
     # TODO: Implement tag page and pagination
     if request.args.get('page') is None:
         posts = False
-    
+
     page_index = int(request.args.get('page') or 1)
     if not isinstance(page_index, int):
         page_index = 1
