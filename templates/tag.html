@@ -20,7 +20,7 @@
             {% set minVal = midpoint+padding %}
           {% endif %}
           {{ pagination.page_number}}
-          {% for i in range(maxVal, minVal) %}   
+          {% for i in range(maxVal, minVal+1) %}   
             {% if i == pagination.page_number %}
 
             <li><a class="pagination-link is-current" aria-label="Page {{ i }}" aria-current="page">{{ i }}</a></li>

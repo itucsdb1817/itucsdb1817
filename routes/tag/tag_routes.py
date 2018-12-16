@@ -61,7 +61,7 @@ def tag_view(tag_name):
         return render_template('error.html', **error_context)
     
     # TODO: Implement tag page and pagination
-    page_index = int(request.args.get('page'))
+    page_index = int(request.args.get('page') or 1)
     if not isinstance(page_index, int):
         page_index = 1
     if page_index <= 0:

@@ -51,7 +51,7 @@ class Tag(BaseModel):
                 return None
             # Normalize page index if it exceeds max page count
             pagination = {}
-            max_page_count = int(ceil(count / page_size))
+            max_page_count = int(ceil(count / page_size))  
             if max_page_count < page:
                 page = max_page_count
             pagination['page_number'] = page
