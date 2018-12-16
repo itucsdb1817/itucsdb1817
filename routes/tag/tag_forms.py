@@ -17,4 +17,6 @@ class TagCreationForm(TagEditForm):
         [validators.DataRequired(), validators.length(max=32)]
     )
 
-# TODO: Create the form for managing moderators
+class TagModForm(FlaskForm):
+    user = TextField('Username', [validators.required()])
+
