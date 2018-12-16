@@ -4,6 +4,7 @@ from models.base import BaseModel
 from models.post import Post
 from models.user import User
 from math import ceil
+from datetime import datetime
 
 class Tag(BaseModel):
     TABLE_NAME = 'tags'
@@ -74,6 +75,19 @@ class Tag(BaseModel):
             cursor.close()
             return pagination
 
+    def mod_add_user(self, user_id):
+        if not TagModerator.is_mod(user_id, self.id):
+            tm = TagModerator()
+            tm.date = datetime.now()
+            tm.user_id = user_id
+            tm.tag_id = self.id
+            tm.save()
+
+    # invoker should be a mod too
+    def mod_remove_user(self, user_id):
+        TagModerator.delete_rel(user_id, self.id)
+
+
 
 class TagModerator(BaseModel):
     TABLE_NAME = 'tag_moderators'
@@ -83,3 +97,55 @@ class TagModerator(BaseModel):
         'user_id',
         'tag_id'
     )
+
+    @classmethod
+    def is_mod(cls, user, tag):
+        """
+        Checks if the user is a mod in the specified tag
+        """
+        u = User.TABLE_NAME
+        t = Tag.TABLE_NAME
+        m = cls.TABLE_NAME
+
+        user_statement = u
+        if isinstance(user, str):
+            user_statement += '.username'
+        elif isinstance(user, int):
+            user_statement += '.id'
+        else:
+            raise TypeError('User parameter must be the username or the id')
+        user_statement += '=%s'
+
+        tag_statement = t
+        if isinstance(tag, str):
+            tag_statement += '.title'
+        elif isinstance(tag, int):
+            tag_statement += '.id'
+        else:
+            raise TypeError('Tag parameter must be the tag title or the id')
+        tag_statement += '=%s'
+
+        query = (
+            f"SELECT {u}.id, {u}.username, {t}.id, {t}.title "
+            f"INNER JOIN {u} ON {u}.id={m}.user_id "
+            f"INNER JOIN {t} ON {t}.id={m}.tag_id "
+            f"WHERE {user_statement} AND {tag_statement}"
+        )
+
+        with db.connect(current_app.config['DB_URL']) as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (user, tag))
+            result = cursor.fetchone()
+            cursor.close()
+            return bool(result)
+
+    @classmethod
+    def delete_rel(cls, user_id, tag_id):
+        if (not isinstance(user_id, int)) or (not isinstance(tag_id, int)):
+            raise NotImplementedError('Must be ids')
+        query = f"DELETE FROM {cls.TABLE_NAME} WHERE user_id=%s AND tag_id=%s"
+        with db.connect(current_app.config['DB_URL']) as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (user_id, tag_id))
+            conn.commit()
+            cursor.close()
