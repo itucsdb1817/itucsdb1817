@@ -108,12 +108,18 @@ def tag_moderate(tag_name):
     remove_mod_form = TagModForm()
     edit_tag_form = TagEditForm(description=tag.description, rules=tag.rules)
 
+    context = {
+        'title' = tag.title,
+        'is_banned' = tag.is_banned,
+        'mods' = tag.list_mods()
+    }
+
     return render_template(
         'tag_mod.html',
         add_mod_form=add_mod_form,
         remove_mod_form=remove_mod_form,
-        edit_tag_form=edit_tag_form
-        # CONTEXT
+        edit_tag_form=edit_tag_form,
+        **context
     )
 
 
