@@ -201,6 +201,7 @@ INIT_STATEMENTS = [
     ALTER TABLE reports ADD CONSTRAINT Reports_Users
         FOREIGN KEY (submitting_user_id)
         REFERENCES users (id) 
+        ON DELETE  CASCADE
         ON UPDATE  CASCADE 
         NOT DEFERRABLE 
         INITIALLY IMMEDIATE
