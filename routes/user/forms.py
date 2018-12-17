@@ -9,7 +9,7 @@ import sys
 
 #Form for user to log in.
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), validators.Regexp('^\w+$')])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
@@ -21,7 +21,7 @@ class RegistrationForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
     birth_date = DateField('Birth Date',validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), validators.Regexp('^\w+$')])
     email = EmailField('Email address', [validators.DataRequired(), validators.Email()])
     password = PasswordField('New Password',  [
         validators.DataRequired(),
