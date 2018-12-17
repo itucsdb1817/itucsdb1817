@@ -36,7 +36,7 @@ INIT_STATEMENTS = [
         user_id int  NOT NULL,
         tag_id int NOT NULL,
         date timestamp  NOT NULL,
-        title varchar(32)  NOT NULL,
+        title varchar(256)  NOT NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
         content_html text NOT NULL,
