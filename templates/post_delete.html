@@ -1,0 +1,18 @@
+{% if error %}
+<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+  {{ error }}
+</div>
+{% endif %}
+{% block title %}Delete{% endblock %}
+{% block content %}
+<h1>Delete {{name}}?</h1>
+<form action="" method="post" novalidate>
+  <p>
+    {{ form.hidden_tag() }}
+  </p>
+  <p>
+    {{ form.yes(value="Yes")}}
+    {{ form.no(value="No") }}
+  </p>
+</form>
+{% endblock %}

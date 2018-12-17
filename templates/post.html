@@ -1,38 +1,139 @@
-{% block title %} {{post.title}} {% endblock %}
-{% block content %}
-    <h2> {{ post.title }} </h2>
-    <p>
-        Submitted By: {{ meta.user }}
-    </p>
-    <p>
-        Date of Submission: {{ meta.date }}
-    </p>
-    <form action = "/report/0/{{post.id}}" method="GET">
-        <input type="submit" value="Report"/>  
-    </form>
-    <p>
-        Vote Count: <div id="votecount">{{ meta.vote }}</div>
-    </p>
-    <p>
-        Comment Count: {{ meta.comment }}
-    </p>
-    <input type="button" onClick="vote(1)">UpVote</input>
-    <input type="button" onClick="vote(0)">DownVote</input>
-    <h3>
-    POST:
-    </h3>
-    {{post.body|safe}}
-    <script>
 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <!-- Bulma Version 0.7.2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/login.css">
+</head>
+
+<body>
+    {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
+        </div>
+    {% endif %}
+    {% include 'flash.html' %}
+
+    <section class="hero is-dark is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">{{post.title}}</h1>
+                <h2 class="subtitle">
+                    <a href="/user/profile/{{meta.user_id|safe}}">@{{meta.user}}</a><br>
+                    Submitted at: {{meta.date}}<br>
+                    Vote: <div id="votecount_post">{{meta.vote|safe}}</div><br>
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            {% if is_logged_in %}
+            <p>
+                <input type="button" class="button" value="Upvote" onClick="vote_post(1)"></input>
+                <input type="button" class="button" value="Downvote"onClick="vote_post(0)"></input>
+                <form action = "/report/0/{{post.id}}" method="GET">
+                    <input type="submit" class="button" value="Report"/>  
+                </form>
+            </p>
+            {% endif %}
+            {% if is_op %}
+            <p>
+                <a href="/post/{{post.id}}/edit" class="button">Edit Post</a>
+                <a href="/post/{{post.id}}/delete" class="button">Delete Post</a>
+            </p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="content">
+                {{post.body|safe}}
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="container">
+            <form action="" method="POST" novalidate>
+                <p>{{ form.hidden_tag() }}</p>
+                <p>
+                    {{ form.content.label }}
+                    {{ form.content }}
+                </p>
+                <p>
+                    <input type="submit" value="Submit">
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            {% for comment in comments %}
+                <ul>
+                <li>Comment by: <a href="/user/profile/{{comment.user_id}}">{{comment.user}}</a></li>
+                {% set vtid =  'votecount_comment_' ~ comment.id %}
+                <li>Vote: <div id="{{vtid|safe}}">{{comment.vote}}</div></li>
+                {% if is_logged_in %}
+                <li>
+                    <input type="button" onClick="vote_comment(1, {{comment.id|safe}})">UpVote</input>
+                    <input type="button" onClick="vote_comment(0, {{comment.id|safe}})">DownVote</input>
+                </li>
+                {% endif %}
+                {% if comment.is_op %}
+                <li><a href="/comment/{{comment.id}}/edit">Edit this comment</a></li>
+                <li><a href="/comment/{{comment.id}}/delete">Delete this comment</a></li>
+                {% endif %}
+                <div class="commentcontent">{{comment.content|safe}}</div>
+                
+                {% if is_logged_in %}
+                <form action = "/report/1/{{comment.id}}" method="GET">
+                    <input type="submit" value="Report"/>  
+                </form>
+                {% endif %}
+                </ul>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script async type="text/javascript" src="/static/bulma.js"></script>
+    {% if is_logged_in %}
+    <script>
     // This function will be updated when fronend platform is implemented
-    function vote(type) {
+    function vote_post(type) {
         $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
             if('success' in result){
                 //For instant display
                 if(type){
-                    $("#votecount").text(result.final_vote);
+                    $("#votecount_post").text(result.final_vote);
                 }else{
-                    $("#votecount").text(result.final_vote);
+                    $("#votecount_post").text(result.final_vote);
+                }
+            }else if('error' in result){
+                alert(result.error);
+            }
+        }});
+    }
+    function vote_comment(type, comment_id) {
+        $.ajax({url: "/vote/" + comment_id + "/" + type + "/1", success: function(result){
+            if('success' in result){
+                //For instant display
+                if(type){
+                    $("#votecount_comment_" + comment_id).text(result.final_vote);
+                }else{
+                    $("#votecount_comment_" + comment_id).text(result.final_vote);
                 }
             }else if('error' in result){
                 alert(result.error);
@@ -41,4 +142,7 @@
     }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-{% endblock %}
+    {% endif %}
+</body>
+
+</html>

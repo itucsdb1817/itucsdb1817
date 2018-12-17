@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create Tag </title>
+    <title>Review </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <!-- Bulma Version 0.7.2-->
@@ -24,8 +24,9 @@
     <section class="hero is-success is-fullheight">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <div class="column is-6 is-offset-3">
-                    <h3 class="title has-text-grey">Create Tag</h3>
+                <div class="column is-4 is-offset-4">
+                    <h3 class="title has-text-grey">Review of report</h3>
+                    <p class="subtitle has-text-grey">Please fill the form.</p>
                     <div class="box">
                         <!--<figure class="avatar">
                             <img src="https://placehold.it/128x128">
@@ -34,23 +35,18 @@
                             {{ form.hidden_tag() }}
                             <div class="field">
                                 <div class="control">
-                                    {{ form.title(class="input is-large", type="text", placeholder="Title", autofocus="")}} 
+                                    {{ form.action_taken(class="input is-large", type="text", placeholder="What is your action on this report?", autofocus="")}} 
+                                    </div>
+                                    <div class="control">
+                                    <br>
+                                    <p> Will you dismiss this report? </p>
+                                    <br>
+                                    {{ form.is_dismissed}} 
                                     </div>
                             </div>
 
-                            <div class="field">
-                                <div class="control">
-                                    {{ form.description(class="input is-large", type="text", placeholder="Description", autofocus="")}} 
-                                    </div>
-                            </div>
 
-                            <div class="field">
-                                <div class="control">
-                                    {{ form.rules(class="input", type="textarea", placeholder="Rules", rows="7", autofocus="")}} 
-                                    </div>
-                            </div>
-                            
-
+                    
                             <input id="submit" name="submit" type="submit" value="Submit"  class="button is-block is-info is-large is-fullwidth">                         
 
                             </form>

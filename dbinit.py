@@ -19,30 +19,28 @@ INIT_STATEMENTS = [
         id serial  NOT NULL,
         user_id int  NOT NULL,
         post_id int  NOT NULL,
-        parent_id int  NOT NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
+        content_html text NOT NULL,
         is_external boolean  NOT NULL,
-        rank_score bigint  NOT NULL,
         date timestamp  NOT NULL,
         current_vote int  NOT NULL,
         CONSTRAINT comments_pk PRIMARY KEY (id)
     );
     """,
 
-    # TODO: Add Tag_ID
     """
     CREATE TABLE posts (
         id serial  NOT NULL,
         user_id int  NOT NULL,
         tag_id int NOT NULL,
         date timestamp  NOT NULL,
-        title varchar(32)  NOT NULL,
+        title varchar(256)  NOT NULL,
         content_type varchar(32)  NOT NULL,
         content text  NOT NULL,
+        content_html text NOT NULL,
         is_external boolean  NOT NULL,
         current_vote int  NOT NULL,
-        rank_score bigint  NOT NULL,
         is_banned boolean  NOT NULL,
         comment_count int  NOT NULL,
         CONSTRAINT posts_pk PRIMARY KEY (id)
@@ -72,17 +70,6 @@ INIT_STATEMENTS = [
         user_id int  NOT NULL,
         tag_id int  NOT NULL,
         CONSTRAINT tag_moderators_pk PRIMARY KEY (id)
-    );
-    """,
-
-
-    """
-    CREATE TABLE tag_subscriptions (
-        id serial  NOT NULL,
-        date timestamp  NOT NULL,
-        user_id int  NOT NULL,
-        tag_id int  NOT NULL,
-        CONSTRAINT tag_subscriptions_pk PRIMARY KEY (id)
     );
     """,
 
@@ -121,7 +108,6 @@ INIT_STATEMENTS = [
         user_id int  NOT NULL,
         date timestamp  NOT NULL,
         is_comment bool  NOT NULL,
-        passed_time interval  NOT NULL,
         vote boolean  NOT NULL,
         vote_ip varchar(32) NOT NULL,
         last_update_time timestamp NOT NULL,
@@ -212,28 +198,7 @@ INIT_STATEMENTS = [
     ALTER TABLE reports ADD CONSTRAINT Reports_Users
         FOREIGN KEY (submitting_user_id)
         REFERENCES users (id) 
-        ON UPDATE  CASCADE 
-        NOT DEFERRABLE 
-        INITIALLY IMMEDIATE
-    ;
-    """,
-
-    """
-    ALTER TABLE tag_subscriptions ADD CONSTRAINT Subscriptions_Tags
-        FOREIGN KEY (tag_id)
-        REFERENCES tags (id)
-        ON DELETE  CASCADE 
-        ON UPDATE  CASCADE 
-        NOT DEFERRABLE 
-        INITIALLY IMMEDIATE
-    ;
-    """,
-
-    """
-    ALTER TABLE tag_subscriptions ADD CONSTRAINT Subscriptions_Users
-        FOREIGN KEY (user_id)
-        REFERENCES users (id)
-        ON DELETE  CASCADE 
+        ON DELETE  CASCADE
         ON UPDATE  CASCADE 
         NOT DEFERRABLE 
         INITIALLY IMMEDIATE

@@ -14,7 +14,9 @@ class TagEditForm(FlaskForm):
 class TagCreationForm(TagEditForm):
     title = StringField(
         'Title',
-        [validators.DataRequired(), validators.length(max=32)]
+        [validators.DataRequired(), validators.length(min=2, max=32), validators.Regexp('^\w+$')]
     )
 
-# TODO: Create the form for managing moderators
+class TagModForm(FlaskForm):
+    user = TextField('Username', [validators.required(), validators.Regexp('^\w+$')])
+

@@ -6,12 +6,14 @@ from utils import logged_in as check
 from utils import md
 from models.post import Post
 from models.user import User
-from models.tag import Tag
-from routes.post.post_forms import TextPostForm
+from models.tag import Tag, TagModerator
+from models.comment import Comment
+from routes.post.post_forms import TextPostForm, TextPostEditForm, DeleteForm
+from routes.post.comment_forms import CommentForm
 
 post_pages = Blueprint('post_pages', __name__,)
 
-@post_pages.route('/post/<int:post_id>')
+@post_pages.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post_view(post_id):
     # get post info by id, 
     # render post block
@@ -24,41 +26,56 @@ def post_view(post_id):
     Expand this DOCSTRING
     """
     try:
-        post = Post(post_id)
+        # get post object with all comments
+        post = Post(post_id, True)
     except:
         error_context = {
             'error_name': "404 Not Found",
             'error_info': "The post you tried to access does not exist"
         }
         return render_template('error.html', **error_context)
-    print(post)
-    context = {
-        'meta': {
-            'user':     User(post.user_id).username,
-            'date':     post.date,
-            'vote':     post.current_vote,
-            'comment':  post.comment_count
-        },
-        'post': {
-            'id':       post.id,
-            'title':    post.title,
-            'body':     post.content
-        }
-    }
+    
+    form = CommentForm()
+    if form.validate_on_submit():
+        if not check.logged_in():
+            error_context = {
+                'error_name': "403 Forbidden",
+                'error_info': "You may not comment without an account. Please log in or create an account"
+            }
+            return render_template('error.html', **error_context)
+        # create comment
+        comment = Comment()
+        comment.user_id = session['user_id']
+        comment.post_id = post_id
+        comment.content_type = 'text'
+        comment.content = form.content.data
+        comment.content_html = md.render(form.content.data)
+        comment.is_external = False
+        comment.date = datetime.now()
+        comment.current_vote = 0
+        
+        comment.save()
 
-    return render_template('post.html', **context)
+        post.comment_count += 1
+        post.save()
 
+        flash('Comment created successfuly')
+        # reload page with the new comment
+        return redirect(url_for('post_pages.post_view', post_id=post_id))
 
-@post_pages.route('/post/<post_id>/<comment_id>')
-def comment_permalink_view(post_id, comment_id):
-    """
-    This view is the permanant view for the comment chain starting from the supplied id.
-    It only renders the post, given comment, and its children
-    """
-    raise NotImplementedError()
+    context = post.generate_context()
+    # sets flag if viewer is logged in
+    context['is_logged_in'] = check.logged_in()
+    # sets flag if viewer is the original poster (a.k.a OP)
+    context['is_op'] = context['is_logged_in'] and (post.user_id == session['user_id'])
+    if not context['is_op']:
+        context['is_op'] = context['is_logged_in'] and TagModerator.is_mod(session['user_id'], post.tag_id)
+
+    return render_template('post.html', **context, form=form)
+
 
 # TODO: Implement different types of posts
-@post_pages.route('/post/submit', methods = ['GET', 'POST'])
+@post_pages.route('/post/submit', methods=['GET', 'POST'])
 def post_submit():
     """
     This view is for submitting posts. An account is required for submitting posts.
@@ -69,7 +86,7 @@ def post_submit():
     if not check.logged_in():
         error_context = {
             'error_name': "403 Forbidden",
-            'error_info': "You many not post without an account. Please log in or create an account"
+            'error_info': "You may not post without an account. Please log in or create an account"
         }
         return render_template('error.html', **error_context)
     # User is logged in, show text submission form
@@ -81,14 +98,14 @@ def post_submit():
             post.user_id = int(session['user_id'])
             post.date = datetime.now()
             post.title = form.title.data
-            post.content_type = 'text'
-            post.content = md.render(form.content.data)
+            post.content_type = form.content_type.data
+            post.content = form.content.data
+            post.content_html = md.render(form.content.data)
             # TODO: Implement external links
             post.is_external = False
             post.current_vote = 0
-            post.rank_score = 0
             post.is_banned = False
-            post.comment_count = 1
+            post.comment_count = 0
             # TODO: Implement tag existance check
             #       This should be done with custom validator after tags are created
             try:
@@ -109,3 +126,161 @@ def post_submit():
             
         else:
             return render_template('post_text_submit.html', form=form)
+
+@post_pages.route('/post/<int:post_id>/edit', methods=['GET', 'POST'])
+def post_edit(post_id):
+    # check if post exists
+    try:
+        post = Post(post_id, False)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The post you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (post.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster"
+        }
+        return render_template('error.html', **error_context)
+
+    # get POST input
+    form = TextPostEditForm(content=post.content)
+    if form.validate_on_submit():
+        post.content = form.content.data
+        post.content_html = md.render(form.content.data)
+        post.save()
+
+        flash("Post edited successfully")
+        return redirect(url_for('post_pages.post_view', post_id=post_id))
+
+    return render_template('post_text_edit.html', form=form, body=post.content, name="Post")
+
+@post_pages.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
+def post_delete(post_id):
+    try:
+        post = Post(post_id, False)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The post you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (post.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster"
+        }
+        return render_template('error.html', **error_context)
+    
+    form = DeleteForm()
+    if form.validate_on_submit():
+        if form.yes.data:
+            post.delete()
+            flash("Post deleted succesfully")
+            return redirect('/')
+        else:
+            flash("Post deletion cancelled")
+            return redirect(url_for('post_pages.post_view', post_id=post_id))
+
+    return render_template('post_delete.html', form=form, name="Post")
+
+@post_pages.route('/comment/<int:comment_id>/edit', methods=['GET', 'POST'])
+def comment_edit(comment_id):
+    # check if post exists
+    try:
+        comment = Comment(comment_id)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The comment you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (comment.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster of this comment"
+        }
+        return render_template('error.html', **error_context)
+
+    # get POST input
+    form = CommentForm(content=comment.content)
+    if form.validate_on_submit():
+        comment.content = form.content.data
+        comment.content_html = md.render(form.content.data)
+        comment.save()
+
+        flash("Comment edited successfully")
+        return redirect(url_for('post_pages.post_view', post_id=comment.post_id))
+
+    return render_template('post_text_edit.html', form=form, body=comment.content, name="Comment")
+
+@post_pages.route('/comment/<int:comment_id>/delete', methods=['GET', 'POST'])
+def comment_delete(comment_id):
+    try:
+        comment = Comment(comment_id)
+    except:
+        error_context = {
+            'error_name': "404 Not Found",
+            'error_info': "The comment you tried to access does not exist"
+        }
+        return render_template('error.html', **error_context)
+    
+    # check if user is logged in
+    if not check.logged_in():
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You must log in first"
+        }
+        return render_template('error.html', **error_context)
+
+    # check if user is OP
+    if not (comment.user_id == session['user_id']):
+        error_context = {
+            'error_name': "Unauthorized",
+            'error_info': "You are not the original poster"
+        }
+        return render_template('error.html', **error_context)
+    
+    form = DeleteForm()
+    if form.validate_on_submit():
+        if form.yes.data:
+            comment.delete()
+            flash("Comment deleted succesfully")
+            return redirect('/')
+        else:
+            flash("Comment deletion cancelled")
+            return redirect(url_for('post_pages.post_view', post_id=comment.post_id))
+
+    return render_template('post_delete.html', form=form, name="Comment")

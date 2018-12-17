@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Reports</title>
+        <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+        <!-- Bulma Version 0.7.2-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/forum.css">
+        {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
+        </div>
+        {% endif %}
+    </head>
+{% block content %}
+    {% for report in report_list %}
+        <article class="post">
+            <h4>Reason of report: {{ report.reason_description }}</h4>
+                <div class="media">
+                    
+                    <div class="media-content">
+                        <div class="content">
+                            <p>Violated rule: {{ report.violated_rule }}</p>  
+                        </div>
+                        <div class="content">
+                            <p>Submission date: {{ report.date }}</p>
+                        </div>
+                        <div class="content">
+                            <p>Submitted by: @{{report.submitting_user_id}} </p> 
+                        </div>
+                    </div>
+                    <div class="media-right">
+
+                       
+                    <a class="button is-block is-info is-large is-fullwidth" href="/admin/reports/{{report.id}}">Review</a>
+                    
+                    
+                        
+                    </div>
+
+                </div>
+    </article>
+    {% endfor %}
+
+{% endblock %}
+</html>
