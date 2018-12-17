@@ -24,11 +24,12 @@
     <section class="hero is-success is-fullheight">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <div class="column is-4 is-offset-4">
+                <div class="column is-6 is-offset-3">
                     <h3 class="title has-text-grey">Create Tag</h3>
-                    <p class="subtitle has-text-grey">Please fill the form to create a new tag.</p>
                     <div class="box">
-                        
+                        <!--<figure class="avatar">
+                            <img src="https://placehold.it/128x128">
+                        </figure>-->
                         <form action="" method="post" novalidate>
                             {{ form.hidden_tag() }}
                             <div class="field">
@@ -39,17 +40,14 @@
 
                             <div class="field">
                                 <div class="control">
-                                    {{ form.description(class="input is-large", type="textarea", placeholder="Description", autofocus="")}} 
-                                    
-                                    
-                                </div>
+                                    {{ form.description(class="input is-large", type="text", placeholder="Description", autofocus="")}} 
+                                    </div>
                             </div>
+
                             <div class="field">
                                 <div class="control">
-                                    {{ form.rules(class="input is-large", type="textarea", placeholder="Rules", autofocus="")}} 
-                                    
-                                    
-                                </div>
+                                    {{ form.rules(class="input", type="textarea", placeholder="Rules", rows="7", autofocus="")}} 
+                                    </div>
                             </div>
                             
 
@@ -57,13 +55,12 @@
 
                             </form>
                     </div>
-                  
+                   
                 </div>
             </div>
         </div>
     </section>
     <script async type="text/javascript" src="/static/bulma.js"></script>
-
 </body>
 
 </html>
