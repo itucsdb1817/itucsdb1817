@@ -99,7 +99,7 @@ def post_submit():
             post.user_id = int(session['user_id'])
             post.date = datetime.now()
             post.title = form.title.data
-            post.content_type = 'text'
+            post.content_type = form.content_type.data
             post.content = form.content.data
             post.content_html = md.render(form.content.data)
             # TODO: Implement external links
