@@ -1,10 +1,42 @@
+{% macro paginationFunc(padding, count, page) %}
+    {% set midpoint = page %}
+    {% if page < padding + 1 %}
+      {% set midpoint = padding + 1 %}
+    {% endif %}
+    {% if page > count - padding %}
+      {% set midpoint = count - padding %}
+    {% endif %}
+
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <ul class="pagination-list" style="list-style-type: none">
+          {% if 1 >= midpoint-padding %}
+            {% set maxVal = 1 %}
+          {% else %}
+            {% set maxVal = midpoint - padding %}
+          {% endif %}
+          {% if count <= midpoint+padding %}
+            {% set minVal = count %}
+          {% else %}
+            {% set minVal = midpoint+padding %}
+          {% endif %}
+          {% for i in range(maxVal, minVal+1) %}   
+            {% if i == pagination.page_number %}
+
+            <li><a class="pagination-link is-current" aria-label="Page {{ i }}" aria-current="page">{{ i }}</a></li>
+            {% else %}
+            <li><a class="pagination-link" aria-label="Goto page {{ i }}" href='/?page={{ i }}'>{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+    </nav>
+{% endmacro %}
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Forum - Free Bulma template</title>
+        <title>Accio</title>
         <link rel="shortcut icon" href="../images/favicon.png" type="image/x-icon">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
@@ -19,7 +51,7 @@
             <div class="container">
                 <div class="navbar-brand">
                     <a class="navbar-item" href="../">
-                        <img src="../images/bulma.png" width="112" height="28">
+                        <img src="/static/accio-logo.png" width="112" height="28">
                     </a>
                     <div class="navbar-burger burger" data-target="topNav">
                         <span></span>
@@ -30,13 +62,12 @@
                 <div id="topNav" class="navbar-menu">
 
                     <div class="navbar-start">
-                        <a class="navbar-item" href="cover.html">Home</a>
-                        <a class="navbar-item" href="landing.html">Landing</a>
-                        <a class="navbar-item" href="blog.html">Blog</a>
-                        <a class="navbar-item" href="instaAlbum.html">Album</a>
-                        <a class="navbar-item" href="kanban[search].html">Kanban</a>
-                        <a class="navbar-item" href="search.html">Search</a>
-                        <a class="navbar-item" href="tabs.html">Tabs</a>
+                        <a class="navbar-item" href="/">Home</a>
+                        <a class="navbar-item" href="/tag_create">New Tag</a>
+                        <a class="navbar-item" href="/post/submit">New Post</a>
+                        {% if loggedin %}
+                        <a class="navbar-item" href="/user/profile/{{id}}">My Profile</a>
+                        {%endif%}
                     </div>
 
                     <div class="navbar-end">
@@ -106,22 +137,7 @@
                 </div>
             </div>
         </nav>
-        <nav class="navbar is-white">
-            <div class="container">
-                <div class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item is-active" href="#">Popular</a>
-                        <a class="navbar-item" href="#">Recent</a>
-                        <a class="navbar-item" href="#">Rising</a>
-                    </div>
-                    <div class="navbar-end">
-                        <div class="navbar-item">
-                            <input class="input" type="search" placeholder="Search forum...">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        
         <section class="container">
 
             <div class="columns">
@@ -132,20 +148,18 @@
                             Tags
                         </p>
                         <ul class="menu-list">
-                            <li><span class="tag is-primary is-medium ">Dashboard</span></li>
-                            <li><span class="tag is-link is-medium ">Customers</span></li>
-                            <li><span class="tag is-light is-danger is-medium ">Authentication</span></li>
-                            <li><span class="tag is-dark is-medium ">Payments</span></li>
-                            <li><span class="tag is-success is-medium ">Transfers</span></li>
-                            <li><span class="tag is-warning is-medium ">Balance</span></li>
-                            <li><span class="tag is-medium ">Question</span></li>
+                            {% for tag in tags %}
+                            <a href = "/t/{{tag.title}}"><li><span class="tag is-{{ (['primary', 'link', 'light', 'dark', 'success']) | random}} is-medium ">{{tag.title}}</span></li></a>
+                            
+                            {% endfor %}
                         </ul>
                     </aside>
                 </div>
                 <div class="column is-9">
                     <div class="box content">
+                        {%for post in pagination.posts%}
                         <article class="post">
-                            <h4>Bulma: How do you center a button in a box?</h4>
+                            <a href = "/post/{{post.id}}"><h4>{{post.title}}</h4></a>
                             <div class="media">
                                 <div class="media-left">
                                     <p class="image is-32x32">
@@ -155,121 +169,20 @@
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <a href="#">@jsmith</a> replied 34 minutes ago &nbsp;
-                                            <span class="tag">Question</span>
+                                            <a href="#">@{{post.user}}</a> created at {{post.date}} &nbsp;
+                                            <span class="tag">{{post.tag}}</span>  
                                         </p>
                                     </div>
                                 </div>
                                 <div class="media-right">
-                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> {{post.comment_count}}</span>
+                                    <span class="has-text-grey-light"><i class="fa fa-star"></i> {{post.vote}}</span>
+
                                 </div>
                             </div>
                         </article>
-                        <article class="post">
-                            <h4>How can I make a bulma button go full width?</h4>
-                            <div class="media">
-                                <div class="media-left">
-                                    <p class="image is-32x32">
-                                        <img src="http://bulma.io/images/placeholders/128x128.png">
-                                    </p>
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <a href="#">@red</a> replied 40 minutes ago &nbsp;
-                                            <span class="tag">Question</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="media-right">
-                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 0</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="post">
-                            <h4>TypeError: Data must be a string or a buffer when trying touse vue-bulma-tabs</h4>
-                            <div class="media">
-                                <div class="media-left">
-                                    <p class="image is-32x32">
-                                        <img src="http://bulma.io/images/placeholders/128x128.png">
-                                    </p>
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <a href="#">@jsmith</a> replied 53 minutes ago &nbsp;
-                                            <span class="tag">Question</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="media-right">
-                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 13</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="post">
-                            <h4>How to vertically center elements in Bulma?</h4>
-                            <div class="media">
-                                <div class="media-left">
-                                    <p class="image is-32x32">
-                                        <img src="http://bulma.io/images/placeholders/128x128.png">
-                                    </p>
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <a href="#">@brown</a> replied 3 hours ago &nbsp;
-                                            <span class="tag">Question</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="media-right">
-                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="post">
-                            <h4>I'm trying to use hamburger menu on bulma css, but it doesn't work. What is wrong?</h4>
-                            <div class="media">
-                                <div class="media-left">
-                                    <p class="image is-32x32">
-                                        <img src="http://bulma.io/images/placeholders/128x128.png">
-                                    </p>
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <a href="#">@hamburgler</a> replied 5 hours ago &nbsp;
-                                            <span class="tag">Question</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="media-right">
-                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="post">
-                            <h4>How to make tiles wrap with Bulma CSS?</h4>
-                            <div class="media">
-                                <div class="media-left">
-                                    <p class="image is-32x32">
-                                        <img src="http://bulma.io/images/placeholders/128x128.png">
-                                    </p>
-                                </div>
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <a href="#">@rapper</a> replied 3 hours ago &nbsp;
-                                            <span class="tag">Question</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="media-right">
-                                    <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
-                                </div>
-                            </div>
-                        </article>
+                        {%endfor%}
+                        {{ paginationFunc(3, pagination.last_page_number, pagination.page_number) }}
                     </div>
                 </div>
             </div>

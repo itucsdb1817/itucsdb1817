@@ -16,10 +16,9 @@
           {{ error }}
         </div>
         {% endif %}
-        {% include 'flash.html' %}
     </head>
 {% block content %}
-
+{% include 'flash.html' %}
 {% if is_banned %}
 {% set color = 'is-danger' %}
 {% else %}
@@ -36,18 +35,20 @@
 <section class="section">
     <div class="container">
         <h2>Moderators</h2>
+        {%if mods %}
         <ul>
             {% for mod in mods %}
             <li><a href="/user/profile/{{mod[0]}}">{{mod[1]}}</a></li>
             {%endfor%}
         </ul>
+        {%endif%}
     </div>
 </section>
 
 <section class="section">
     <div class="container">
         <h2>Add mod</h2>
-        <form action="/tag/{{title}}/mod/add" method="post">
+        <form action="/t/{{title}}/mod/add" method="post">
             <div class="field">
                 <div class="control">
                     {{ add_mod_form.user(class='input', placeholder='Username')}}
@@ -64,7 +65,7 @@
 <section class="section">
     <div class="container">
         <h2>Remove mod</h2>
-        <form action="/tag/{{title}}/mod/remove" method="post">
+        <form action="/t/{{title}}/mod/remove" method="post">
             <div class="field">
                 <div class="control">
                     {{ remove_mod_form.user(class='input', placeholder='Username')}}
@@ -81,7 +82,7 @@
 <section class="section">
     <div class="container">
         <h2>Edit info</h2>
-        <form action="/tag/{{title}}/mod/edit_info" method="post">
+        <form action="/t/{{title}}/mod/edit_info" method="post">
             <div class="field">
                 <div class="control">
                     {{ edit_tag_form.description(class="input is-large", type="textarea", placeholder="Description", autofocus="")}} 
