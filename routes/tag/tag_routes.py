@@ -162,6 +162,9 @@ def tag_moderate_add_mod(tag_name):
             except:
                 flash('User does not exist')
                 return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
+            if not user:
+                flash('User does not exist')
+                return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
             if TagModerator.is_mod(user.id, tag.id):
                 flash('User is already a mod')
                 return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
@@ -215,6 +218,9 @@ def tag_moderate_remove_mod(tag_name):
             try:
                 user = User.get_from_username(username_to_remove)
             except:
+                flash('User does not exist')
+                return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
+            if not user:
                 flash('User does not exist')
                 return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
             if not TagModerator.is_mod(user.id, tag.id):
