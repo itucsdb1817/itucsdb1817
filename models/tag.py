@@ -102,7 +102,7 @@ class Tag(BaseModel):
         TagModerator.delete_rel(user_id, self.id)
 
     def list_mods(self):
-        TagModerator.list_mods(self.id)
+        return TagModerator.list_mods(self.id)
 
 
 
@@ -168,7 +168,8 @@ class TagModerator(BaseModel):
         with db.connect(current_app.config['DB_URL']) as conn:
             cursor = conn.cursor()
             cursor.execute(query, (tag_id, ))
-            return(cursor.fetchall())
+            result = cursor.fetchall()
+            return(result)
 
     @classmethod
     def delete_rel(cls, user_id, tag_id):

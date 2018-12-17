@@ -106,15 +106,16 @@ def tag_moderate(tag_name):
         }
         return render_template('error.html', **error_context)
 
-    add_mod_form = TagModForm()
-    remove_mod_form = TagModForm()
-    edit_tag_form = TagEditForm(description=tag.description, rules=tag.rules)
+    add_mod_form = TagModForm(csrf_enabled=False)
+    remove_mod_form = TagModForm(csrf_enabled=False)
+    edit_tag_form = TagEditForm(description=tag.description, rules=tag.rules, csrf_enabled=False)
 
     context = {
         'title':  tag.title,
         'is_banned': tag.is_banned,
         'mods': tag.list_mods()
     }
+
 
     return render_template(
         'tag_mod.html',
@@ -152,13 +153,16 @@ def tag_moderate_add_mod(tag_name):
         }
         return render_template('error.html', **error_context)
 
-    form = TagModForm()
+    form = TagModForm(csrf_enabled=False)
     if form.validate_on_submit():
         username_to_add = form.user.data
         if username_to_add:
             try:
                 user = User.get_from_username(username_to_add)
             except:
+                flash('User does not exist')
+                return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
+            if not user:
                 flash('User does not exist')
                 return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
             if TagModerator.is_mod(user.id, tag.id):
@@ -207,13 +211,16 @@ def tag_moderate_remove_mod(tag_name):
         }
         return render_template('error.html', **error_context)
 
-    form = TagModForm()
+    form = TagModForm(csrf_enabled=False)
     if form.validate_on_submit():
         username_to_remove = form.user.data
         if username_to_remove:
             try:
                 user = User.get_from_username(username_to_remove)
             except:
+                flash('User does not exist')
+                return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
+            if not user:
                 flash('User does not exist')
                 return redirect(url_for('tag_pages.tag_moderate', tag_name=tag_name))
             if not TagModerator.is_mod(user.id, tag.id):
@@ -256,7 +263,7 @@ def tag_moderate_edit_info(tag_name):
         }
         return render_template('error.html', **error_context)
     
-    form = TagEditForm()
+    form = TagEditForm(csrf_enabled=False)
     if form.validate_on_submit():
         tag.description = form.description.data
         tag.rules = form.rules.data
