@@ -6,7 +6,7 @@ from utils import logged_in as check
 from utils import md
 from models.post import Post
 from models.user import User
-from models.tag import Tag
+from models.tag import Tag, TagModerator
 from models.comment import Comment
 from routes.post.post_forms import TextPostForm, TextPostEditForm, DeleteForm
 from routes.post.comment_forms import CommentForm
@@ -69,6 +69,8 @@ def post_view(post_id):
     context['is_logged_in'] = check.logged_in()
     # sets flag if viewer is the original poster (a.k.a OP)
     context['is_op'] = context['is_logged_in'] and (post.user_id == session['user_id'])
+    if not context['is_op']:
+        context['is_op'] = context['is_logged_in'] and TagModerator.is_mod(session['user_id'], post.tag_id)
 
     return render_template('post.html', **context, form=form)
 
