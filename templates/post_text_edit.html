@@ -1,21 +1,55 @@
-{% if error %}
-<div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
-  {{ error }}
-</div>
-{% endif %}
-{% block title %}Edit{% endblock %}
-{% block content %}
-<h1>Edit {{name}}</h1>
-<form action="" method="post" novalidate>
-  <p>
-    {{ form.hidden_tag() }}
-  </p>
-  <p>
-    {{ form.content.label }}
-    {{ form.content }}
-  </p>
-  <p>
-    <input type="submit" value="Submit">
-  </p>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Post </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <!-- Bulma Version 0.7.2-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/login.css">
+</head>
+
+<body>
+    {% if error %}
+        <div style="padding: 20px;background-color: #f44336; color: white;margin-bottom: 15px;">
+          {{ error }}
+        </div>
+        {% endif %}
+
+    {% include 'flash.html' %}
+    <section class="hero is-success is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="column is-6 is-offset-3">
+                    <h3 class="title has-text-grey">Edit Post</h3>
+                    <div class="box">
+                        <!--<figure class="avatar">
+                            <img src="https://placehold.it/128x128">
+                        </figure>-->
+                        <form action="" method="post" novalidate>
+                            {{ form.hidden_tag() }}
+
+                            <div class="field">
+                                <div class="control">
+                                    {{ form.content(class="input is-large", type="textarea", placeholder="Post", rows="7", autofocus="")}} 
+                                    </div>
+                            </div>
+                            
+
+                            <input id="submit" name="submit" type="submit" value="Submit"  class="button is-block is-info is-large is-fullwidth">                         
+
+                            </form>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+    <script async type="text/javascript" src="/static/bulma.js"></script>
+</body>
+
+</html>
