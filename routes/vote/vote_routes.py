@@ -70,7 +70,6 @@ def vote_post(parent_id,vote_type,parent_type):
                     vote = Vote()
                     vote.date = datetime.utcnow()
                     vote.is_comment = bool(parent_type)
-                    vote.passed_time = '1'
                     vote.vote = bool(vote_type)
                     vote.vote_ip = request.remote_addr
                     vote.last_update_time = datetime.utcnow()

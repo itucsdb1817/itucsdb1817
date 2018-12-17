@@ -12,7 +12,6 @@ class Vote(BaseModel):
         'user_id' ,
         'date',
         'is_comment',
-        'passed_time',
         'vote' ,
         'vote_ip',
         'last_update_time',

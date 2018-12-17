@@ -108,7 +108,6 @@ INIT_STATEMENTS = [
         user_id int  NOT NULL,
         date timestamp  NOT NULL,
         is_comment bool  NOT NULL,
-        passed_time interval  NOT NULL,
         vote boolean  NOT NULL,
         vote_ip varchar(32) NOT NULL,
         last_update_time timestamp NOT NULL,
