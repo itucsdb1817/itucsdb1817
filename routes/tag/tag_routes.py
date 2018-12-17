@@ -69,7 +69,7 @@ def tag_view(tag_name):
     if page_index <= 0:
         page_index = 1
     
-    context = { 
+    context = {  
         'tag_info': {
             'title':        tag.title,
             'rules':        tag.rules,

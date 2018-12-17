@@ -9,6 +9,7 @@ from utils import admin_logged_in as admin_check
 from models.user import User 
 from models.post import Post 
 from models.vote import Vote 
+from models.tag import Tag 
 from models.comment import Comment 
 from models.report import Report 
 from routes.user.forms import LoginForm
@@ -21,7 +22,8 @@ user_page = Blueprint('user_page', __name__,)
 #password is correct.
 @user_page.route('/', methods = ['GET', 'POST'])
 def index():
-    return render_template("index.html", loggedin=check.logged_in())
+    id = session.get("user_id","")
+    return render_template("index.html", id = id, loggedin=check.logged_in(), tags=Tag.get_all(), pagination=Post.paginate(int(request.args.get('page') or 1)))
 @user_page.route('/user/login', methods = ['GET', 'POST'])
 def login():
     if check.logged_in():

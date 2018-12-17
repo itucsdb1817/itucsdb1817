@@ -4,6 +4,8 @@ import psycopg2 as db
 from models.base import BaseModel
 from models.user import User
 from models.comment import Comment
+from math import ceil
+
 
 
 # possible content types:
@@ -129,3 +131,51 @@ class Post(BaseModel):
                 for post_tuple in cursor.fetchall():
                     list_of_posts.append(Post(post_tuple))
                 return list_of_posts
+
+
+    @classmethod
+    def paginate(cls, page, page_size=15):
+        """
+        This method paginates the entries in database.
+        """
+        assert page > 0
+        with db.connect(current_app.config['DB_URL']) as conn:
+            # TODO: Selection of sorting
+            cursor = conn.cursor()
+            cursor.execute(f"SELECT COUNT(id) FROM posts")
+            count = cursor.fetchone()[0]
+            if count == 0:
+                # table is empty, abort 
+                pagination = {}
+                pagination['page_number'] = 1
+                pagination['last_page_number'] = 1
+                pagination['posts'] = []  
+                return pagination
+            # Normalize page index if it exceeds max page count
+            pagination = {}
+            max_page_count = int(ceil(count / page_size))  
+            if max_page_count < page:
+                page = max_page_count
+            pagination['page_number'] = page
+            pagination['last_page_number'] = max_page_count
+            pagination['posts'] = []
+            cursor.execute(f"SELECT * FROM posts ORDER BY date DESC")
+            for i in range(page):
+                post_tuples = cursor.fetchmany(page_size)
+                if post_tuples is None:
+                    raise IndexError('No set of posts left to render')
+            for post_tuple in post_tuples:
+                post = Post(post_tuple)
+                info = {
+                    'title':    post.title,
+                    'id':       post.id,
+                    'comment_count': post.comment_count,
+                    'user':     User(post.user_id).username,
+                    'vote':     post.current_vote,
+                    'date':     post.date,
+                    'tag' :     Tag(post.tag_id).title
+                }
+                pagination['posts'].append(info)
+            cursor.close()
+            return pagination
+from models.tag import Tag

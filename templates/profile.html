@@ -128,8 +128,9 @@
 
             <div id='posts'>
                 <div class='columns is-mobile'>
-                    {% for post in posts %}
+                    {% for posts_batch in posts|batch(3) %}
                     <div class='column is-3'>
+                        {% for post in posts_batch %}
                         <div class='card'>
                           <div class='card-image'>
                             
@@ -151,6 +152,7 @@
                           </footer>
                         </div>
                         <br>
+                        {% endfor %}
                   </div>
                   {% endfor %}
                 </div>
@@ -159,8 +161,9 @@
             <div id='votes'>
               <div class='columns is-mobile'>
                     {%set index = 0 %}
-                    {% for vote in total_votes %}
+                    {% for vote_batch in total_votes|batch(3) %}
                     <div class='column is-3'>
+                      {%for vote in vote_batch%}
                         <div class='card'>
                           <div class='card-image'>
                             </div>
@@ -189,16 +192,18 @@
                           
                         </div>
                         <br>
+                        {%set index = index + 1%} 
+                        {%endfor%}
                   </div>
-                    {%set index = index + 1%}
                   {% endfor %}
                 </div>
             </div>
 
             <div id='comments'>
               <div class='columns is-mobile'>
-                    {% for comment in comments %}
+                    {% for comment_batch in comments|batch(3) %}
                     <div class='column is-3'>
+                      {%for comment in comment_batch%}
                         <div class='card'>
                           <div class='card-image'>
                             
@@ -220,6 +225,7 @@
                           </footer>
                         </div>
                         <br>
+                        {%endfor%}
                   </div>
                   {% endfor %}
                 </div>
@@ -227,8 +233,9 @@
 
             <div id='reports'>
 
-            {% for report in reports %}
+            {% for report_batch in reports|batch(3) %}
                     <div class='column is-3'>
+                    {%for report in report_batch%}
                         <div class='card'>
                           <div class='card-image'>
                            
@@ -251,6 +258,7 @@
                           </footer>
                         </div>
                         <br>
+                        {%endfor%}
                   </div>
                   {% endfor %}
                 </div>

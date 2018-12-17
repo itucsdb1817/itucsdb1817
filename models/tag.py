@@ -35,6 +35,16 @@ class Tag(BaseModel):
         # tag id or none or direct tuple
         else:
             super().__init__(identifier)
+
+    @classmethod
+    def get_all(cls): 
+        with db.connect(current_app.config['DB_URL']) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} LIMIT 5')
+                list_of_tags = []
+                for tag_tuple in cursor.fetchall():
+                    list_of_tags.append(Tag(tag_tuple))
+                return list_of_tags
     
     def paginate(self, page, page_size=20):
         """
