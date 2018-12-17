@@ -105,7 +105,7 @@ def post_submit():
             post.current_vote = 0
             post.rank_score = 0
             post.is_banned = False
-            post.comment_count = 1
+            post.comment_count = 0
             # TODO: Implement tag existance check
             #       This should be done with custom validator after tags are created
             try:
