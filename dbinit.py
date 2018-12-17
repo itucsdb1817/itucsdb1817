@@ -23,7 +23,6 @@ INIT_STATEMENTS = [
         content text  NOT NULL,
         content_html text NOT NULL,
         is_external boolean  NOT NULL,
-        rank_score bigint  NOT NULL,
         date timestamp  NOT NULL,
         current_vote int  NOT NULL,
         CONSTRAINT comments_pk PRIMARY KEY (id)
@@ -42,7 +41,6 @@ INIT_STATEMENTS = [
         content_html text NOT NULL,
         is_external boolean  NOT NULL,
         current_vote int  NOT NULL,
-        rank_score bigint  NOT NULL,
         is_banned boolean  NOT NULL,
         comment_count int  NOT NULL,
         CONSTRAINT posts_pk PRIMARY KEY (id)

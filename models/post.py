@@ -31,7 +31,6 @@ class Post(BaseModel):
         'content_html',
         'is_external',
         'current_vote',
-        'rank_score',
         'is_banned',
         'comment_count'
     )

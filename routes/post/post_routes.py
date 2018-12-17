@@ -51,7 +51,6 @@ def post_view(post_id):
         comment.content = form.content.data
         comment.content_html = md.render(form.content.data)
         comment.is_external = False
-        comment.rank_score = 0
         comment.date = datetime.now()
         comment.current_vote = 0
         
@@ -105,7 +104,6 @@ def post_submit():
             # TODO: Implement external links
             post.is_external = False
             post.current_vote = 0
-            post.rank_score = 0
             post.is_banned = False
             post.comment_count = 0
             # TODO: Implement tag existance check

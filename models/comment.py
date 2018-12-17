@@ -14,7 +14,6 @@ class Comment(BaseModel):
         'content',
         'content_html',
         'is_external',
-        'rank_score',
         'date',
         'current_vote'
     )
