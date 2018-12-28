@@ -254,10 +254,7 @@ Markdown enabled
 2 - Routes
 ~~~~~~~~~~
 
-* ``/post/submit`` - Post submission
-* ``/post/<post_id>`` - Main view
-* ``/post/<post_id>/edit`` - Edit post (Only OP and Mods)
-* ``/post/<post_id>/delete`` - Delete post (Only OP and Mods)
-
-
+* ``/post/<post_id>`` - Comment submission
+* ``/comment/<post_id>/edit`` - Edit comment (Only OP and Mods)
+* ``/comment/<post_id>/delete`` - Delete comment (Only OP and Mods)
 
