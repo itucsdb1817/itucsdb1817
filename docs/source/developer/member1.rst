@@ -14,38 +14,38 @@ So ``Users`` has 10 attributes and it is highly connected with the rest of the t
 Attributes 
 ^^^^^^^^^^
 
-* :sql:`id`
-    - :sql:`PRIMARY KEY`
-    - *Type:* :sql:`SERIAL`
+* ``id``
+    - ``PRIMARY KEY``
+    - *Type:* ``SERIAL``
     - *Explanation:* Primary key of the Users
-* :sql:`first_name`
-    - *Type:* :sql:`VARCHAR(32)`
+* ``first_name``
+    - *Type:* ``VARCHAR(32)``
     - *Explanation:* First name of the user
-    - *Nullable:* :sql:`NOT NULL`
-* :sql:`last_name`
-    - *Type:* :sql:`VARCHAR(32)`
+    - *Nullable:* ``NOT NULL``
+* ``last_name```
+    - *Type:* ``VARCHAR(32)``
     - *Explanation:* Last name of the user
-    - *Nullable:* :sql:`NOT NULL`
-* :sql:`username`
-    - *Type:* :sql:`VARCHAR(32)`
+    - *Nullable:* `NOT NULL``
+* ``username``
+    - *Type:* ``VARCHAR(32)``
     - *Explanation:* Username for user
-    - *Nullable:* :sql:`NOT NULL`
-* :sql:`password`
-    - *Type:* :sql:`VARCHAR(200)`
+    - *Nullable:* ``NOT NULL``
+* ``password``
+    - *Type:* ``VARCHAR(200)``
     - *Explanation:* Password of the user
-    - *Nullable:* :sql:`NOT NULL`
-* :sql:`email`
-    - *Type:* :sql:`VARCHAR(254)`
+    - *Nullable:* ``NOT NULL``
+* ``email``
+    - *Type:* ``VARCHAR(254)``
     - *Explanation:* E-mail address of user
-* :sql:`birth_date`
-    - *Type:* :sql:`DATE`
+* ``birth_date``
+    - *Type:* ``DATE``
     - *Explanation:* Birth date of user 
-* :sql:`date`
-    - *Type:* :sql:`DATE`
+* ``date```
+    - *Type:* ``DATE``
     - *Explanation:* Date of user's registration
-* :sql:`is_admin`
-    - *Type:* :sql:`BOOL`
+* ``is_admin``
+    - *Type:* ``BOOL``
     - *Explanation:* User type
-* :sql:`is_banned`
-    - *Type:* :sql:`BOOL`
+* ``is_banned``
+    - *Type:* ``BOOL``
     - *Explanation:* Holds the information of user's ban status

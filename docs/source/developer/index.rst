@@ -6,10 +6,6 @@ Database Design
 
 We have six main tables as Users, Posts, Comments, Tags, Reports, Votes and one extra table Tag_Moderators. 
 
-.. figure:: images/diagram.png
-
-	E/R Diagram
-
 
 Accio project constructed around three main folders such as models, routes and templates.
 ``models`` includes our main six tables and one extra table as classes. Before starting to build these classes we created a ``BaseModel`` that we can get use of for all of our tables.
@@ -23,6 +19,9 @@ database interfacing happens through these ``models``.
 
 Additionaly, ``static`` folder includes CSS templated for user interface. We used `Bulma CSS framework <https://dansup.github.io/bulma-templates/>`_ for our project.
 
+.. figure:: images/diagram.png
+
+	E/R Diagram
 
 
 Code

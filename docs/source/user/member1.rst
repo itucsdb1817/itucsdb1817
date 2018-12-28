@@ -10,6 +10,7 @@ Users are registered members of Accio community. They can be an admin or a regul
 Registration is possible with the form below.
 
 .. figure:: images/register.png
+   :align:   center
 
 	Registration Page
 
@@ -18,7 +19,7 @@ Registration is possible with the form below.
 Users have to log in first in order to create tags, create a post, comment, vote or report.
 
 .. figure:: images/login.png
-
+   :align:   center
 	Login page
 
 
@@ -27,7 +28,7 @@ Each user has a profile as below, they can view their latest posts, votes, comme
 They can check the status of their reports, wheter it is dismissed or not, and delete these reports if they want to.
 
 .. figure:: images/profile_page.png
-
+   :align:   center
 	User profile
 
 
@@ -37,14 +38,14 @@ If the user is an admin, there will be a "ban user" button available at each use
 Admins also have access to a panel which they can view users and submitted reports.
 
 .. figure:: images/admin.png
-
+   :align:   center
 	Administration
 
 
 Admins can make changes on uses from this page. They can ban a user, delete a user permanently or convert them to an admin.
 
 .. figure:: images/admin_users.png
-
+   :align:   center
 	User actions
 
 
@@ -58,7 +59,7 @@ Accio is a content-based website so users can vote these content in order to sho
 After a user logged in, he or she can give upvote or a downvote  to a post / comment.
 
 .. figure:: images/vote_post.png
-
+   :align:   center
 	Voting on a post
 
 
@@ -79,7 +80,7 @@ In case of a user is uncomfortable because of a post or comment, they can report
 After they clicked to Report button at the relevant post/comment they are redirected to a form. The reason of their report could be many things such as an inappropriate expression or something against the rules of the tag or user might just think that is not suitable. If so they explain the reason with the form below and the form gets sended to admins.
 
 .. figure:: images/report_form.png
-
+   :align:   center
 	Form for a report
 
 
@@ -87,7 +88,7 @@ After they clicked to Report button at the relevant post/comment they are redire
 At the admin page, admins can view a short summary of reports as a list and they can review the one they choose as we see below.
 
 .. figure:: images/report_view.png
-
+   :align:   center
 	List of reports for admins
 
 
@@ -95,7 +96,7 @@ At the admin page, admins can view a short summary of reports as a list and they
 If they decide to review one, they must decide the action that they will take which means if they are going to ban the owner of the post or there is nothing against rules or any comment they want to make about the situation of the report. If they decide to execute this action they dismiss the report and it will not be shown any more at the admin panel.
 
 .. figure:: images/report_review.png
-
+   :align:   center
 	Review form for report
 
 
