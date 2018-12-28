@@ -9,6 +9,23 @@ Posts can be pretty much anything the user can compose: sites, articles, images,
 discussions etc. 
 Users can also comment under these posts and contribute to the community even further.
 
+Our project is a social media / user submitted content site. It is intended for communities to discuss
+content they create or find on the internet, similar to websites reddit and digg.
+
+Each user has the ability to post content, (images, videos, links, text-posts markdown), comment
+on them, and vote posts and comments of other users. Users can select or create tags which are attached to posts for
+the type of their context, and later browse the posts with specific tags.
+
+Administrators will have the ability to review reports and users.
+
+Tags are small communities, have posts about specific subjects and have rules created by the
+respective tags’ communities. Tagged posts are moderated by Tag Moderators which do not have
+site wide permissions but are responsible for moderating their created tags.
+
+Latest posts will be displayed on the home page with their vote and comment counts.
+
+
+
 
 Main page displays a feed with lastest posts and tags!
 
