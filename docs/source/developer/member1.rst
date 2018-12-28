@@ -16,36 +16,32 @@ Attributes
 
 * ``id``
     - ``PRIMARY KEY``
-    - *Type:* ``SERIAL``
-    - *Explanation:* Primary key of the Users
+    - ``SERIAL``
+    - Primary key of the Users
 * ``first_name``
-    - *Type:* ``VARCHAR(32)``
-    - *Explanation:* First name of the user
-    - *Nullable:* ``NOT NULL``
-* ``last_name```
-    - *Type:* ``VARCHAR(32)``
-    - *Explanation:* Last name of the user
-    - *Nullable:* `NOT NULL``
+    - ``VARCHAR(32)``
+    - First name of the user
+* ``last_name``
+    - ``VARCHAR(32)``
+    - Last name of the user
 * ``username``
-    - *Type:* ``VARCHAR(32)``
-    - *Explanation:* Username for user
-    - *Nullable:* ``NOT NULL``
+    - ``VARCHAR(32)``
+    - Username for user
 * ``password``
-    - *Type:* ``VARCHAR(200)``
-    - *Explanation:* Password of the user
-    - *Nullable:* ``NOT NULL``
+    - ``VARCHAR(200)``
+    - Password of the user
 * ``email``
-    - *Type:* ``VARCHAR(254)``
-    - *Explanation:* E-mail address of user
+    - ``VARCHAR(254)``
+    - E-mail address of user
 * ``birth_date``
-    - *Type:* ``DATE``
-    - *Explanation:* Birth date of user 
+    - ``DATE``
+    - Birth date of user 
 * ``date```
-    - *Type:* ``DATE``
-    - *Explanation:* Date of user's registration
+    - ``DATE``
+    - Date of user's registration
 * ``is_admin``
-    - *Type:* ``BOOL``
-    - *Explanation:* User type
+    - ``BOOL``
+    - User type
 * ``is_banned``
-    - *Type:* ``BOOL``
-    - *Explanation:* Holds the information of user's ban status
+    - ``BOOL``
+    - Holds the information of user's ban status
