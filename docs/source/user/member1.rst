@@ -20,6 +20,7 @@ Users have to log in first in order to create tags, create a post, comment, vote
 
 .. figure:: images/login.png
    :align:   center
+
 	Login page
 
 
@@ -29,6 +30,7 @@ They can check the status of their reports, wheter it is dismissed or not, and d
 
 .. figure:: images/profile_page.png
    :align:   center
+
 	User profile
 
 
@@ -39,6 +41,7 @@ Admins also have access to a panel which they can view users and submitted repor
 
 .. figure:: images/admin.png
    :align:   center
+
 	Administration
 
 
@@ -46,9 +49,8 @@ Admins can make changes on uses from this page. They can ban a user, delete a us
 
 .. figure:: images/admin_users.png
    :align:   center
+
 	User actions
-
-
 
 
 Votes
@@ -60,6 +62,7 @@ After a user logged in, he or she can give upvote or a downvote  to a post / com
 
 .. figure:: images/vote_post.png
    :align:   center
+
 	Voting on a post
 
 
@@ -81,6 +84,7 @@ After they clicked to Report button at the relevant post/comment they are redire
 
 .. figure:: images/report_form.png
    :align:   center
+
 	Form for a report
 
 
@@ -89,6 +93,7 @@ At the admin page, admins can view a short summary of reports as a list and they
 
 .. figure:: images/report_view.png
    :align:   center
+
 	List of reports for admins
 
 
@@ -97,6 +102,7 @@ If they decide to review one, they must decide the action that they will take wh
 
 .. figure:: images/report_review.png
    :align:   center
+   
 	Review form for report
 
 

@@ -1,25 +1,32 @@
 User Guide
 ==========
 
-**explain how your application works from the user perspective, use
-screenshots whereever appropriate**
 
 **ACCIO, PROVIDES SOCIAL NEWS TO ITS COMMUNITY**
 
-Accio is a link aggregation site, where users can form up communities under
-tags, and discuss about anything and moderate the content themselves.
-Main source of information is posts. Posts can be pretty much anything the
-user can compose: sites, articles, images, blog posts, ideas that spawn
-discussions etc. Users can also comment under these posts and contribute
-to the community even further.
+Accio is a link aggregation site, where users can form up communities under tags, and discuss about anything and moderate the content themselves. Main source of information is posts.
+Posts can be pretty much anything the user can compose: sites, articles, images, blog posts, ideas that spawn
+discussions etc. 
+Users can also comment under these posts and contribute to the community even further.
 
-**to add a picture, use the following example**::
 
-   .. figure:: picture.png
-      :scale: 50 %
-      :alt: map to buried treasure
+Main page displays a feed with lastest posts and tags!
 
-      This is the caption of the figure (a simple paragraph).
+.. figure:: images/homepage.png
+   :align:   center
+
+User can,
+
+	- Access their own profile page
+	- Create a new tag
+	- Submit a new post
+	- View any latest post 
+	- Login, logout or register
+	- Handle administration if their user type is an admin
+
+	from the homepage.
+
+
 
 .. toctree::
 

@@ -5,7 +5,7 @@ Parts Implemented by Buse Kuz
 *********
 
 1- Table Creation
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 This table holds records of registered users. ``Users`` is the main table for the project. The attribute ``id`` is foreign key in 5 other tables.
 
@@ -41,7 +41,9 @@ So ``Users`` has 10 attributes and it is highly connected with the rest of the t
 
 
 2- User Routes
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
+
+
 
 
 A regular user must be able to register, login, logout, change their password view their profile.
@@ -231,11 +233,12 @@ Anyone can view user profiles except these slight differences,
 
 
 
-3- DATABASE QUERIES
-~~~~~~~~~~~~~~~~~~~
+3- Methods and Queries
+~~~~~~~~~~~~~~~~~~~~~~
 
 * SELECT
-	Any user with an id can be accessed by this approach.
+
+Any user with an id can be accessed by this approach.
 
 .. code-block:: python
 
@@ -243,7 +246,8 @@ Anyone can view user profiles except these slight differences,
 
 
 * UPDATE
-	``save()`` function or a specific method such as ``update_password`` from ``user.py`` can be used.
+
+``save()`` function or a specific method such as ``update_password`` from ``user.py`` can be used.
 
 * DELETE
 	Admins can delete the user that they view in administration page.
@@ -266,6 +270,42 @@ Anyone can view user profiles except these slight differences,
 		    else:
 		        flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
 		        return redirect("/user/login")
+
+
+Also a few helper methods are implemented at ``user.py`` to fasten some operations.
+
+* ``get_from_username`` is a method that returns User object with requested username.
+
+.. code-block:: python
+
+	    @classmethod
+	    def get_from_username(cls, username):
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE username = %s', (username, ))
+	                if cursor.rowcount == 0:
+	                    return None
+	                tuple = (cursor.fetchone())
+	                u=User(tuple[0])
+	                print(u.username)
+	                return User(tuple[0])
+
+
+* ``unique_user_check`` is a method returns true if there is no other user with the same username or email.
+
+.. code-block:: python
+
+	    @classmethod
+	    def unique_user_check(cls, username, email):
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE email = %s OR username = %s', (email,username, ))
+	                if cursor.rowcount == 0:
+	                    return True
+	                else:
+	                    return False    
+
+
 
 
 
@@ -424,6 +464,46 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 
 
 
+
+
+
+.. note:: Displaying current vote at the same time the vote button is clicked requieres an asynchronous call. In this project, ``ajax`` is used at the ``post.html``. Implementation is available below.
+
+
+.. code-block:: javascript
+		
+		    function vote_post(type) {
+		        $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
+		            if('success' in result){
+		                //For instant display
+		                if(type){
+		                    $("#votecount_post").text(result.final_vote);
+		                }else{
+		                    $("#votecount_post").text(result.final_vote);
+		                }
+		            }else if('error' in result){
+		                alert(result.error);
+		            }
+		        }});
+		    }
+		    function vote_comment(type, comment_id) {
+		        $.ajax({url: "/vote/" + comment_id + "/" + type + "/1", success: function(result){
+		            if('success' in result){
+		                //For instant display
+		                if(type){
+		                    $("#votecount_comment_" + comment_id).text(result.final_vote);
+		                }else{
+		                    $("#votecount_comment_" + comment_id).text(result.final_vote);
+		                }
+		            }else if('error' in result){
+		                alert(result.error);
+		            }
+		        }});
+		    }
+		    
+
+
+
 **Reports**
 ***********
 
@@ -436,18 +516,18 @@ User has to explain the reason of report, later admins can review these and deci
 
 .. code-block:: sql
 
-		CREATE TABLE reports (
-        id serial  NOT NULL,
-        submitting_user_id int  NOT NULL,
-        violated_rule text  NOT NULL,
-        date timestamp  NOT NULL,
-        reason_description text  NOT NULL,
-        is_comment int  NOT NULL,
-        action_taken text  NULL,
-        is_dismissed boolean  NOT NULL,
-        post_id int  NULL,
-        comment_id int  NULL,
-        CONSTRAINT reports_pk PRIMARY KEY (id)
+			CREATE TABLE reports (
+	        id serial  NOT NULL,
+	        submitting_user_id int  NOT NULL,
+	        violated_rule text  NOT NULL,
+	        date timestamp  NOT NULL,
+	        reason_description text  NOT NULL,
+	        is_comment int  NOT NULL,
+	        action_taken text  NULL,
+	        is_dismissed boolean  NOT NULL,
+	        post_id int  NULL,
+	        comment_id int  NULL,
+	        CONSTRAINT reports_pk PRIMARY KEY (id)
    		);
 
 
@@ -487,8 +567,6 @@ Report is created same way as other classes.
                 report.comment_id = reported_id if is_comment == 1 else None
                 report.save()
 
-
-Deletion of the report is only possible by its owner.
 
 
 * ``DELETE`` : Deletion of the report is only possible by its owner.
