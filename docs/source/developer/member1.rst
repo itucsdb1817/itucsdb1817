@@ -472,9 +472,6 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 
 .. code-block:: javascript
 		
-		    <script async type="text/javascript" src="/static/bulma.js"></script>
-		    {% if is_logged_in %}
-		    <script>
 		    // This function will be updated when fronend platform is implemented
 		    function vote_post(type) {
 		        $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
@@ -504,10 +501,7 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 		            }
 		        }});
 		    }
-		    </script>
-		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		    {% endif %}
-
+		    
 
 
 
