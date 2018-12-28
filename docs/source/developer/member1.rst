@@ -17,7 +17,6 @@ Attributes
 * ``id``
     - ``PRIMARY KEY``
     - ``SERIAL``
-    - Primary key of the Users
 * ``first_name``
     - ``VARCHAR(32)``
     - First name of the user
