@@ -5,9 +5,18 @@ Parts Implemented by Buse Kuz
 Users
 -----
 
+This page contains a quick summary of users actions such as,
+
+	- Login
+	- Logout
+	- Register
+	- Profile
+	- Administration panel
+	
+
 Users are registered members of Accio community. They can be an admin or a regular user. Same person can not register again with same e-mail address and username.
 
-Registration is possible with the form below.
+Registration is possible with the form below. Each field has to be answered to submit.
 
 .. figure:: images/register.png
    :align:   center
@@ -16,7 +25,7 @@ Registration is possible with the form below.
 
 
 
-Users have to log in first in order to create tags, create a post, comment, vote or report.
+Users have to log in first in order to create tags, create a post, comment, vote or report. Users that are not logged in can only view homepage and user profiles but can not take an action.
 
 .. figure:: images/login.png
    :align:   center
@@ -102,7 +111,7 @@ If they decide to review one, they must decide the action that they will take wh
 
 .. figure:: images/report_review.png
    :align:   center
-   
+
 	Review form for report
 
 
