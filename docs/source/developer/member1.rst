@@ -159,8 +159,10 @@ Users can login with their username and password unless they are banned.
 **Profile**
 
 Anyone can view user profiles except these slight differences,
-	*If user views their own profile they can edit change their password or delete their reports.
-	*If logged in user is an admin, admin can ban the user from their profile.
+
+*If user views their own profile they can edit change their password or delete their reports.
+
+*If logged in user is an admin, admin can ban the user from their profile.
 
 .. code-block:: python
 
@@ -235,20 +237,24 @@ Anyone can view user profiles except these slight differences,
 3- DATABASE QUERIES
 ~~~~~~~~~~~~~~~~~~~
 
-	* SELECT
-		Any user with an id can be accessed by,
+* SELECT
+	Any user with an id can be accessed by this approach.
 
 .. code-block:: python
+
 		user = User(id)
 
-	* UPDATE
-		``save()`` function or specific methods such as ``update_password`` from user.py can be used.
 
-	* DELETE
-		Admins can delete the user that they view in administration page.
-		``delete()`` is imported from base.py
+
+* UPDATE
+	``save()`` function or specific methods such as ``update_password`` from user.py can be used.
+
+* DELETE
+	Admins can delete the user that they view in administration page.
+	``delete()`` is imported from base.py
 
 .. code-block:: python
+
 		@admin_user_page.route('/delete_user/<int:id>', methods = ['GET', 'POST'])
 		def delete_user(id):
 		#Admins can delete the user with given id using this function. 
@@ -266,8 +272,8 @@ Anyone can view user profiles except these slight differences,
 		        return redirect("/user/login")
 
 	
-	* READ
-		It is used anywhere we need to use display information of a user.
+* READ
+	It is used anywhere we need to use display information of a user.
 
 
 
