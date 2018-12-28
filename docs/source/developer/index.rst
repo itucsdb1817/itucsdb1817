@@ -24,5 +24,5 @@ Code
 
 .. toctree::
 
-   buse
-   hakan
+   member1
+   member2
