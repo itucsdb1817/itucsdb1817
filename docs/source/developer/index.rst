@@ -8,6 +8,8 @@ Database Design
 
 **include the E/R diagram(s)**
 
+.. figure:: images/diagram.png
+
 Code
 ----
 
