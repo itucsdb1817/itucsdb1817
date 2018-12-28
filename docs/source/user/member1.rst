@@ -27,7 +27,7 @@ Admins also have access to a panel which they can view users and submitted repor
 
 Admins can make changes on uses from this page. They can ban a user, delete a user permanently or convert them to an admin.
 
-..figure:: images/admin_users.png
+.. figure:: images/admin_users.png
 
 Votes
 -----
@@ -36,7 +36,7 @@ Accio is a content-based website so users can vote these content in order to sho
 
 After a user logged in, he or she can give upvote or a downvote  to a post / comment.
 
-..figure:: images/vote_post.png
+.. figure:: images/vote_post.png
 
 A post or a comment can be voted by the same user once. So if a user clicks to upvote or downvote twice that means they taked their vote back. But of course, they can change their vote from upvote to downvote or vice versa.
 
@@ -50,15 +50,15 @@ In case of a user is uncomfortable because of a post or comment, they can report
 
 After they clicked to Report button at the relevant post/comment they are redirected to a form. The reason of their report could be many things such as an inappropriate expression or something against the rules of the tag or user might just think that is not suitable. If so they explain the reason with the form below and the form gets sended to admins.
 
-..figure:: images/report_form.png
+.. figure:: images/report_form.png
 
 At the admin page, admins can view a short summary of reports as a list and they can review the one they choose as we see below.
 
-..figure:: images/report_view.png
+.. figure:: images/report_view.png
 
 If they decide to review one, they must decide the action that they will take which means if they are going to ban the owner of the post or there is nothing against rules or any comment they want to make about the situation of the report. If they decide to execute this action they dismiss the report and it will not be shown any more at the admin panel.
 
-..figure:: images/report_review.png
+.. figure:: images/report_review.png
 
 Users can keep track of the latest status of their report from their profile or delete them.
 
