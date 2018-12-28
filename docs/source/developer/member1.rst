@@ -1,11 +1,8 @@
 Parts Implemented by Buse Kuz
 ================================
 
-**TABLES**
-**********
-
-Users
------
+**Users**
+*********
 
 1- Table Creation
 ~~~~~~~~~~~~~~~~~~
@@ -31,7 +28,7 @@ So ``Users`` has 10 attributes and it is highly connected with the rest of the t
 	        CONSTRAINT id PRIMARY KEY (id)
 	    );
 
-* ``id`` ``PRIMARY KEY```
+* ``id`` ``PRIMARY KEY``
 * ``first_name``	First name of the user
 * ``last_name``	Last name of the user
 * ``username``	Username for user
@@ -245,9 +242,8 @@ Anyone can view user profiles except these slight differences,
 		user = User(id)
 
 
-
 * UPDATE
-	``save()`` function or specific methods such as ``update_password`` from user.py can be used.
+	``save()`` function or a specific method such as ``update_password`` from ``user.py`` can be used.
 
 * DELETE
 	Admins can delete the user that they view in administration page.
@@ -271,15 +267,10 @@ Anyone can view user profiles except these slight differences,
 		        flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
 		        return redirect("/user/login")
 
-	
-* READ
-	It is used anywhere we need to use display information of a user.
 
 
-
-
-Votes
------
+**Votes**
+*********
 
 1- Table Creation
 ~~~~~~~~~~~~~~~~~~
@@ -303,11 +294,22 @@ This table holds records of every vote.
 	    );
 
 
+* ``id`` ``PRIMARY KEY``
+* ``post_id`` ``FOREIGN KEY``
+* ``comment_id`` ``FOREIGN KEY``
+
+
 2- Vote Routes
 ~~~~~~~~~~~~~~~
 
 * A user can have only one vote per comment or post that is either upvote or downvote.
 * There is only one vote route and it works at the background of project.
+
+When a user decides to click on vote several scenarios may occur such as,
+
+* If user had voted this post/comment before,
+	-  ``UPDATE`` : User can change his or her vote from upvote to down vote or vice versa.
+
 
 .. code-block:: python
 
@@ -316,8 +318,7 @@ This table holds records of every vote.
 		def vote_post(parent_id,vote_type,parent_type):
 		    if check.logged_in():
 		        if (parent_type == 0 or parent_type == 1) and (vote_type == 0 or vote_type == 1):
-		            ## parent type = 0 post
-		            ## parent type = 1 comment
+		            ## parent type = 0 post, parent type = 1 comment
 		            create_vote = False
 		            delete_vote = False
 		            try:
@@ -330,63 +331,71 @@ This table holds records of every vote.
 		                    user_vote = Vote.get_user_comment_vote(session.get("user_id", ""),parent_id)
 
 
-		                if not user_vote:						#User did not vote this post before
-		                    if(vote_type == 1):					#If upvote increment the count, else decrement.
+		                if not user_vote:					#User did not vote this post before
+		                    if(vote_type == 1):				#If upvote increment the count, else decrement.
 		                        parent.current_vote += 1
 		                    else:
 		                        parent.current_vote -= 1 
 		                    parent.save()
 		                    create_vote = True
-		                else:									#User voted this post before
-		                    if user_vote[0].vote:				#Previous vote was upvote
-		                        if vote_type == 0:				#User wants to change the vote to downwote
-		                            parent.current_vote -= 2
-		                            user_vote[0].last_update_time = datetime.utcnow()
-		                            user_vote[0].save()
-		                        else:
-		                            parent.current_vote -= 1	#User takes the vote back by clicking twice
-		                            delete_vote = True			#Vote will be delete
-		                    else:								#Previous vote was downvote
-		                        if vote_type == 0:				#Current vote is downvote
-		                            parent.current_vote += 1	#Vote will be deleted since it was clicked twice
-		                            delete_vote = True
-		                        else:
-		                            parent.current_vote += 2	#User wants to chane the vote to upvote
-		                            user_vote[0].last_update_time = datetime.utcnow()
-		                            user_vote[0].save()
-		                    if delete_vote:
-		                        user_vote[0].delete()
-		                    else:
-		                        user_vote[0].vote = bool(vote_type)
-		                        user_vote[0].save()
-		                    parent.save()
-		                
-		                #New vote gets created and sended as a JSON object
-		                if create_vote:
-		                    vote = Vote()
-		                    vote.date = datetime.utcnow()
-		                    vote.is_comment = bool(parent_type)
-		                    vote.vote = bool(vote_type)
-		                    vote.vote_ip = request.remote_addr
-		                    vote.last_update_time = datetime.utcnow()
-		                    vote.user_id = session.get("user_id", "")
-		                    vote.post_id = parent_id if parent_type == 0 else None
-		                    vote.comment_id = parent_id if parent_type == 1 else None 
-		                    vote.save()
-		                return jsonify({'success': 'Successfuly voted!', 'final_vote': parent.current_vote})
-		            except NotImplementedError as error:
-		                return jsonify({'error': str(error)})
-		    return jsonify({'error': 'Invalid vote.'})
 
-
-When a user decides to click on vote several scenarios may occur such as,
 
 * If user had voted this post/comment before,
-	-  ``UPDATE`` : User can change his or her vote from upvote to down vote or vice versa.
 	-  ``DELETE`` : User may want to take his or her vote back.
+
+
+.. code-block:: python
+
+		else:								#User voted this post before
+		    if user_vote[0].vote:			#Previous vote was upvote
+		        if vote_type == 0:			#User wants to change the vote to downwote
+		            parent.current_vote -= 2
+		            user_vote[0].last_update_time = datetime.utcnow()
+		            user_vote[0].save()
+		        else:
+		            parent.current_vote -= 1 #User takes the vote back by clicking twice
+		            delete_vote = True		 #Vote will be delete
+		    else:							 #Previous vote was downvote
+		        if vote_type == 0:			 #Current vote is downvote
+		            parent.current_vote += 1 #Vote will be deleted since it was clicked twice
+		            delete_vote = True
+		        else:
+		            parent.current_vote += 2	#User wants to chane the vote to upvote
+		            user_vote[0].last_update_time = datetime.utcnow()
+		            user_vote[0].save()
+		    if delete_vote:
+		        user_vote[0].delete()
+		    else:
+		        user_vote[0].vote = bool(vote_type)
+		        user_vote[0].save()
+		    parent.save()
+
+
 
 * If user is voting for the first time,
 	- ``CREATE`` : After we set the attributes of vote object, we save it at the end.
+
+
+.. code-block:: python		                 
+		                
+	    #New vote gets created and sended as a JSON object
+	    if create_vote:
+	        vote = Vote()
+	        vote.date = datetime.utcnow()
+	        vote.is_comment = bool(parent_type)
+	        vote.vote = bool(vote_type)
+	        vote.vote_ip = request.remote_addr
+	        vote.last_update_time = datetime.utcnow()
+	        vote.user_id = session.get("user_id", "")
+	        vote.post_id = parent_id if parent_type == 0 else None
+	        vote.comment_id = parent_id if parent_type == 1 else None 
+	        vote.save()
+	    return jsonify({'success': 'Successfuly voted!', 'final_vote': parent.current_vote})
+	except NotImplementedError as error:
+	    return jsonify({'error': str(error)})
+	return jsonify({'error': 'Invalid vote.'})
+
+
 
 
 Also there are a few class methods at ``vote.py`` that will fasten the process. These are mostly need because we need to seperate voted posts and comments from each other to display them to user.
@@ -415,5 +424,105 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 
 
 
-Reports
--------
+**Reports**
+***********
+
+
+1- Table Creation
+~~~~~~~~~~~~~~~~~~
+
+Reports are submitted by users about a specific comment or post.
+User has to explain the reason of report, later admins can review these and decide what to do next.
+
+.. code-block:: sql
+
+		CREATE TABLE reports (
+        id serial  NOT NULL,
+        submitting_user_id int  NOT NULL,
+        violated_rule text  NOT NULL,
+        date timestamp  NOT NULL,
+        reason_description text  NOT NULL,
+        is_comment int  NOT NULL,
+        action_taken text  NULL,
+        is_dismissed boolean  NOT NULL,
+        post_id int  NULL,
+        comment_id int  NULL,
+        CONSTRAINT reports_pk PRIMARY KEY (id)
+   		);
+
+
+* ``id`` ``PRIMARY KEY``
+* ``post_id`` ``FOREIGN KEY``
+* ``comment_id`` ``FOREIGN KEY``
+
+
+2- Report Routes
+~~~~~~~~~~~~~~~~
+
+Report is created same way as other classes.
+
+* ``CREATE`` : It is created when a user first fills the form to report a post/comment.
+
+.. code-block:: python
+
+		 #If reported object is a post
+                if is_comment == 0:
+                    reported_post = Post(reported_id)
+                    if len(Report.get_user_prev_report(session.get("user_id", ""),reported_id)) > 0:
+                        return redirect("/post/" + str(reported_id))
+                else:
+                    reported_comment = Comment(reported_id)
+                    if len(Report.get_user_prev_report(session.get("user_id", ""),reported_id)) > 0:
+                        return redirect("/post/" + str(reported_comment.post_id))
+                    
+                report = Report()
+                report.submitting_user_id = session.get("user_id", "")
+                report.violated_rule = form.data["violated_rule"]
+                report.date = datetime.utcnow()
+                report.reason_description = form.data["reason_description"]
+                report.is_comment = is_comment
+                report.action_taken = None
+                report.is_dismissed = False
+                report.post_id = reported_id if is_comment == 0 else None
+                report.comment_id = reported_id if is_comment == 1 else None
+                report.save()
+
+
+Deletion of the report is only possible by its owner.
+
+
+* ``DELETE`` : Deletion of the report is only possible by its owner.
+
+.. code-block:: python
+
+
+		@report_page.route('/report_delete/<int:submitter_id>/<int:id>', methods = ['GET', 'POST'])
+		def delete_report(submitter_id,id):
+		    if not check.logged_in():
+		        flash({'text': "Please sign in.", 'type': "error"}) 
+		        return redirect("/") 
+		    else:
+		        if submitter_id == session.get("user_id",""):
+		            report = Report(id)
+		            report.delete()
+		            flash({'text': "You have deleted a report.", 'type': "success"}) 
+		            return redirect("/user/profile/" + str(submitter_id))
+		        else:
+		            flash({'text': "You can not delete another user's report.", 'type': "error"}) 
+		            return redirect("/") 
+
+
+
+* ``UPDATE`` : Admins can update a report and saves the action they will take to database.
+
+.. code-block:: python
+	
+
+	    def update_for_review(self,action,is_dismissed):
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'UPDATE {self.TABLE_NAME} SET  action_taken = %s , is_dismissed = %s WHERE id = %s', (action,is_dismissed,self.id, ))
+
+
+
+
