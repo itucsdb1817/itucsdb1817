@@ -2,13 +2,14 @@ Parts Implemented by Efe Hakan Gençoğlu
 ================================
 
 **Tags**
-
-1 - Table Creation
-~~~~~~~~~~~~~~~~~~
+--------
 
 This table provides common tags for posts to be submitted under.
 All posts must be submitted with a tag.
 It does not reference any other tables.
+
+1 - Table Creation
+~~~~~~~~~~~~~~~~~~
 
 .. code-block:: sql
 
@@ -173,3 +174,90 @@ Pagination
                     pagination['posts'].append(info)
                 cursor.close()
                 return pagination
+
+Posts
+-----
+
+Posts are submitted by logged in users.
+Content of a post can be text, image, gif, link.
+Posts are markdown enabled.
+
+1 - Table Creation
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: sql
+
+        CREATE TABLE posts (
+            id serial  NOT NULL,
+            user_id int  NOT NULL,
+            tag_id int NOT NULL,
+            date timestamp  NOT NULL,
+            title varchar(256)  NOT NULL,
+            content_type varchar(32)  NOT NULL,
+            content text  NOT NULL,
+            content_html text NOT NULL,
+            is_external boolean  NOT NULL,
+            current_vote int  NOT NULL,
+            is_banned boolean  NOT NULL,
+            comment_count int  NOT NULL,
+            CONSTRAINT posts_pk PRIMARY KEY (id)
+        );
+
+
+* ``user_id`` ``FK(users)`` User who created the post.
+* ``tag_id`` ``FK(tags)`` The tag the post was submitted to.
+* ``content_type`` text, image or link.
+* ``content`` Markdown content.
+* ``content_html`` Rendered Markdown content.
+
+2 - Routes
+~~~~~~~~~~
+
+* ``/post/submit`` - Post submission
+* ``/post/<post_id>`` - Main view
+* ``/post/<post_id>/edit`` - Edit post (Only OP and Mods)
+* ``/post/<post_id>/delete`` - Delete post (Only OP and Mods)
+
+
+Comments
+--------
+
+Comments refernce posts, and go under posts.
+Markdown enabled
+
+
+1 - Table Creation
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: sql
+
+        CREATE TABLE comments (
+            id serial  NOT NULL,
+            user_id int  NOT NULL,
+            post_id int  NOT NULL,
+            content_type varchar(32)  NOT NULL,
+            content text  NOT NULL,
+            content_html text NOT NULL,
+            is_external boolean  NOT NULL,
+            date timestamp  NOT NULL,
+            current_vote int  NOT NULL,
+            CONSTRAINT comments_pk PRIMARY KEY (id)
+        );
+
+
+* ``user_id`` ``FK(users)`` User who created the post.
+* ``tag_id`` ``FK(tags)`` The tag the post was submitted to.
+* ``content_type`` text, image or link.
+* ``content`` Markdown content.
+* ``content_html`` Rendered Markdown content.
+
+2 - Routes
+~~~~~~~~~~
+
+* ``/post/submit`` - Post submission
+* ``/post/<post_id>`` - Main view
+* ``/post/<post_id>/edit`` - Edit post (Only OP and Mods)
+* ``/post/<post_id>/delete`` - Delete post (Only OP and Mods)
+
+
+
