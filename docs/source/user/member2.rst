@@ -38,6 +38,7 @@ Posts
 After a tag has been created, users can submit posts to these tags
 
 Users can submit posts at ``/post/submit``
+These posts accept Markdown for formatting
 
 .. figure:: images/create_post.png
    :align: center
@@ -60,3 +61,22 @@ or delete posts
 
    Post Editing
 
+
+Comment
+-------
+
+Under posts, logged in users can comment.
+Comments support Markdown too. 
+Comments can be edited or deleted later by original posters or moderators.
+
+
+.. figure:: images/submit_comment.png
+   :align: center
+
+   Comment Submission
+
+
+.. figure:: images/post.png
+   :align: center
+
+   Single Comment View
