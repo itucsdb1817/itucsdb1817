@@ -4,8 +4,8 @@ Parts Implemented by Buse Kuz
 **Users**
 *********
 
-**Table Creation**
-******************
+1- Table Creation
+~~~~~~~~~~~~~~~~
 
 This table holds records of registered users. ``Users`` is the main table for the project. The attribute ``id`` is foreign key in 5 other tables.
 
@@ -40,8 +40,9 @@ So ``Users`` has 10 attributes and it is highly connected with the rest of the t
 * ``is_banned``	Holds the information of user's ban status
 
 
-**User Routes**
-***************
+2- User Routes
+~~~~~~~~~~~~~~~~
+
 
 
 
@@ -232,9 +233,8 @@ Anyone can view user profiles except these slight differences,
 
 
 
-**METHODS AND QUERIES**
-***********************
-
+3- Methods and Queries
+~~~~~~~~~~~~~~~~~~~~~~
 
 * SELECT
 	Any user with an id can be accessed by this approach.
@@ -310,9 +310,8 @@ Also a few helper methods are implemented at ``user.py`` to fasten some operatio
 **Votes**
 *********
 
-**Table Creation**
-******************
-
+1- Table Creation
+~~~~~~~~~~~~~~~~~~
 
 This table holds records of every vote. 
 
@@ -338,9 +337,8 @@ This table holds records of every vote.
 * ``comment_id`` ``FOREIGN KEY``
 
 
-***Vote Routes***
-******************
-
+2- Vote Routes
+~~~~~~~~~~~~~~~
 
 * A user can have only one vote per comment or post that is either upvote or downvote.
 * There is only one vote route and it works at the background of project.
@@ -468,8 +466,8 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 ***********
 
 
-** Table Creation**
-*******************
+1- Table Creation
+~~~~~~~~~~~~~~~~~~
 
 Reports are submitted by users about a specific comment or post.
 User has to explain the reason of report, later admins can review these and decide what to do next.
@@ -496,8 +494,8 @@ User has to explain the reason of report, later admins can review these and deci
 * ``comment_id`` ``FOREIGN KEY``
 
 
-***Report Routes**
-******************
+2- Report Routes
+~~~~~~~~~~~~~~~~
 
 Report is created same way as other classes.
 
