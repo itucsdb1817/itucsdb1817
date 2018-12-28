@@ -14,6 +14,6 @@ screenshots whereever appropriate**
 
 .. toctree::
 
-   member1
-   member2
+   buse
+   hakan
 
