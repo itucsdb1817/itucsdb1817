@@ -44,3 +44,16 @@ Attributes
 * ``is_banned``
     - ``BOOL``
     - Holds the information of user's ban status
+
+ User has to register to be a member of Accio community. Flask-WTF is used for registration and also at login, submit post etc. 
+
+ .. literalinclude:: /../../routes/user/user_routes.py
+   :language: python
+   :linenos:
+   :caption: **Registration** (file: ``routes/user/user_routes.py``)
+   :name: Register Route
+   :lines: 62-99
+
+   * Save function uses insert into query to create a User tuple.
+   * ``logged_in`` function checks if there is a user in the session and returns user if there is any
+
