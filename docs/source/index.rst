@@ -21,7 +21,7 @@ Users can create tags that poeple will post to, and create communities with
 their own rules and set of moderators.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    :caption: Contents:
    
    user/index
