@@ -5,7 +5,8 @@ Parts Implemented by Buse Kuz
 Users
 -----
 
-Users are registered members of Accio community. They can be an admin or a regular user.
+Users are registered members of Accio community. They can be an admin or a regular user. Same person can not register again with same e-mail address and username.
+
 Registration is possible with the form below.
 
 .. figure:: images/register.png
