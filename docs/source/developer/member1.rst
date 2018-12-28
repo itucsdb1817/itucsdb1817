@@ -44,13 +44,11 @@ Parts Implemented by Buse Kuz
 ~~~~~~~~~~~~~~~~
 
 
-
-
 A regular user must be able to register, login, logout, change their password view their profile.
 An admin user addtionaly can review reports and update user's attributes and delete them if necessary.
 All of those operations are handled in ``user_routes.py``.
 
-* Flask-WTF is used for all forms at the routes.
+*  ``Flask-WTF`` is used for all forms at the routes.
 * `Flask-Bcrypt <https://flask-bcrypt.readthedocs.io/en/latest/>`_ library is used to store the password hashed in the database which is a much safer approach
 
 
@@ -440,6 +438,8 @@ When a user decides to click on vote several scenarios may occur such as,
 
 
 
+3- Methods
+~~~~~~~~~~
 
 Also there are a few class methods at ``vote.py`` that will fasten the process. These are mostly need because we need to seperate voted posts and comments from each other to display them to user.
 
@@ -539,10 +539,12 @@ User has to explain the reason of report, later admins can review these and deci
 * ``comment_id`` ``FOREIGN KEY``
 
 
-2- Report Routes
-~~~~~~~~~~~~~~~~
+2- Report Routes and Queries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Report is created same way as other classes.
+
+
 
 * ``CREATE`` : It is created when a user first fills the form to report a post/comment.
 
