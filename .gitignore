@@ -9,6 +9,7 @@ __pycache__
 
 venv/
 docs/build/
+docs/source/_build/
 
 models/config\.py
 
