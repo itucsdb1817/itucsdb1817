@@ -51,9 +51,12 @@ A regular user must be able to register, login, logout, change their password vi
 An admin user addtionaly can review reports and update user's attributes and delete them if necessary.
 All of those operations are handled in ``user_routes.py``.
 
-**Registration**
+* Flask-WTF is used for all forms at the routes.
+* `Flask-Bcrypt <https://flask-bcrypt.readthedocs.io/en/latest/>`_ library is used to store the password hashed in the database which is a much safer approach
 
-User has to register to be a member of Accio community.
+
+
+**Registration**
 
 .. code-block:: python
 
@@ -97,14 +100,14 @@ User has to register to be a member of Accio community.
 
 
 
-* Save function uses insert into query to create a User tuple (details of initializations are at BaseModel section).
-* ``logged_in`` function checks if there is a user in the session and returns user if there is any
-* Flask-bcrypt library is used to store the password hashed in the database which is a much safer approach
-* Flask-WTF is used for all forms in the project 
+* ``user.save()`` function uses "INSERT" query from base.py to create a User tuple (details of initializations are at BaseModel section).
+* ``logged_in`` function checks if there is a user in the session and returns user if it exists.
 
 
 
 **Login**
+
+Users can login with their username and password unless they are banned.
 
 
 .. code-block:: python
@@ -150,4 +153,124 @@ User has to register to be a member of Accio community.
 		    return redirect("/")
 
 
+.. note:: Flask-Session is an extension for Flask that adds support for Server-side Session to your application. It is essential to know which user is in the session while user is visiting routes. Session is setted in ``login`` and popped at ``logout``.
 
+
+**Profile**
+
+Anyone can view user profiles except these slight differences,
+	*If user views their own profile they can edit change their password or delete their reports.
+	*If logged in user is an admin, admin can ban the user from their profile.
+
+.. code-block:: python
+
+		@user_page.route('/user/profile/<int:id>', methods = ['GET', 'POST'])
+		def profile_page(id):
+		    try:
+		        admin = False
+		        ban = False
+		        self_profile = False
+		        if check.logged_in():
+		            if id == session.get("user_id",""):
+		                self_profile = True
+		        if admin_check.admin_logged_in():
+		            admin = True
+		        user = User(id)
+		        if user.is_banned == True:
+		        	ban = True
+		       	
+		        parent_list = []
+		        for vote in Vote.get_user_total_votes(user.id):
+		        	if vote.is_comment == 1:
+		        		parent_list.append(Comment(vote.comment_id))
+		        	elif vote.is_comment == 0:
+		        		parent_list.append(Post(vote.post_id))
+
+
+		        return render_template('profile.html',id=user.id, username = user.username, first_name = user.first_name, last_name = user.last_name, birth_date = user.birth_date, creation_date = user.date, posts = Post.get_user_post(user.id),email= user.email, self_profile = self_profile, total_votes = Vote.get_user_total_votes(user.id), comments = Comment.get_user_total_comments(user.id), reports = Report.get_user_all_reports(user.id), parent_list = parent_list, admin=admin, ban= ban)
+
+		    except NotImplementedError as error:
+		        flash("Error: " + str(error))
+		        return redirect("/") 
+
+
+
+
+.. code-block:: python
+
+		@user_page.route('/user/change_password', methods = ['GET', 'POST'])
+		def change_password():
+		    if check.logged_in():
+		        form = PasswordForm()
+		        if form.validate_on_submit():
+		            user = User(session.get("user_id",""))
+		            password = form.data["old_password"]
+		            password_hash = user.password
+		            if current_app.config['bcrypt'].check_password_hash(password_hash, password):
+		                user.update_password(current_app.config['bcrypt'].generate_password_hash(form.data["new_password"]).decode('utf-8'))
+		                return render_template('change_password.html', form=form, success = "Your password has been updated.")
+		            else:
+		                return render_template('change_password.html', form=form, error = "Incorrect password.")
+		        else:
+		            if request.method == "POST":
+		                return render_template('change_password.html', form=form, error = "Invalid field, please check again.")
+		            else:
+		                return render_template('change_password.html', form=form)
+		    else:
+		        flash({'text': "You have to sign in to change your password.",'type':'is-warning'})
+		        return redirect("/user/login")
+
+
+* This route works at the background and calls ``update_password`` function from ``user.py``.
+
+.. code-block:: python
+
+	    def update_password(self,new_password):
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'UPDATE {self.TABLE_NAME} SET  password = %s WHERE id = %s', (new_password,self.id, ))
+
+
+
+3- DATABASE QUERIES
+~~~~~~~~~~~~~~~~~~~
+
+	* SELECT
+		Any user with an id can be accessed by,
+
+.. code-block:: python
+		user = User(id)
+
+	* UPDATE
+		``save()`` function or specific methods such as ``update_password`` from user.py can be used.
+
+	* DELETE
+		Admins can delete the user that they view in administration page.
+		``delete()`` is imported from base.py
+
+.. code-block:: python
+		@admin_user_page.route('/delete_user/<int:id>', methods = ['GET', 'POST'])
+		def delete_user(id):
+		#Admins can delete the user with given id using this function. 
+		    if check.admin_logged_in():   
+		        try:
+		            user = User(id)
+		            user.delete()
+		            flash({'text': "This account is deleted permanently.", 'type': 'success'}) 
+		            return redirect("/admin/view_users")
+		        except NotImplementedError as error:
+		            flash({'text': "This account does not exist.", 'type': "Error:" + str(error)}) 
+		            return redirect("/")
+		    else:
+		        flash({'text': "You have to sign in to your admin account first.", 'type': "error"}) 
+		        return redirect("/user/login")
+
+	
+	* READ
+		It is used anywhere we need to use display information of a user.
+
+
+
+
+Votes
+-----
