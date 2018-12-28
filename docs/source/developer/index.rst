@@ -45,13 +45,63 @@ It can also initialized with a tuple, which updates the related entry upon ``.sa
 table format, and should be used with caution. It is meant for developers to overload ``__init__()`` and
 create their own initalization methods. (*e.g*. Retreiving a user entry by its username).
 
-Code for the ``BaseModel`` class is located at ``models/base.py``
+Code for the ``save()`` method is as follows
+
+.. code-block:: python
+
+      def save(self):
+         with db.connect(current_app.config['DB_URL']) as conn:
+               cursor = conn.cursor()
+               if hasattr(self, '_ORIGINAL_ATTR'):
+                  assert hasattr(self, 'id')
+                  changed = self._get_changed()
+                  if not changed:
+                     return
+                  placeholders = ', '.join((key + ' = %s') for key in changed.keys())
+                  query = f'''UPDATE {self.__class__.TABLE_NAME}
+                              SET {placeholders}
+                              WHERE id = {self._ORIGINAL_ATTR[0]}'''
+                  cursor.execute(query, list(changed.values()))
+                  print(f'Existing db entry {self.__class__.__name__} updated')
+               else:
+                  if not self._is_attr_complete():
+                     raise NotImplementedError('INSUFFICENT ATTR')
+                  columns = ', '.join(self.__class__.COLUMN_NAMES[1:])
+                  placeholders = (len(self.__class__.COLUMN_NAMES[1:]) * '%s, ')[:-2]
+                  query = f'''INSERT INTO {self.__class__.TABLE_NAME} ({columns})
+                              VALUES ({placeholders})
+                              RETURNING id
+                              '''
+                  t = self._get_attr()
+                  cursor.execute(query, t)
+                  print(f'New db entry {self.__class__.__name__} created')
+                  self.id = cursor.fetchone()[0]
+               conn.commit()
+
+Deletion methods:
+
+.. code-block:: python
+
+      def delete(self):
+         if hasattr(self, 'id'):
+               self.delete_direct(self.id)
+         else:
+               raise NotImplementedError("Cannot delete unexisting row, save first or discard")
+      
+      @classmethod
+      def delete_direct(cls, pk):
+         assert isinstance(pk, int), "Key must be of type int"
+         with db.connect(current_app.config['DB_URL']) as conn:
+               cursor = conn.cursor()
+               cursor.execute(f"DELETE FROM {cls.TABLE_NAME} WHERE id=%s", (pk, ))
+               conn.commit()
+               cursor.close()
 
 Views
 ^^^^^
 
 Views are what end-users are exposed to. It couples models and templates, renders them and serves them
-to the users.
+to the users. These views are explained in detail on member specific implementation pages.
 
 They are located at the folder ``routes/``
 
