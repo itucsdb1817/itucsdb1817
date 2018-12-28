@@ -7,9 +7,9 @@ Parts Implemented by Buse Kuz
 1- Table Creation
 ~~~~~~~~~~~~~~~~
 
-This table holds records of registered users. ``Users`` is the main table for the project. The attribute ``id`` is foreign key in 5 other tables.
+``Users`` holds records of registered users, it is the main table for project. The attribute ``id`` is foreign key in five other tables.
 
-So ``Users`` has 10 attributes and it is highly connected with the rest of the tables.
+``Users`` has 10 attributes and it is highly connected with the rest of the tables.
 
 
 .. code-block:: sql
@@ -195,6 +195,8 @@ Anyone can view user profiles except these slight differences,
 		        return redirect("/") 
 
 
+.. warning:: Try - except block is essential to prevent manipulations on the route. Except block catches NotImplementedError from ``base.py``.
+
 
 
 .. code-block:: python
@@ -250,8 +252,9 @@ Any user with an id can be accessed by this approach.
 ``save()`` function or a specific method such as ``update_password`` from ``user.py`` can be used.
 
 * DELETE
-	Admins can delete the user that they view in administration page.
-	``delete()`` is imported from base.py
+
+Admins can delete the user that they view in administration page.
+``delete()`` is imported from base.py
 
 .. code-block:: python
 
@@ -386,9 +389,9 @@ When a user decides to click on vote several scenarios may occur such as,
 
 .. code-block:: python
 
-		else:								#User voted this post before
-		    if user_vote[0].vote:			#Previous vote was upvote
-		        if vote_type == 0:			#User wants to change the vote to downwote
+		else:							#User voted this post before
+		    if user_vote[0].vote:		#Previous vote was upvote
+		        if vote_type == 0:		#User wants to change the vote to downwote
 		            parent.current_vote -= 2
 		            user_vote[0].last_update_time = datetime.utcnow()
 		            user_vote[0].save()
