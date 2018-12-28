@@ -1,7 +1,7 @@
 Parts Implemented by Buse Kuz
 ================================
 
-**Tables**
+**TABLES**
 **********
 
 Users
@@ -44,7 +44,7 @@ So ``Users`` has 10 attributes and it is highly connected with the rest of the t
 
 
 2- User Routes
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 
 A regular user must be able to register, login, logout, change their password view their profile.
@@ -160,9 +160,9 @@ Users can login with their username and password unless they are banned.
 
 Anyone can view user profiles except these slight differences,
 
-*If user views their own profile they can edit change their password or delete their reports.
+* If user views their own profile they can edit change their password or delete their reports.
 
-*If logged in user is an admin, admin can ban the user from their profile.
+* If logged in user is an admin, admin can ban the user from their profile.
 
 .. code-block:: python
 
@@ -280,3 +280,140 @@ Anyone can view user profiles except these slight differences,
 
 Votes
 -----
+
+1- Table Creation
+~~~~~~~~~~~~~~~~~~
+
+This table holds records of every vote. 
+
+
+.. code-block:: sql
+
+		    CREATE TABLE votes (
+	        id serial  NOT NULL,
+	        user_id int  NOT NULL,
+	        date timestamp  NOT NULL,
+	        is_comment bool  NOT NULL,
+	        vote boolean  NOT NULL,
+	        vote_ip varchar(32) NOT NULL,
+	        last_update_time timestamp NOT NULL,
+	        post_id int  NULL,
+	        comment_id int  NULL,
+	        CONSTRAINT votes_pk PRIMARY KEY (id)
+	    );
+
+
+2- Vote Routes
+~~~~~~~~~~~~~~~
+
+* A user can have only one vote per comment or post that is either upvote or downvote.
+* There is only one vote route and it works at the background of project.
+
+.. code-block:: python
+
+		
+		@vote_page.route('/vote/<int:parent_id>/<int:vote_type>/<int:parent_type>', methods = ['GET', 'POST'])
+		def vote_post(parent_id,vote_type,parent_type):
+		    if check.logged_in():
+		        if (parent_type == 0 or parent_type == 1) and (vote_type == 0 or vote_type == 1):
+		            ## parent type = 0 post
+		            ## parent type = 1 comment
+		            create_vote = False
+		            delete_vote = False
+		            try:
+		                if parent_type == 0:
+		                    parent = Post(parent_id)
+		                    user_vote = Vote.get_user_post_vote(session.get("user_id", ""),parent_id)
+
+		                elif parent_type == 1:
+		                    parent = Comment(parent_id)
+		                    user_vote = Vote.get_user_comment_vote(session.get("user_id", ""),parent_id)
+
+
+		                if not user_vote:						#User did not vote this post before
+		                    if(vote_type == 1):					#If upvote increment the count, else decrement.
+		                        parent.current_vote += 1
+		                    else:
+		                        parent.current_vote -= 1 
+		                    parent.save()
+		                    create_vote = True
+		                else:									#User voted this post before
+		                    if user_vote[0].vote:				#Previous vote was upvote
+		                        if vote_type == 0:				#User wants to change the vote to downwote
+		                            parent.current_vote -= 2
+		                            user_vote[0].last_update_time = datetime.utcnow()
+		                            user_vote[0].save()
+		                        else:
+		                            parent.current_vote -= 1	#User takes the vote back by clicking twice
+		                            delete_vote = True			#Vote will be delete
+		                    else:								#Previous vote was downvote
+		                        if vote_type == 0:				#Current vote is downvote
+		                            parent.current_vote += 1	#Vote will be deleted since it was clicked twice
+		                            delete_vote = True
+		                        else:
+		                            parent.current_vote += 2	#User wants to chane the vote to upvote
+		                            user_vote[0].last_update_time = datetime.utcnow()
+		                            user_vote[0].save()
+		                    if delete_vote:
+		                        user_vote[0].delete()
+		                    else:
+		                        user_vote[0].vote = bool(vote_type)
+		                        user_vote[0].save()
+		                    parent.save()
+		                
+		                #New vote gets created and sended as a JSON object
+		                if create_vote:
+		                    vote = Vote()
+		                    vote.date = datetime.utcnow()
+		                    vote.is_comment = bool(parent_type)
+		                    vote.vote = bool(vote_type)
+		                    vote.vote_ip = request.remote_addr
+		                    vote.last_update_time = datetime.utcnow()
+		                    vote.user_id = session.get("user_id", "")
+		                    vote.post_id = parent_id if parent_type == 0 else None
+		                    vote.comment_id = parent_id if parent_type == 1 else None 
+		                    vote.save()
+		                return jsonify({'success': 'Successfuly voted!', 'final_vote': parent.current_vote})
+		            except NotImplementedError as error:
+		                return jsonify({'error': str(error)})
+		    return jsonify({'error': 'Invalid vote.'})
+
+
+When a user decides to click on vote several scenarios may occur such as,
+
+* If user had voted this post/comment before,
+	-  ``UPDATE`` : User can change his or her vote from upvote to down vote or vice versa.
+	-  ``DELETE`` : User may want to take his or her vote back.
+
+* If user is voting for the first time,
+	- ``CREATE`` : After we set the attributes of vote object, we save it at the end.
+
+
+Also there are a few class methods at ``vote.py`` that will fasten the process. These are mostly need because we need to seperate voted posts and comments from each other to display them to user.
+
+.. code-block:: python
+
+	    @classmethod
+	    def get_user_post_vote(cls,user_id,post_id):             
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE user_id = %s AND post_id = %s', (user_id,post_id, ))
+	                list_of_votes = []
+	                for vote_tuple in cursor.fetchall():
+	                    list_of_votes.append(Vote(vote_tuple))
+	                return list_of_votes
+
+	    @classmethod
+	    def get_user_comment_vote(cls,user_id,comment_id):             
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE user_id = %s AND comment_id = %s', (user_id,comment_id, ))
+	                list_of_votes = []
+	                for vote_tuple in cursor.fetchall():
+	                    list_of_votes.append(Vote(vote_tuple))
+	                return list_of_votes
+
+
+
+Reports
+-------
