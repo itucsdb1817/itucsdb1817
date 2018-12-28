@@ -237,7 +237,8 @@ Anyone can view user profiles except these slight differences,
 ~~~~~~~~~~~~~~~~~~~~~~
 
 * SELECT
-	Any user with an id can be accessed by this approach.
+
+Any user with an id can be accessed by this approach.
 
 .. code-block:: python
 
@@ -245,7 +246,8 @@ Anyone can view user profiles except these slight differences,
 
 
 * UPDATE
-	``save()`` function or a specific method such as ``update_password`` from ``user.py`` can be used.
+
+``save()`` function or a specific method such as ``update_password`` from ``user.py`` can be used.
 
 * DELETE
 	Admins can delete the user that they view in administration page.
@@ -462,6 +464,53 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 
 
 
+
+
+
+.. note:: Displaying current vote at the same time the vote button is clicked requieres an asynchronous call. In this project ``ajax`` is used at the ``post.html``. Implementation is available below.
+
+
+.. code-block:: javascript
+		
+		    <script async type="text/javascript" src="/static/bulma.js"></script>
+		    {% if is_logged_in %}
+		    <script>
+		    // This function will be updated when fronend platform is implemented
+		    function vote_post(type) {
+		        $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
+		            if('success' in result){
+		                //For instant display
+		                if(type){
+		                    $("#votecount_post").text(result.final_vote);
+		                }else{
+		                    $("#votecount_post").text(result.final_vote);
+		                }
+		            }else if('error' in result){
+		                alert(result.error);
+		            }
+		        }});
+		    }
+		    function vote_comment(type, comment_id) {
+		        $.ajax({url: "/vote/" + comment_id + "/" + type + "/1", success: function(result){
+		            if('success' in result){
+		                //For instant display
+		                if(type){
+		                    $("#votecount_comment_" + comment_id).text(result.final_vote);
+		                }else{
+		                    $("#votecount_comment_" + comment_id).text(result.final_vote);
+		                }
+		            }else if('error' in result){
+		                alert(result.error);
+		            }
+		        }});
+		    }
+		    </script>
+		    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		    {% endif %}
+
+
+
+
 **Reports**
 ***********
 
@@ -525,8 +574,6 @@ Report is created same way as other classes.
                 report.comment_id = reported_id if is_comment == 1 else None
                 report.save()
 
-
-Deletion of the report is only possible by its owner.
 
 
 * ``DELETE`` : Deletion of the report is only possible by its owner.
