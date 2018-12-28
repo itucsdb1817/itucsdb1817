@@ -4,8 +4,8 @@ Parts Implemented by Buse Kuz
 **Users**
 *********
 
-1- Table Creation
-~~~~~~~~~~~~~~~~~~
+**Table Creation**
+******************
 
 This table holds records of registered users. ``Users`` is the main table for the project. The attribute ``id`` is foreign key in 5 other tables.
 
@@ -40,8 +40,9 @@ So ``Users`` has 10 attributes and it is highly connected with the rest of the t
 * ``is_banned``	Holds the information of user's ban status
 
 
-2- User Routes
-~~~~~~~~~~~~~~~
+**User Routes**
+***************
+
 
 
 A regular user must be able to register, login, logout, change their password view their profile.
@@ -231,8 +232,9 @@ Anyone can view user profiles except these slight differences,
 
 
 
-3- DATABASE QUERIES
-~~~~~~~~~~~~~~~~~~~
+**METHODS AND QUERIES**
+***********************
+
 
 * SELECT
 	Any user with an id can be accessed by this approach.
@@ -268,12 +270,49 @@ Anyone can view user profiles except these slight differences,
 		        return redirect("/user/login")
 
 
+Also a few helper methods are implemented at ``user.py`` to fasten some operations.
+
+* ``get_from_username`` is a method that returns User object with requested username.
+
+.. code-block:: python
+
+	    @classmethod
+	    def get_from_username(cls, username):
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE username = %s', (username, ))
+	                if cursor.rowcount == 0:
+	                    return None
+	                tuple = (cursor.fetchone())
+	                u=User(tuple[0])
+	                print(u.username)
+	                return User(tuple[0])
+
+
+* ``unique_user_check`` is a method returns true if there is no other user with the same username or email.
+
+.. code-block:: python
+
+	    @classmethod
+	    def unique_user_check(cls, username, email):
+	        with db.connect(current_app.config['DB_URL']) as conn:
+	            with conn.cursor() as cursor:
+	                cursor.execute(f'SELECT * FROM {cls.TABLE_NAME} WHERE email = %s OR username = %s', (email,username, ))
+	                if cursor.rowcount == 0:
+	                    return True
+	                else:
+	                    return False    
+
+
+
+
 
 **Votes**
 *********
 
-1- Table Creation
-~~~~~~~~~~~~~~~~~~
+**Table Creation**
+******************
+
 
 This table holds records of every vote. 
 
@@ -299,8 +338,9 @@ This table holds records of every vote.
 * ``comment_id`` ``FOREIGN KEY``
 
 
-2- Vote Routes
-~~~~~~~~~~~~~~~
+***Vote Routes***
+******************
+
 
 * A user can have only one vote per comment or post that is either upvote or downvote.
 * There is only one vote route and it works at the background of project.
@@ -428,26 +468,26 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 ***********
 
 
-1- Table Creation
-~~~~~~~~~~~~~~~~~~
+** Table Creation**
+*******************
 
 Reports are submitted by users about a specific comment or post.
 User has to explain the reason of report, later admins can review these and decide what to do next.
 
 .. code-block:: sql
 
-		CREATE TABLE reports (
-        id serial  NOT NULL,
-        submitting_user_id int  NOT NULL,
-        violated_rule text  NOT NULL,
-        date timestamp  NOT NULL,
-        reason_description text  NOT NULL,
-        is_comment int  NOT NULL,
-        action_taken text  NULL,
-        is_dismissed boolean  NOT NULL,
-        post_id int  NULL,
-        comment_id int  NULL,
-        CONSTRAINT reports_pk PRIMARY KEY (id)
+			CREATE TABLE reports (
+	        id serial  NOT NULL,
+	        submitting_user_id int  NOT NULL,
+	        violated_rule text  NOT NULL,
+	        date timestamp  NOT NULL,
+	        reason_description text  NOT NULL,
+	        is_comment int  NOT NULL,
+	        action_taken text  NULL,
+	        is_dismissed boolean  NOT NULL,
+	        post_id int  NULL,
+	        comment_id int  NULL,
+	        CONSTRAINT reports_pk PRIMARY KEY (id)
    		);
 
 
@@ -456,8 +496,8 @@ User has to explain the reason of report, later admins can review these and deci
 * ``comment_id`` ``FOREIGN KEY``
 
 
-2- Report Routes
-~~~~~~~~~~~~~~~~
+***Report Routes**
+******************
 
 Report is created same way as other classes.
 
