@@ -257,4 +257,3 @@ Markdown enabled
 * ``/post/<post_id>`` - Comment submission
 * ``/comment/<post_id>/edit`` - Edit comment (Only OP and Mods)
 * ``/comment/<post_id>/delete`` - Delete comment (Only OP and Mods)
-
