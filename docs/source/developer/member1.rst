@@ -467,12 +467,11 @@ Also there are a few class methods at ``vote.py`` that will fasten the process. 
 
 
 
-.. note:: Displaying current vote at the same time the vote button is clicked requieres an asynchronous call. In this project ``ajax`` is used at the ``post.html``. Implementation is available below.
+.. note:: Displaying current vote at the same time the vote button is clicked requieres an asynchronous call. In this project, ``ajax`` is used at the ``post.html``. Implementation is available below.
 
 
 .. code-block:: javascript
 		
-		    // This function will be updated when fronend platform is implemented
 		    function vote_post(type) {
 		        $.ajax({url: "/vote/{{ post.id }}/" + type + "/0", success: function(result){
 		            if('success' in result){
