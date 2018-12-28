@@ -594,7 +594,8 @@ Report is created same way as other classes.
 		            flash({'text': "You can not delete another user's report.", 'type': "error"}) 
 		            return redirect("/") 
 
-
+2- Methods
+~~~~~~~~~~
 
 * ``UPDATE`` : Admins can update a report and saves the action they will take to database.
 
