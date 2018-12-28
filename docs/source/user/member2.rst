@@ -31,3 +31,32 @@ After this, moderators of the tag can access the moderation page at
    :align: center
 
    Tag Moderation Page
+
+Posts
+-----
+
+After a tag has been created, users can submit posts to these tags
+
+Users can submit posts at ``/post/submit``
+
+.. figure:: images/create_post.png
+   :align: center
+
+   Post Creation
+
+After the post is created the user is redirected to the post page
+at ``/post/<post_id>``
+
+.. figure:: images/post.png
+   :align: center
+
+   Post View
+
+The original submitter of the post or a moderator of the tag can edit
+or delete posts
+
+.. figure:: images/edit_post.png
+   :align: center
+
+   Post Editing
+
