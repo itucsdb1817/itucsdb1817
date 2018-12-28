@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Parts Implemented by Efe Hakan Gençoğlu &mdash; ITUCSDB1817 1.0 RC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Parts Implemented by Buse Kuz" href="member1.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1817
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#database-design">Database Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#code-model-view-template-structure">Code (Model-View-Template Structure)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#views">Views</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#templates">Templates</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="member1.html">Parts Implemented by Buse Kuz</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Parts Implemented by Efe Hakan Gençoğlu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1817</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+        
+      <li>Parts Implemented by Efe Hakan Gençoğlu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer/member2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parts-implemented-by-efe-hakan-gencoglu">
+<h1>Parts Implemented by Efe Hakan Gençoğlu<a class="headerlink" href="#parts-implemented-by-efe-hakan-gencoglu" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tags">
+<h2><strong>Tags</strong><a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h2>
+<p>This table provides common tags for posts to be submitted under.
+All posts must be submitted with a tag.
+It does not reference any other tables.</p>
+<div class="section" id="table-creation">
+<h3>1 - Table Creation<a class="headerlink" href="#table-creation" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">tags</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">serial</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">title</span> <span class="nb">text</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="nb">date</span> <span class="k">timestamp</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">subscriber_amount</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_banned</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">description</span> <span class="nb">text</span>  <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">rules</span> <span class="nb">text</span>  <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">CONSTRAINT</span> <span class="n">tags_pk</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code> <code class="docutils literal notranslate"><span class="pre">PRIMARY</span> <span class="pre">KEY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">title</span></code> Title of the tag.</li>
+<li><code class="docutils literal notranslate"><span class="pre">date</span></code> Creation date of the tag.</li>
+<li><code class="docutils literal notranslate"><span class="pre">subscriber_amount</span></code> Amount of people who subscribed to this tag.</li>
+<li><code class="docutils literal notranslate"><span class="pre">is_banned</span></code> Whether the tag has been banned or not.</li>
+<li><code class="docutils literal notranslate"><span class="pre">description</span></code> A short description of this tag/community.</li>
+<li><code class="docutils literal notranslate"><span class="pre">rules</span></code> Rules that are decided by the moderators of the tag.</li>
+</ul>
+</div>
+<div class="section" id="routes">
+<h3>2 - Routes<a class="headerlink" href="#routes" title="Permalink to this headline">¶</a></h3>
+<p>All viewers can view a tag, but only tag creators and moderators selected
+by the tag creator and the other mods are allowed to access the
+moderation page.</p>
+<p><strong>Tag Creation</strong></p>
+<p>User must be logged in to create a tag.
+Route for creating a post is <code class="docutils literal notranslate"><span class="pre">/tag_create</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@tag_pages.route</span><span class="p">(</span><span class="s1">&#39;/tag_create&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">tag_create</span><span class="p">():</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+        <span class="n">error_context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;error_name&#39;</span><span class="p">:</span> <span class="s2">&quot;403 Forbidden&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;error_info&#39;</span><span class="p">:</span> <span class="s2">&quot;You may not create a tag without an account. Please log in or create an account&quot;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;error.html&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">error_context</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">TagCreationForm</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">()</span>
+            <span class="n">mod</span> <span class="o">=</span> <span class="n">TagModerator</span><span class="p">()</span>
+
+            <span class="c1"># TODO: tag name sanitization</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">subscriber_amount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">is_banned</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">rules</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">data</span>
+
+            <span class="n">tag</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="c1"># exact same date of creation denotes original creator</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">date</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">])</span>
+            <span class="n">mod</span><span class="o">.</span><span class="n">tag_id</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">id</span>
+
+            <span class="n">mod</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;New tag created&#39;</span><span class="p">)</span>
+            <span class="c1"># TODO: Redirect to tag page</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;tag_create.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;tag_create.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Main Tag View</strong></p>
+<p>Anyone can see the post history of the tag and all the posts that are not deleted,
+through the route <code class="docutils literal notranslate"><span class="pre">/t/&lt;tag_name&gt;</span></code>. It utilizes the pagination method in the model for the tag.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@tag_pages.route</span><span class="p">(</span><span class="s1">&#39;/t/&lt;string:tag_name&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">tag_view</span><span class="p">(</span><span class="n">tag_name</span><span class="p">):</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">)</span>
+    <span class="n">posts</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="c1"># existance of the attributes _ORIGINAL_ATTR denotes the model instance</span>
+    <span class="c1"># is not new and interfaces an entry in table</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s1">&#39;_ORIGINAL_ATTR&#39;</span><span class="p">):</span>
+        <span class="n">error_context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;error_name&#39;</span><span class="p">:</span> <span class="s2">&quot;404 Not Found&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;error_info&#39;</span><span class="p">:</span> <span class="s2">&quot;The tag you tried to access does not exist, but you can create this tag.&quot;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;error.html&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">error_context</span><span class="p">)</span>
+
+    <span class="c1"># TODO: Implement tag page and pagination</span>
+
+    <span class="n">page_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_index</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">page_index</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">page_index</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">page_index</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;tag_info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span>        <span class="n">tag</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+            <span class="s1">&#39;rules&#39;</span><span class="p">:</span>        <span class="n">tag</span><span class="o">.</span><span class="n">rules</span><span class="p">,</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span>  <span class="n">tag</span><span class="o">.</span><span class="n">description</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">&#39;pagination&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">paginate</span><span class="p">(</span><span class="n">page_index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;tag.html&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="special-methods-and-queries">
+<h3>3 - Special Methods and Queries<a class="headerlink" href="#special-methods-and-queries" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="pagination">
+<h4>Pagination<a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">paginate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method paginates the entries in database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">page</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="c1"># TODO: Selection of sorting</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;SELECT COUNT(id) FROM posts WHERE tag_id={self.id}&quot;</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># table is empty, abort</span>
+            <span class="n">pagination</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;page_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;last_page_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="n">pagination</span>
+        <span class="c1"># Normalize page index if it exceeds max page count</span>
+        <span class="n">pagination</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">max_page_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">count</span> <span class="o">/</span> <span class="n">page_size</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">max_page_count</span> <span class="o">&lt;</span> <span class="n">page</span><span class="p">:</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">max_page_count</span>
+        <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;page_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span>
+        <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;last_page_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_page_count</span>
+        <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;SELECT * FROM posts WHERE tag_id={self.id}&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+            <span class="n">post_tuples</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchmany</span><span class="p">(</span><span class="n">page_size</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">post_tuples</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;No set of posts left to render&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">post_tuple</span> <span class="ow">in</span> <span class="n">post_tuples</span><span class="p">:</span>
+            <span class="n">post</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">post_tuple</span><span class="p">)</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span>    <span class="n">post</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">:</span>       <span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s1">&#39;user&#39;</span><span class="p">:</span>     <span class="n">User</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                <span class="s1">&#39;vote&#39;</span><span class="p">:</span>     <span class="n">post</span><span class="o">.</span><span class="n">current_vote</span><span class="p">,</span>
+                <span class="s1">&#39;date&#39;</span><span class="p">:</span>     <span class="n">post</span><span class="o">.</span><span class="n">date</span>
+            <span class="p">}</span>
+            <span class="n">pagination</span><span class="p">[</span><span class="s1">&#39;posts&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pagination</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="posts">
+<h2>Posts<a class="headerlink" href="#posts" title="Permalink to this headline">¶</a></h2>
+<p>Posts are submitted by logged in users.
+Content of a post can be text, image, gif, link.
+Posts are markdown enabled.</p>
+<div class="section" id="id1">
+<h3>1 - Table Creation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">posts</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">serial</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">user_id</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">tag_id</span> <span class="nb">int</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="nb">date</span> <span class="k">timestamp</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">title</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">content_type</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">content</span> <span class="nb">text</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">content_html</span> <span class="nb">text</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_external</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">current_vote</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_banned</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">comment_count</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">CONSTRAINT</span> <span class="n">posts_pk</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">user_id</span></code> <code class="docutils literal notranslate"><span class="pre">FK(users)</span></code> User who created the post.</li>
+<li><code class="docutils literal notranslate"><span class="pre">tag_id</span></code> <code class="docutils literal notranslate"><span class="pre">FK(tags)</span></code> The tag the post was submitted to.</li>
+<li><code class="docutils literal notranslate"><span class="pre">content_type</span></code> text, image or link.</li>
+<li><code class="docutils literal notranslate"><span class="pre">content</span></code> Markdown content.</li>
+<li><code class="docutils literal notranslate"><span class="pre">content_html</span></code> Rendered Markdown content.</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>2 - Routes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/post/submit</span></code> - Post submission</li>
+<li><code class="docutils literal notranslate"><span class="pre">/post/&lt;post_id&gt;</span></code> - Main view</li>
+<li><code class="docutils literal notranslate"><span class="pre">/post/&lt;post_id&gt;/edit</span></code> - Edit post (Only OP and Mods)</li>
+<li><code class="docutils literal notranslate"><span class="pre">/post/&lt;post_id&gt;/delete</span></code> - Delete post (Only OP and Mods)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="comments">
+<h2>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
+<p>Comments refernce posts, and go under posts.
+Markdown enabled</p>
+<div class="section" id="id3">
+<h3>1 - Table Creation<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">comments</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">serial</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">user_id</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">post_id</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">content_type</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">content</span> <span class="nb">text</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">content_html</span> <span class="nb">text</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_external</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="nb">date</span> <span class="k">timestamp</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">current_vote</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">CONSTRAINT</span> <span class="n">comments_pk</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">user_id</span></code> <code class="docutils literal notranslate"><span class="pre">FK(users)</span></code> User who created the post.</li>
+<li><code class="docutils literal notranslate"><span class="pre">tag_id</span></code> <code class="docutils literal notranslate"><span class="pre">FK(tags)</span></code> The tag the post was submitted to.</li>
+<li><code class="docutils literal notranslate"><span class="pre">content_type</span></code> text, image or link.</li>
+<li><code class="docutils literal notranslate"><span class="pre">content</span></code> Markdown content.</li>
+<li><code class="docutils literal notranslate"><span class="pre">content_html</span></code> Rendered Markdown content.</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>2 - Routes<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">/post/&lt;post_id&gt;</span></code> - Comment submission</li>
+<li><code class="docutils literal notranslate"><span class="pre">/comment/&lt;post_id&gt;/edit</span></code> - Edit comment (Only OP and Mods)</li>
+<li><code class="docutils literal notranslate"><span class="pre">/comment/&lt;post_id&gt;/delete</span></code> - Delete comment (Only OP and Mods)</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="member1.html" class="btn btn-neutral" title="Parts Implemented by Buse Kuz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1817, Efe Hakan Gençoğlu &amp; Buse Kuz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

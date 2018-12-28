@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer Guide &mdash; ITUCSDB1817 1.0 RC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parts Implemented by Buse Kuz" href="member1.html" />
+    <link rel="prev" title="Parts Implemented by Efe Hakan Gençoğlu" href="../user/member2.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1817
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#database-design">Database Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-model-view-template-structure">Code (Model-View-Template Structure)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#views">Views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#templates">Templates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="member1.html">Parts Implemented by Buse Kuz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="member2.html">Parts Implemented by Efe Hakan Gençoğlu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1817</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Developer Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-guide">
+<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="database-design">
+<h2>Database Design<a class="headerlink" href="#database-design" title="Permalink to this headline">¶</a></h2>
+<p>We have six main tables as Users, Posts, Comments, Tags, Reports, Votes and one extra table Tag_Moderators.</p>
+<p>Accio project constructed around three main folders such as models, routes and templates.
+<code class="docutils literal notranslate"><span class="pre">models</span></code> includes our main six tables and one extra table as classes. Before starting to build these classes we created a <code class="docutils literal notranslate"><span class="pre">BaseModel</span></code> that we can get use of for all of our tables.</p>
+<p>So, <code class="docutils literal notranslate"><span class="pre">models</span></code> are partial representations of a row in table.
+With the <code class="docutils literal notranslate"><span class="pre">BaseModel</span></code> they can be easily retrofitted to use their related tables and implement specific functionality for that table. Much of the
+database interfacing happens through these <code class="docutils literal notranslate"><span class="pre">models</span></code>.
+<code class="docutils literal notranslate"><span class="pre">routes</span></code> are functions that dictate what happens, where. They are invoked when a certain route such as /post/&lt;post_id&gt; is accessed. They retrieve the relevant model and template, render it and send to the user.</p>
+<p><code class="docutils literal notranslate"><span class="pre">templates</span></code> are pages that are filled with content and sent to the user to interact with.</p>
+<p>Additionaly, <code class="docutils literal notranslate"><span class="pre">static</span></code> folder includes CSS templated for user interface. We used <a class="reference external" href="https://dansup.github.io/bulma-templates/">Bulma CSS framework</a> for our project.</p>
+<div class="figure" id="id1">
+<img alt="../_images/diagram.png" src="../_images/diagram.png" />
+<p class="caption"><span class="caption-text">E/R Diagram</span></p>
+</div>
+</div>
+<div class="section" id="code-model-view-template-structure">
+<h2>Code (Model-View-Template Structure)<a class="headerlink" href="#code-model-view-template-structure" title="Permalink to this headline">¶</a></h2>
+<p>Our project utilizes MVT paradigm.</p>
+<div class="section" id="models">
+<h3>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<p>Models are located in the folder <cite>models/</cite> and they are the main method of how we
+interact with out database, representations of our data in the codebase. It is not a full-fledged ORM, but simple changes can be
+done and saved without using SQL in views.
+Classes that have the parent <code class="docutils literal notranslate"><span class="pre">BaseModel</span></code> can be created with creating the following class variables:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">TABLE_NAME</span></code> A string that matches the table name in the db</li>
+<li><code class="docutils literal notranslate"><span class="pre">COLUMN_NAMES</span></code> Tuple consisting of strings that matches the column names in the table, in order.</li>
+</ul>
+<p>An empty initialization of the child class object results in a new entry in the table upon calling <code class="docutils literal notranslate"><span class="pre">.save()</span></code>.
+Initialization with the entry id results in update of changes of the related entry upon <code class="docutils literal notranslate"><span class="pre">.save()</span></code>.
+It can also initialized with a tuple, which updates the related entry upon <code class="docutils literal notranslate"><span class="pre">.save()</span></code>. The system assumes it is ordered correctly and matches the
+table format, and should be used with caution. It is meant for developers to overload <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> and
+create their own initalization methods. (<em>e.g</em>. Retreiving a user entry by its username).</p>
+<p>Code for the <code class="docutils literal notranslate"><span class="pre">save()</span></code> method is as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+   <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+         <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_ORIGINAL_ATTR&#39;</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">)</span>
+            <span class="n">changed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_changed</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
+               <span class="k">return</span>
+            <span class="n">placeholders</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">key</span> <span class="o">+</span> <span class="s1">&#39; = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">changed</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;&#39;&#39;UPDATE {self.__class__.TABLE_NAME}</span>
+<span class="s1">                        SET {placeholders}</span>
+<span class="s1">                        WHERE id = {self._ORIGINAL_ATTR[0]}&#39;&#39;&#39;</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">changed</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Existing db entry {self.__class__.__name__} updated&#39;</span><span class="p">)</span>
+         <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_attr_complete</span><span class="p">():</span>
+               <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;INSUFFICENT ATTR&#39;</span><span class="p">)</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">COLUMN_NAMES</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="n">placeholders</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">COLUMN_NAMES</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">*</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">, &#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;&#39;&#39;INSERT INTO {self.__class__.TABLE_NAME} ({columns})</span>
+<span class="s1">                        VALUES ({placeholders})</span>
+<span class="s1">                        RETURNING id</span>
+<span class="s1">                        &#39;&#39;&#39;</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_attr</span><span class="p">()</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;New db entry {self.__class__.__name__} created&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+         <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Deletion methods:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+   <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">delete_direct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+   <span class="k">else</span><span class="p">:</span>
+         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Cannot delete unexisting row, save first or discard&quot;</span><span class="p">)</span>
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">delete_direct</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+   <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;Key must be of type int&quot;</span>
+   <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+         <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+         <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;DELETE FROM {cls.TABLE_NAME} WHERE id=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">pk</span><span class="p">,</span> <span class="p">))</span>
+         <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+         <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="views">
+<h3>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
+<p>Views are what end-users are exposed to. It couples models and templates, renders them and serves them
+to the users. These views are explained in detail on member specific implementation pages.</p>
+<p>They are located at the folder <code class="docutils literal notranslate"><span class="pre">routes/</span></code></p>
+</div>
+<div class="section" id="templates">
+<h3>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h3>
+<p>Templates are not changed significantly and are written in Jinja2 format.</p>
+<p>They are located at the folder <code class="docutils literal notranslate"><span class="pre">templates/</span></code> and are to be used by views.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="member1.html">Parts Implemented by Buse Kuz</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="member1.html#users"><strong>Users</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#table-creation">1- Table Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#user-routes">2- User Routes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#methods-and-queries">3- Methods and Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="member1.html#votes"><strong>Votes</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#id1">1- Table Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#vote-routes">2- Vote Routes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#methods">3- Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="member1.html#reports"><strong>Reports</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#id2">1- Table Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#report-routes-and-queries">2- Report Routes and Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member1.html#id3">2- Methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="member2.html">Parts Implemented by Efe Hakan Gençoğlu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="member2.html#tags"><strong>Tags</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#table-creation">1 - Table Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#routes">2 - Routes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#special-methods-and-queries">3 - Special Methods and Queries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="member2.html#pagination">Pagination</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="member2.html#posts">Posts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#id1">1 - Table Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#id2">2 - Routes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="member2.html#comments">Comments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#id3">1 - Table Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member2.html#id4">2 - Routes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="member1.html" class="btn btn-neutral float-right" title="Parts Implemented by Buse Kuz" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../user/member2.html" class="btn btn-neutral" title="Parts Implemented by Efe Hakan Gençoğlu" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1817, Efe Hakan Gençoğlu &amp; Buse Kuz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

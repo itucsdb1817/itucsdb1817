@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Parts Implemented by Buse Kuz &mdash; ITUCSDB1817 1.0 RC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parts Implemented by Efe Hakan Gençoğlu" href="member2.html" />
+    <link rel="prev" title="Developer Guide" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1817
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#database-design">Database Design</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#code-model-view-template-structure">Code (Model-View-Template Structure)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#views">Views</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#templates">Templates</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Parts Implemented by Buse Kuz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="member2.html">Parts Implemented by Efe Hakan Gençoğlu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1817</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+        
+      <li>Parts Implemented by Buse Kuz</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer/member1.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parts-implemented-by-buse-kuz">
+<h1>Parts Implemented by Buse Kuz<a class="headerlink" href="#parts-implemented-by-buse-kuz" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="users">
+<h2><strong>Users</strong><a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="table-creation">
+<h3>1- Table Creation<a class="headerlink" href="#table-creation" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Users</span></code> holds records of registered users, it is the main table for project. The attribute <code class="docutils literal notranslate"><span class="pre">id</span></code> is foreign key in five other tables.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Users</span></code> has 10 attributes and it is highly connected with the rest of the tables.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">users</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">serial</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">first_name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">last_name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">username</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">password</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">email</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">254</span><span class="p">)</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">birth_date</span> <span class="nb">date</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_admin</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_banned</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="nb">date</span> <span class="k">timestamp</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">CONSTRAINT</span> <span class="n">id</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code> <code class="docutils literal notranslate"><span class="pre">PRIMARY</span> <span class="pre">KEY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">first_name</span></code>        First name of the user</li>
+<li><code class="docutils literal notranslate"><span class="pre">last_name</span></code> Last name of the user</li>
+<li><code class="docutils literal notranslate"><span class="pre">username</span></code>  Username for user</li>
+<li><code class="docutils literal notranslate"><span class="pre">password</span></code>  Password of the user</li>
+<li><code class="docutils literal notranslate"><span class="pre">email</span></code>     E-mail address of user</li>
+<li><code class="docutils literal notranslate"><span class="pre">birth_date</span></code>        Birth date of user</li>
+<li><code class="docutils literal notranslate"><span class="pre">date</span></code>      Date of user’s registration</li>
+<li><code class="docutils literal notranslate"><span class="pre">is_admin</span></code>  User type</li>
+<li><code class="docutils literal notranslate"><span class="pre">is_banned</span></code> Holds the information of user’s ban status</li>
+</ul>
+</div>
+<div class="section" id="user-routes">
+<h3>2- User Routes<a class="headerlink" href="#user-routes" title="Permalink to this headline">¶</a></h3>
+<p>A regular user must be able to register, login, logout, change their password view their profile.
+An admin user addtionaly can review reports and update user’s attributes and delete them if necessary.
+All of those operations are handled in <code class="docutils literal notranslate"><span class="pre">user_routes.py</span></code>.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Flask-WTF</span></code> is used for all forms at the routes.</li>
+<li><a class="reference external" href="https://flask-bcrypt.readthedocs.io/en/latest/">Flask-Bcrypt</a> library is used to store the password hashed in the database which is a much safer approach</li>
+</ul>
+<p><strong>Registration</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@user_page.route</span><span class="p">(</span><span class="s1">&#39;/user/register&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RegistrationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
+            <span class="n">email</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+            <span class="n">unique_check</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">unique_user_check</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="n">email</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">unique_check</span><span class="p">:</span>
+                <span class="n">new_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">first_name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;firstname&quot;</span><span class="p">]</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">last_name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;lastname&quot;</span><span class="p">]</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">birth_date</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;birth_date&quot;</span><span class="p">]</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+                <span class="n">password_hash</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bcrypt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password_hash</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">is_banned</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+                <span class="n">new_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You have successfully signed up!&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">})</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;register.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;This username or e-mail is already in use, please try another one.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;register.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;, field, please check again.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;register.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;register.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">user.save()</span></code> function uses “INSERT” query from base.py to create a User tuple (details of initializations are at BaseModel section).</li>
+<li><code class="docutils literal notranslate"><span class="pre">logged_in</span></code> function checks if there is a user in the session and returns user if it exists.</li>
+</ul>
+<p><strong>Login</strong></p>
+<p>Users can login with their username and password unless they are banned.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@user_page.route</span><span class="p">(</span><span class="s1">&#39;/user/login&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">login</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">]</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_from_username</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_banned</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You are banned from Accio, you can not sign in.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">})</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+            <span class="n">password_hash</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span>
+            <span class="k">if</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bcrypt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">check_password_hash</span><span class="p">(</span><span class="n">password_hash</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
+                <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You have successfully logged in.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">})</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span><span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;Incorrect password.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span><span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;Incorrect username or password.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;login.html&quot;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+
+    <span class="nd">@user_page.route</span><span class="p">(</span><span class="s1">&#39;/user/login&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Logout</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@user_page.route</span><span class="p">(</span><span class="s1">&#39;/user/logout&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">logout</span><span class="p">():</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You have successfully logged out.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Flask-Session is an extension for Flask that adds support for Server-side Session to your application. It is essential to know which user is in the session while user is visiting routes. Session is setted in <code class="docutils literal notranslate"><span class="pre">login</span></code> and popped at <code class="docutils literal notranslate"><span class="pre">logout</span></code>.</p>
+</div>
+<p><strong>Profile</strong></p>
+<p>Anyone can view user profiles except these slight differences,</p>
+<ul class="simple">
+<li>If user views their own profile they can edit change their password or delete their reports.</li>
+<li>If logged in user is an admin, admin can ban the user from their profile.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@user_page.route</span><span class="p">(</span><span class="s1">&#39;/user/profile/&lt;int:id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">profile_page</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">admin</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">ban</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">self_profile</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">id</span> <span class="o">==</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="n">self_profile</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">admin_check</span><span class="o">.</span><span class="n">admin_logged_in</span><span class="p">():</span>
+            <span class="n">admin</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_banned</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="n">ban</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">parent_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">vote</span> <span class="ow">in</span> <span class="n">Vote</span><span class="o">.</span><span class="n">get_user_total_votes</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">vote</span><span class="o">.</span><span class="n">is_comment</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">parent_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Comment</span><span class="p">(</span><span class="n">vote</span><span class="o">.</span><span class="n">comment_id</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">vote</span><span class="o">.</span><span class="n">is_comment</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">parent_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Post</span><span class="p">(</span><span class="n">vote</span><span class="o">.</span><span class="n">post_id</span><span class="p">))</span>
+
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;profile.html&#39;</span><span class="p">,</span><span class="nb">id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">username</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">first_name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">birth_date</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">birth_date</span><span class="p">,</span> <span class="n">creation_date</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">get_user_post</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span><span class="n">email</span><span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="n">self_profile</span> <span class="o">=</span> <span class="n">self_profile</span><span class="p">,</span> <span class="n">total_votes</span> <span class="o">=</span> <span class="n">Vote</span><span class="o">.</span><span class="n">get_user_total_votes</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">comments</span> <span class="o">=</span> <span class="n">Comment</span><span class="o">.</span><span class="n">get_user_total_comments</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">reports</span> <span class="o">=</span> <span class="n">Report</span><span class="o">.</span><span class="n">get_user_all_reports</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">parent_list</span> <span class="o">=</span> <span class="n">parent_list</span><span class="p">,</span> <span class="n">admin</span><span class="o">=</span><span class="n">admin</span><span class="p">,</span> <span class="n">ban</span><span class="o">=</span> <span class="n">ban</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">NotImplementedError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s2">&quot;Error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Try - except block is essential to prevent manipulations on the route. Except block catches NotImplementedError from <code class="docutils literal notranslate"><span class="pre">base.py</span></code>.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@user_page.route</span><span class="p">(</span><span class="s1">&#39;/user/change_password&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">change_password</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">PasswordForm</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">():</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;old_password&quot;</span><span class="p">]</span>
+            <span class="n">password_hash</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span>
+            <span class="k">if</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bcrypt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">check_password_hash</span><span class="p">(</span><span class="n">password_hash</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+                <span class="n">user</span><span class="o">.</span><span class="n">update_password</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;bcrypt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">generate_password_hash</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;new_password&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;change_password.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">success</span> <span class="o">=</span> <span class="s2">&quot;Your password has been updated.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;change_password.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;Incorrect password.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;change_password.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="s2">&quot;Invalid field, please check again.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;change_password.html&#39;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You have to sign in to change your password.&quot;</span><span class="p">,</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;is-warning&#39;</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/user/login&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>This route works at the background and calls <code class="docutils literal notranslate"><span class="pre">update_password</span></code> function from <code class="docutils literal notranslate"><span class="pre">user.py</span></code>.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_password</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;UPDATE {self.TABLE_NAME} SET  password = </span><span class="si">%s</span><span class="s1"> WHERE id = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">new_password</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods-and-queries">
+<h3>3- Methods and Queries<a class="headerlink" href="#methods-and-queries" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>SELECT</li>
+</ul>
+<p>Any user with an id can be accessed by this approach.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>UPDATE</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">save()</span></code> function or a specific method such as <code class="docutils literal notranslate"><span class="pre">update_password</span></code> from <code class="docutils literal notranslate"><span class="pre">user.py</span></code> can be used.</p>
+<ul class="simple">
+<li>DELETE</li>
+</ul>
+<p>Admins can delete the user that they view in administration page.
+<code class="docutils literal notranslate"><span class="pre">delete()</span></code> is imported from base.py</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@admin_user_page.route</span><span class="p">(</span><span class="s1">&#39;/delete_user/&lt;int:id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">delete_user</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="c1">#Admins can delete the user with given id using this function.</span>
+    <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">admin_logged_in</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;This account is deleted permanently.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;success&#39;</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/admin/view_users&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;This account does not exist.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;Error:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)})</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You have to sign in to your admin account first.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/user/login&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also a few helper methods are implemented at <code class="docutils literal notranslate"><span class="pre">user.py</span></code> to fasten some operations.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">get_from_username</span></code> is a method that returns User object with requested username.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_from_username</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;SELECT * FROM {cls.TABLE_NAME} WHERE username = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="p">))</span>
+            <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">None</span>
+            <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">())</span>
+            <span class="n">u</span><span class="o">=</span><span class="n">User</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">User</span><span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">unique_user_check</span></code> is a method returns true if there is no other user with the same username or email.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">unique_user_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;SELECT * FROM {cls.TABLE_NAME} WHERE email = </span><span class="si">%s</span><span class="s1"> OR username = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="n">username</span><span class="p">,</span> <span class="p">))</span>
+            <span class="k">if</span> <span class="n">cursor</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="votes">
+<h2><strong>Votes</strong><a class="headerlink" href="#votes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>1- Table Creation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>This table holds records of every vote.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span>        <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">votes</span> <span class="p">(</span>
+    <span class="n">id</span> <span class="nb">serial</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">user_id</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="nb">date</span> <span class="k">timestamp</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">is_comment</span> <span class="n">bool</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">vote</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">vote_ip</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">last_update_time</span> <span class="k">timestamp</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">post_id</span> <span class="nb">int</span>  <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">comment_id</span> <span class="nb">int</span>  <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">CONSTRAINT</span> <span class="n">votes_pk</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code> <code class="docutils literal notranslate"><span class="pre">PRIMARY</span> <span class="pre">KEY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">post_id</span></code> <code class="docutils literal notranslate"><span class="pre">FOREIGN</span> <span class="pre">KEY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">comment_id</span></code> <code class="docutils literal notranslate"><span class="pre">FOREIGN</span> <span class="pre">KEY</span></code></li>
+</ul>
+</div>
+<div class="section" id="vote-routes">
+<h3>2- Vote Routes<a class="headerlink" href="#vote-routes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A user can have only one vote per comment or post that is either upvote or downvote.</li>
+<li>There is only one vote route and it works at the background of project.</li>
+</ul>
+<p>When a user decides to click on vote several scenarios may occur such as,</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>If user had voted this post/comment before,</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> : User can change his or her vote from upvote to down vote or vice versa.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@vote_page.route</span><span class="p">(</span><span class="s1">&#39;/vote/&lt;int:parent_id&gt;/&lt;int:vote_type&gt;/&lt;int:parent_type&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">vote_post</span><span class="p">(</span><span class="n">parent_id</span><span class="p">,</span><span class="n">vote_type</span><span class="p">,</span><span class="n">parent_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">parent_type</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">parent_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">vote_type</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">vote_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="c1">## parent type = 0 post, parent type = 1 comment</span>
+            <span class="n">create_vote</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">delete_vote</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">parent_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">parent_id</span><span class="p">)</span>
+                    <span class="n">user_vote</span> <span class="o">=</span> <span class="n">Vote</span><span class="o">.</span><span class="n">get_user_post_vote</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span><span class="n">parent_id</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="n">parent_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">parent_id</span><span class="p">)</span>
+                    <span class="n">user_vote</span> <span class="o">=</span> <span class="n">Vote</span><span class="o">.</span><span class="n">get_user_comment_vote</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span><span class="n">parent_id</span><span class="p">)</span>
+
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">user_vote</span><span class="p">:</span>                                       <span class="c1">#User did not vote this post before</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">vote_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>                         <span class="c1">#If upvote increment the count, else decrement.</span>
+                        <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="n">parent</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">create_vote</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>If user had voted this post/comment before,</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">DELETE</span></code> : User may want to take his or her vote back.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">else</span><span class="p">:</span>                                                   <span class="c1">#User voted this post before</span>
+    <span class="k">if</span> <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vote</span><span class="p">:</span>               <span class="c1">#Previous vote was upvote</span>
+        <span class="k">if</span> <span class="n">vote_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>              <span class="c1">#User wants to change the vote to downwote</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span> <span class="o">-=</span> <span class="mi">2</span>
+            <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">last_update_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+            <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span> <span class="o">-=</span> <span class="mi">1</span> <span class="c1">#User takes the vote back by clicking twice</span>
+            <span class="n">delete_vote</span> <span class="o">=</span> <span class="bp">True</span>           <span class="c1">#Vote will be delete</span>
+    <span class="k">else</span><span class="p">:</span>                                                        <span class="c1">#Previous vote was downvote</span>
+        <span class="k">if</span> <span class="n">vote_type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                       <span class="c1">#Current vote is downvote</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1">#Vote will be deleted since it was clicked twice</span>
+            <span class="n">delete_vote</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span> <span class="o">+=</span> <span class="mi">2</span>    <span class="c1">#User wants to chane the vote to upvote</span>
+            <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">last_update_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+            <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">delete_vote</span><span class="p">:</span>
+        <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vote</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">vote_type</span><span class="p">)</span>
+        <span class="n">user_vote</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">parent</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>If user is voting for the first time,</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">CREATE</span></code> : After we set the attributes of vote object, we save it at the end.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1">#New vote gets created and sended as a JSON object</span>
+    <span class="k">if</span> <span class="n">create_vote</span><span class="p">:</span>
+        <span class="n">vote</span> <span class="o">=</span> <span class="n">Vote</span><span class="p">()</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">is_comment</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">parent_type</span><span class="p">)</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">vote</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">vote_type</span><span class="p">)</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">vote_ip</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">last_update_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">post_id</span> <span class="o">=</span> <span class="n">parent_id</span> <span class="k">if</span> <span class="n">parent_type</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">comment_id</span> <span class="o">=</span> <span class="n">parent_id</span> <span class="k">if</span> <span class="n">parent_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="n">vote</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="s1">&#39;Successfuly voted!&#39;</span><span class="p">,</span> <span class="s1">&#39;final_vote&#39;</span><span class="p">:</span> <span class="n">parent</span><span class="o">.</span><span class="n">current_vote</span><span class="p">})</span>
+<span class="k">except</span> <span class="ne">NotImplementedError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)})</span>
+<span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Invalid vote.&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods">
+<h3>3- Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+<p>Also there are a few class methods at <code class="docutils literal notranslate"><span class="pre">vote.py</span></code> that will fasten the process. These are mostly need because we need to seperate voted posts and comments from each other to display them to user.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_user_post_vote</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">user_id</span><span class="p">,</span><span class="n">post_id</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;SELECT * FROM {cls.TABLE_NAME} WHERE user_id = </span><span class="si">%s</span><span class="s1"> AND post_id = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="n">post_id</span><span class="p">,</span> <span class="p">))</span>
+            <span class="n">list_of_votes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">vote_tuple</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+                <span class="n">list_of_votes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vote</span><span class="p">(</span><span class="n">vote_tuple</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">list_of_votes</span>
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">get_user_comment_vote</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="n">user_id</span><span class="p">,</span><span class="n">comment_id</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;SELECT * FROM {cls.TABLE_NAME} WHERE user_id = </span><span class="si">%s</span><span class="s1"> AND comment_id = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span><span class="n">comment_id</span><span class="p">,</span> <span class="p">))</span>
+            <span class="n">list_of_votes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">vote_tuple</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+                <span class="n">list_of_votes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Vote</span><span class="p">(</span><span class="n">vote_tuple</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">list_of_votes</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Displaying current vote at the same time the vote button is clicked requieres an asynchronous call. In this project, <code class="docutils literal notranslate"><span class="pre">ajax</span></code> is used at the <code class="docutils literal notranslate"><span class="pre">post.html</span></code>. Implementation is available below.</p>
+</div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">vote_post</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;/vote/{{ post.id }}/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/0&quot;</span><span class="p">,</span> <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="s1">&#39;success&#39;</span> <span class="k">in</span> <span class="nx">result</span><span class="p">){</span>
+            <span class="c1">//For instant display</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">type</span><span class="p">){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#votecount_post&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">final_vote</span><span class="p">);</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#votecount_post&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">final_vote</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="s1">&#39;error&#39;</span> <span class="k">in</span> <span class="nx">result</span><span class="p">){</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}});</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">vote_comment</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">comment_id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;/vote/&quot;</span> <span class="o">+</span> <span class="nx">comment_id</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;/1&quot;</span><span class="p">,</span> <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="s1">&#39;success&#39;</span> <span class="k">in</span> <span class="nx">result</span><span class="p">){</span>
+            <span class="c1">//For instant display</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">type</span><span class="p">){</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#votecount_comment_&quot;</span> <span class="o">+</span> <span class="nx">comment_id</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">final_vote</span><span class="p">);</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#votecount_comment_&quot;</span> <span class="o">+</span> <span class="nx">comment_id</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">final_vote</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="s1">&#39;error&#39;</span> <span class="k">in</span> <span class="nx">result</span><span class="p">){</span>
+            <span class="nx">alert</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">error</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="reports">
+<h2><strong>Reports</strong><a class="headerlink" href="#reports" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3>1- Table Creation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Reports are submitted by users about a specific comment or post.
+User has to explain the reason of report, later admins can review these and decide what to do next.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span>        <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">reports</span> <span class="p">(</span>
+<span class="n">id</span> <span class="nb">serial</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="n">submitting_user_id</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="n">violated_rule</span> <span class="nb">text</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="nb">date</span> <span class="k">timestamp</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="n">reason_description</span> <span class="nb">text</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="n">is_comment</span> <span class="nb">int</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="n">action_taken</span> <span class="nb">text</span>  <span class="k">NULL</span><span class="p">,</span>
+<span class="n">is_dismissed</span> <span class="nb">boolean</span>  <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+<span class="n">post_id</span> <span class="nb">int</span>  <span class="k">NULL</span><span class="p">,</span>
+<span class="n">comment_id</span> <span class="nb">int</span>  <span class="k">NULL</span><span class="p">,</span>
+<span class="k">CONSTRAINT</span> <span class="n">reports_pk</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">id</span></code> <code class="docutils literal notranslate"><span class="pre">PRIMARY</span> <span class="pre">KEY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">post_id</span></code> <code class="docutils literal notranslate"><span class="pre">FOREIGN</span> <span class="pre">KEY</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">comment_id</span></code> <code class="docutils literal notranslate"><span class="pre">FOREIGN</span> <span class="pre">KEY</span></code></li>
+</ul>
+</div>
+<div class="section" id="report-routes-and-queries">
+<h3>2- Report Routes and Queries<a class="headerlink" href="#report-routes-and-queries" title="Permalink to this headline">¶</a></h3>
+<p>Report is created same way as other classes.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">CREATE</span></code> : It is created when a user first fills the form to report a post/comment.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="c1">#If reported object is a post</span>
+<span class="k">if</span> <span class="n">is_comment</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">reported_post</span> <span class="o">=</span> <span class="n">Post</span><span class="p">(</span><span class="n">reported_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Report</span><span class="o">.</span><span class="n">get_user_prev_report</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span><span class="n">reported_id</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/post/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">reported_id</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">reported_comment</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">reported_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Report</span><span class="o">.</span><span class="n">get_user_prev_report</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span><span class="n">reported_id</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/post/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">reported_comment</span><span class="o">.</span><span class="n">post_id</span><span class="p">))</span>
+
+<span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">()</span>
+<span class="n">report</span><span class="o">.</span><span class="n">submitting_user_id</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">report</span><span class="o">.</span><span class="n">violated_rule</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;violated_rule&quot;</span><span class="p">]</span>
+<span class="n">report</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+<span class="n">report</span><span class="o">.</span><span class="n">reason_description</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;reason_description&quot;</span><span class="p">]</span>
+<span class="n">report</span><span class="o">.</span><span class="n">is_comment</span> <span class="o">=</span> <span class="n">is_comment</span>
+<span class="n">report</span><span class="o">.</span><span class="n">action_taken</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">report</span><span class="o">.</span><span class="n">is_dismissed</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">report</span><span class="o">.</span><span class="n">post_id</span> <span class="o">=</span> <span class="n">reported_id</span> <span class="k">if</span> <span class="n">is_comment</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">None</span>
+<span class="n">report</span><span class="o">.</span><span class="n">comment_id</span> <span class="o">=</span> <span class="n">reported_id</span> <span class="k">if</span> <span class="n">is_comment</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span>
+<span class="n">report</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DELETE</span></code> : Deletion of the report is only possible by its owner.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@report_page.route</span><span class="p">(</span><span class="s1">&#39;/report_delete/&lt;int:submitter_id&gt;/&lt;int:id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">delete_report</span><span class="p">(</span><span class="n">submitter_id</span><span class="p">,</span><span class="nb">id</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check</span><span class="o">.</span><span class="n">logged_in</span><span class="p">():</span>
+        <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;Please sign in.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">submitter_id</span> <span class="o">==</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">report</span> <span class="o">=</span> <span class="n">Report</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="n">report</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You have deleted a report.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;success&quot;</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/user/profile/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">submitter_id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;You can not delete another user&#39;s report.&quot;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>2- Methods<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">UPDATE</span></code> : Admins can update a report and saves the action they will take to database.</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_for_review</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">action</span><span class="p">,</span><span class="n">is_dismissed</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">db</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;DB_URL&#39;</span><span class="p">])</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;UPDATE {self.TABLE_NAME} SET  action_taken = </span><span class="si">%s</span><span class="s1"> , is_dismissed = </span><span class="si">%s</span><span class="s1"> WHERE id = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">action</span><span class="p">,</span><span class="n">is_dismissed</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="member2.html" class="btn btn-neutral float-right" title="Parts Implemented by Efe Hakan Gençoğlu" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Developer Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1817, Efe Hakan Gençoğlu &amp; Buse Kuz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

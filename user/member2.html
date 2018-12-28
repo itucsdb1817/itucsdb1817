@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Parts Implemented by Efe Hakan Gençoğlu &mdash; ITUCSDB1817 1.0 RC documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer Guide" href="../developer/index.html" />
+    <link rel="prev" title="Parts Implemented by Buse Kuz" href="member1.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1817
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="member1.html">Parts Implemented by Buse Kuz</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parts Implemented by Efe Hakan Gençoğlu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tags">Tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#posts">Posts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comment">Comment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1817</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">User Guide</a> &raquo;</li>
+        
+      <li>Parts Implemented by Efe Hakan Gençoğlu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/user/member2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parts-implemented-by-efe-hakan-gencoglu">
+<h1>Parts Implemented by Efe Hakan Gençoğlu<a class="headerlink" href="#parts-implemented-by-efe-hakan-gencoglu" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tags">
+<h2>Tags<a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h2>
+<p>Actions:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Tag Creation</li>
+<li>Tag Moderation</li>
+</ul>
+</div></blockquote>
+<p>Users can create tags through <code class="docutils literal notranslate"><span class="pre">/tag_create</span></code>.</p>
+<div class="figure align-center" id="id1">
+<img alt="../_images/create_tag.png" src="../_images/create_tag.png" />
+<p class="caption"><span class="caption-text">Tag Creation</span></p>
+</div>
+<p>After the tag has been created and filled with posts, the tag
+can be viewed from the route <code class="docutils literal notranslate"><span class="pre">/t/&lt;tag_title&gt;</span></code></p>
+<div class="figure align-center" id="id2">
+<img alt="../_images/tag.png" src="../_images/tag.png" />
+<p class="caption"><span class="caption-text">Tag View</span></p>
+</div>
+<p>After this, moderators of the tag can access the moderation page at
+<code class="docutils literal notranslate"><span class="pre">/t/&lt;tag_title&gt;/mod</span></code></p>
+<div class="figure align-center" id="id3">
+<img alt="../_images/tag_moderation.png" src="../_images/tag_moderation.png" />
+<p class="caption"><span class="caption-text">Tag Moderation Page</span></p>
+</div>
+</div>
+<div class="section" id="posts">
+<h2>Posts<a class="headerlink" href="#posts" title="Permalink to this headline">¶</a></h2>
+<p>After a tag has been created, users can submit posts to these tags</p>
+<p>Users can submit posts at <code class="docutils literal notranslate"><span class="pre">/post/submit</span></code>
+These posts accept Markdown for formatting</p>
+<div class="figure align-center" id="id4">
+<img alt="../_images/create_post.png" src="../_images/create_post.png" />
+<p class="caption"><span class="caption-text">Post Creation</span></p>
+</div>
+<p>After the post is created the user is redirected to the post page
+at <code class="docutils literal notranslate"><span class="pre">/post/&lt;post_id&gt;</span></code></p>
+<div class="figure align-center" id="id5">
+<img alt="../_images/post.png" src="../_images/post.png" />
+<p class="caption"><span class="caption-text">Post View</span></p>
+</div>
+<p>The original submitter of the post or a moderator of the tag can edit
+or delete posts</p>
+<div class="figure align-center" id="id6">
+<img alt="../_images/edit_post.png" src="../_images/edit_post.png" />
+<p class="caption"><span class="caption-text">Post Editing</span></p>
+</div>
+</div>
+<div class="section" id="comment">
+<h2>Comment<a class="headerlink" href="#comment" title="Permalink to this headline">¶</a></h2>
+<p>Under posts, logged in users can comment.
+Comments support Markdown too.
+Comments can be edited or deleted later by original posters or moderators.</p>
+<div class="figure align-center" id="id7">
+<img alt="../_images/submit_comment.png" src="../_images/submit_comment.png" />
+<p class="caption"><span class="caption-text">Comment Submission</span></p>
+</div>
+<div class="figure align-center" id="id8">
+<img alt="../_images/post.png" src="../_images/post.png" />
+<p class="caption"><span class="caption-text">Single Comment View</span></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../developer/index.html" class="btn btn-neutral float-right" title="Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="member1.html" class="btn btn-neutral" title="Parts Implemented by Buse Kuz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1817, Efe Hakan Gençoğlu &amp; Buse Kuz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
